@@ -51,6 +51,19 @@
 </div>
 <div id="initiative" class="container">
     Initiative:
+    <ul>
+        <li ng-repeat="guy in combatList">
+            <div class="well">
+                <b>{{guy.name}}</b> Initiative: {{guy.score}}
+                <hr>
+
+                <label>
+                    Status:
+                    <input type="text" class="form-control" ng-model="guy.status">
+                </label>
+            </div>
+        </li>
+    </ul>
 </div>
 </body>
 </html>

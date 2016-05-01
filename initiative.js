@@ -6,6 +6,14 @@ initiativeTracker.controller('InitiativeController', function($scope) {
         { 'name': 'Participant2', 'mod': 0, 'adv': false, 'roll': true }
     ];
 
+    $scope.combatList = [
+        {
+            'name': 'Bonertown',
+            'score': 10,
+            'status': ''
+        }
+    ];
+
     $scope.remove = function(participant) {
         var index = $scope.participants.indexOf(participant);
         $scope.participants.splice(index, 1);
@@ -19,8 +27,12 @@ initiativeTracker.controller('InitiativeController', function($scope) {
 
 var Tracker = {} || (
     function() {
-        function AddParticipant() {
+        function ProcessParticipantList(participants) {
             
         }
+        return
+        { Process : ProcessParticipantList };
     }
+
+
 )();
