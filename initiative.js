@@ -31,6 +31,7 @@ var Tracker = Tracker || {};
         function RollInit(modifier, hasAdvantage)
         {
             var diceRoll = 0;
+            var mod = parseInt(modifier);
             if (!hasAdvantage)
             {
                 diceRoll = Math.ceil(Math.random() * 20);
@@ -41,7 +42,7 @@ var Tracker = Tracker || {};
                     Math.ceil(Math.random() * 20),
                     Math.ceil(Math.random() * 20));
             }
-            return diceRoll + modifier + (modifier / 100);
+            return diceRoll + mod + (mod/100);
         }
 
         function ProcessParticipantList(participants) {
