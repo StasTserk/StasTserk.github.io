@@ -47,12 +47,13 @@
             </div>
         </li>
     </ul>
-    <button type="button" class="btn btn-success" ng-click="addNew()">Add Combatant</button>
+    <button type="button" class="btn btn-success btn-block" ng-click="addNew()">Add Combatant</button>
+    <button type="button" class="btn btn-info btn-block" ng-click="rollInitiative()">Start Combat</button>
 </div>
 <div id="initiative" class="container">
     Initiative:
     <ul>
-        <li ng-repeat="guy in combatList">
+        <li ng-repeat="guy in combatList | orderBy:'-score'">
             <div class="well">
                 <b>{{guy.name}}</b> Initiative: {{guy.score}}
                 <hr>
