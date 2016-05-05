@@ -10,20 +10,25 @@ initiativeTracker.controller('InitiativeController', function($scope) {
 
     $scope.rollInitiative = function() {
         var newModel = Tracker.Initiative.Process($scope.participants);
+        Tracker.Initiative.SwitchModes();
         $scope.combatList.length = 0;
         $scope.combatList = $scope.combatList.concat(newModel);
+    };
+
+    $scope.endCombat = function () {
+        Tracker.Initiative.SwitchModes();
     }
 
     $scope.remove = function(participant) {
         var index = $scope.participants.indexOf(participant);
         $scope.participants.splice(index, 1);
-    }
+    };
 
     $scope.addNew = function() {
         $scope.participants.push(
         { 'name': "Name", 'mod': 0, 'adv': false, 'roll': true });
     }
-})
+});
 
 var Tracker = Tracker || {};
     Tracker.Initiative = (function() {
@@ -47,9 +52,7 @@ var Tracker = Tracker || {};
 
         function ProcessParticipantList(participants) {
             var combatList = [];
-            console.log(participants);
             for (var part in participants) {
-                console.log(participants[part]);
                 var score = 0;
                 if (!participants[part].roll) {
                     score= participants[part].mod;
@@ -69,7 +72,15 @@ var Tracker = Tracker || {};
             console.log(combatList);
             return combatList;
         }
+
+        function ToggleDivs()
+        {
+            $( "#participantsDiv" ).toggle(100);
+            $( "#initiativeDiv" ).toggle(100);
+        }
+
         return {
-            Process : ProcessParticipantList
+            Process : ProcessParticipantList,
+            SwitchModes : ToggleDivs
         };
     }());
