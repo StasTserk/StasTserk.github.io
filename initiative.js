@@ -8,16 +8,21 @@ initiativeTracker.controller('InitiativeController', function($scope) {
 
     $scope.combatList = [];
 
+    $scope.activePlayer = {};
+
     $scope.rollInitiative = function() {
         var newModel = Tracker.Initiative.Process($scope.participants);
+        newModel = newModel.sort(Tracker.Initiative.Compare);
         Tracker.Initiative.SwitchModes();
         $scope.combatList.length = 0;
         $scope.combatList = $scope.combatList.concat(newModel);
+        newModel[0].active = true;
+        $scope.activePlayer = newModel[0];
     };
 
     $scope.endCombat = function () {
         Tracker.Initiative.SwitchModes();
-    }
+    };
 
     $scope.remove = function(participant) {
         var index = $scope.participants.indexOf(participant);
@@ -27,6 +32,35 @@ initiativeTracker.controller('InitiativeController', function($scope) {
     $scope.addNew = function() {
         $scope.participants.push(
         { 'name': "Name", 'mod': 0, 'adv': false, 'roll': true });
+    };
+
+    $scope.kill = function(guy) {
+        if (guy.active) {
+            // the combatant just died on their turn somehow
+            $scope.nextTurn();
+        }
+        var index = $scope.combatList.indexOf(guy)
+        $scope.combatList.splice(index, 1);
+    };
+
+    $scope.nextTurn = function () {
+
+        var activePlayerIndex = $scope.combatList.indexOf($scope.activePlayer);
+        $scope.combatList[activePlayerIndex].active = false;
+        console.log("done turn... i:" + activePlayerIndex);
+        activePlayerIndex ++;
+        if (activePlayerIndex == $scope.combatList.length) { // new round starts
+            activePlayerIndex = 0;
+        }
+
+        $scope.combatList[activePlayerIndex].active = true;
+        $scope.activePlayer = $scope.combatList[activePlayerIndex];
+    };
+
+    $scope.damage = function (guy, amount) {
+        var intAmount = parseInt(amount);
+        guy.damage += intAmount;
+        console.log("hit " + guy.name + " for " + intAmount);
     }
 });
 
@@ -65,7 +99,9 @@ var Tracker = Tracker || {};
                     {
                         'name': participants[part].name,
                         'score': score,
-                        'status': ''
+                        'status': '',
+                        'active': false,
+                        'damage' : 0
                     }
                 );
             }
@@ -79,8 +115,16 @@ var Tracker = Tracker || {};
             $( "#initiativeDiv" ).toggle(100);
         }
 
+        function CompareInitiatives(a, b) {
+            var numA = parseFloat(a.score);
+            var numB = parseFloat(b.score);
+
+            return (numA < numB) ? 1 : (numA > numB) ? -1 : 0;
+        }
+
         return {
             Process : ProcessParticipantList,
-            SwitchModes : ToggleDivs
+            SwitchModes : ToggleDivs,
+            Compare: CompareInitiatives
         };
     }());
