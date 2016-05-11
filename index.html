@@ -41,8 +41,10 @@
                     Mod:
                     <input type="text" class="form-control" ng-model="part.mod">
                 </label>
-                <label><input type="checkbox" ng-model="part.adv" />Adv?</label>
-                <label><input type="checkbox" ng-model="part.roll" />Roll?</label>
+                <div class="btn-group">
+                    <button type="button" ng-click="toggleAdvantage(part)" ng-attr-class="{{part.adv && 'btn btn-success' || 'btn btn-default'}}"/>Adv</button>
+                    <button type="button" ng-click="toggleShouldRoll(part)" ng-attr-class="{{part.roll && 'btn btn-success' || 'btn btn-default'}}"/>Roll</button>
+                </div>
                 <button type="button" class="btn btn-danger" ng-click="remove(part)">Remove</button>
             </div>
         </li>
@@ -50,9 +52,11 @@
     <button type="button" class="btn btn-success btn-block" ng-click="addNew()">Add Combatant</button>
     <button type="button" class="btn btn-info btn-block" ng-click="rollInitiative()">Start Combat</button>
 </div>
+
+    <!-- START OF COMBAT SECTION -->
+
 <div id="initiativeDiv">
     <button type="button" class="btn btn-info btn-block" ng-click="endCombat()">End Combat</button><br/>
-
 
     <h2>Active player:</h2>
     <div class="panel panel-primary" id="activePlayerInfoDiv">

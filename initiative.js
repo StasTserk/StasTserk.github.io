@@ -24,6 +24,14 @@ initiativeTracker.controller('InitiativeController', function($scope) {
         Tracker.Initiative.SwitchModes();
     };
 
+    $scope.toggleAdvantage = function (participant) {
+        participant.adv = !participant.adv;
+    };
+
+    $scope.toggleShouldRoll = function (participant) {
+        participant.roll = !participant.roll;
+    };
+
     $scope.remove = function(participant) {
         var index = $scope.participants.indexOf(participant);
         $scope.participants.splice(index, 1);
