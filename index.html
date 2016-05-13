@@ -49,20 +49,20 @@
             </div>
         </li>
     </ul>
-    <button type="button" class="btn btn-success btn-block" ng-click="addNew()">Add Combatant</button>
-    <button type="button" class="btn btn-info btn-block" ng-click="rollInitiative()">Start Combat</button>
+    <button type="button" class="btn btn-success btn-block btn-lg" ng-click="addNew()">Add Combatant</button>
+    <button type="button" class="btn btn-warning btn-block btn-lg" ng-click="rollInitiative()">Start Combat</button>
 </div>
 
     <!-- START OF COMBAT SECTION -->
 
 <div id="initiativeDiv" class="container">
-    <button type="button" class="btn btn-info btn-block" ng-click="endCombat()">End Combat</button><br/>
+    <button type="button" class="btn btn-warning btn-block btn-lg" ng-click="endCombat()">End Combat</button><br/>
     <div class="container">
         <div class="row row-centered">
             <div class="col-md-6 col-centered">
-                <h2>Active player:</h2>
+                <h3>Active player</h3>
                 <div class="panel panel-primary" id="activePlayerInfoDiv">
-                    <div class="panel-heading">{{activePlayer.name}}</div>
+                    <div class="panel-heading" id="activePlayerHeading">{{activePlayer.name}}</div>
                     <div class="panel-body">
                         <div class="input-group">
                             <div class="input-group-addon">
@@ -92,9 +92,11 @@
                 </div>
             </div>
             <div class="col-md-6 col-centered">
-                <h2>Target Player</h2>
+                <h3>Target Player</h3>
                 <div class="panel panel-primary" id="targetPlayerDiv">
-                    <div class="panel-heading">Target Player</div>
+                    <div class="panel-heading">
+                        <select class="form-control input-sm" data-ng-options="p.name for p in combatList" data-ng-model="targetPlayer"></select>
+                    </div>
                     <div class="panel-body">
                         <div class="input-group">
                             <div class="input-group-addon">
@@ -122,8 +124,7 @@
             </div>
         </div>
     </div>
-    <br/>
-    <h2>Initiative:</h2>
+    <h3>Initiative</h3>
     <ul id="initiativeListUl">
         <li ng-repeat="guy in combatList">
             <div ng-attr-class="{{guy.active && 'panel panel-primary' || 'panel panel-default'}}">

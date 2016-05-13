@@ -11,6 +11,11 @@ ul {
     list-style-type: none;
 }
 
+#activePlayerHeading {
+    height: 51px;
+    font-weight: bold;
+}
+
 .input-group {
     padding-bottom: 5px;
 }
