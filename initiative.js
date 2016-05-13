@@ -10,6 +10,8 @@ initiativeTracker.controller('InitiativeController', function($scope) {
 
     $scope.activePlayer = {};
 
+    $scope.targetPlayer = {};
+
     $scope.rollInitiative = function() {
         var newModel = Tracker.Initiative.Process($scope.participants);
         newModel = newModel.sort(Tracker.Initiative.Compare);
@@ -18,6 +20,7 @@ initiativeTracker.controller('InitiativeController', function($scope) {
         $scope.combatList = $scope.combatList.concat(newModel);
         newModel[0].active = true;
         $scope.activePlayer = newModel[0];
+        $scope.targetPlayer = $scope.activePlayer;
     };
 
     $scope.endCombat = function () {
