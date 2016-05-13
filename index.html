@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!--suppress ALL -->
 <html ng-app="initiativeTracker">
 <head>
     <title>Neato Initiative Tracker</title>
@@ -41,8 +42,8 @@
                     <input type="text" class="form-control" ng-model="part.mod">
                 </label>
                 <div class="btn-group">
-                    <button type="button" ng-click="toggleAdvantage(part)" ng-attr-class="{{part.adv && 'btn btn-success' || 'btn btn-default'}}"/>Adv</button>
-                    <button type="button" ng-click="toggleShouldRoll(part)" ng-attr-class="{{part.roll && 'btn btn-success' || 'btn btn-default'}}"/>Roll</button>
+                    <button type="button" ng-click="toggleAdvantage(part)" ng-attr-class="{{part.adv && 'btn btn-success' || 'btn btn-default'}}">Adv</button>
+                    <button type="button" ng-click="toggleShouldRoll(part)" ng-attr-class="{{part.roll && 'btn btn-success' || 'btn btn-default'}}">Roll</button>
                 </div>
                 <button type="button" class="btn btn-danger" ng-click="remove(part)">Remove</button>
             </div>
@@ -84,8 +85,8 @@
                             </span>
                         </div>
                         <span class="input-group-btn" >
-                            <button class="btn btn-info" style="width:50%" ng-click="nextTurn()">Done turn.</button>
-                            <button type="button" style="width:50%" class="btn btn-danger" ng-click="kill(activePlayer)">Kill</button>
+                            <button class="btn btn-info" style="width:80%" ng-click="nextTurn()">Done turn.</button>
+                            <button type="button" style="width:20%" class="btn btn-danger" ng-click="kill(activePlayer)">Kill</button>
                         </span>
                     </div>
                 </div>
@@ -94,7 +95,7 @@
                 <h2>Target Player</h2>
                 <div class="panel panel-primary" id="targetPlayerDiv">
                     <div class="panel-heading">Target Player</div>
-                    <duv class="panel-body">
+                    <div class="panel-body">
                         <div class="input-group">
                             <div class="input-group-addon">
                                 Status Effects
@@ -116,7 +117,7 @@
                             </span>
                         </div>
                         <button type="button" class="btn btn-danger btn-block" ng-click="kill(targetPlayer)">Kill</button>
-                    </duv>
+                    </div>
                 </div>
             </div>
         </div>
