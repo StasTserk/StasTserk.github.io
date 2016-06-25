@@ -1,7 +1,7 @@
 var initiativeTracker = angular.module('initiativeTracker', []);
 
 initiativeTracker.controller('InitiativeController', function($scope) {
-    $scope.participants = [
+    $scope.participants = Tracker.Initiative.LoadParticipants() || [
         { 'name': 'Participant1', 'mod': 0, 'adv': true, 'roll': false },
         { 'name': 'Participant2', 'mod': 0, 'adv': false, 'roll': true }
     ];
@@ -21,6 +21,7 @@ initiativeTracker.controller('InitiativeController', function($scope) {
         newModel[0].active = true;
         $scope.activePlayer = newModel[0];
         $scope.targetPlayer = $scope.activePlayer;
+        Tracker.Initiative.SaveInitiative(newModel);
     };
 
     $scope.endCombat = function () {
@@ -50,15 +51,42 @@ initiativeTracker.controller('InitiativeController', function($scope) {
             // the combatant just died on their turn somehow
             $scope.nextTurn();
         }
-        var index = $scope.combatList.indexOf(guy)
+        var index = $scope.combatList.indexOf(guy);
         $scope.combatList.splice(index, 1);
     };
 
-    $scope.nextTurn = function () {
+    $scope.saveParticipants = function() {
+        Tracker.Initiative.SaveParticipants($scope.participants);
+    };
 
+    $scope.loadParticipants = function() {
+        var prevParticipants = Tracker.Initiative.LoadParticipants();
+        if (prevParticipants !== undefined) {
+            $scope.participants.length = 0;
+            $scope.participants = $scope.participants.concat(prevParticipants);
+        } else {
+            window.alert("Failed to load participants... are there supposed to be any?");
+        }
+    };
+
+    $scope.restoreLastInitiative = function () {
+        var storedInit = Tracker.Initiative.LoadInitiative();
+        if (storedInit === undefined) {
+            window.alert("Sorry, I got nothing... ");
+            return;
+        }
+
+        $scope.combatList.length = 0;
+        $scope.combatList = $scope.combatList.concat(storedInit);
+        Tracker.Initiative.SwitchModes();
+        $scope.activePlayer = storedInit[0];
+        $scope.activePlayer.active = true;
+        $scope.targetPlayer = $scope.activePlayer;
+    };
+
+    $scope.nextTurn = function () {
         var activePlayerIndex = $scope.combatList.indexOf($scope.activePlayer);
         $scope.combatList[activePlayerIndex].active = false;
-        console.log("done turn... i:" + activePlayerIndex);
         activePlayerIndex ++;
         if (activePlayerIndex == $scope.combatList.length) { // new round starts
             activePlayerIndex = 0;
@@ -69,73 +97,102 @@ initiativeTracker.controller('InitiativeController', function($scope) {
     };
 
     $scope.damage = function (guy, amount) {
-        var intAmount = parseInt(amount);
-        guy.damage += intAmount;
-        console.log("hit " + guy.name + " for " + intAmount);
+        guy.damage += parseInt(amount);
     }
 });
 
+//noinspection JSUnusedAssignment
 var Tracker = Tracker || {};
-    Tracker.Initiative = (function() {
+Tracker.Initiative = function () {
 
-        function RollInit(modifier, hasAdvantage)
-        {
-            var diceRoll = 0;
-            var mod = parseInt(modifier);
-            if (!hasAdvantage)
-            {
-                diceRoll = Math.ceil(Math.random() * 20);
-            }
-            else
-            {
-                diceRoll = Math.max(
-                    Math.ceil(Math.random() * 20),
-                    Math.ceil(Math.random() * 20));
-            }
-            return diceRoll + mod + (mod/100);
+    /**
+     * @return {number}
+     */
+    function RollInit(modifier, hasAdvantage) {
+        var diceRoll = 0;
+        var mod = parseInt(modifier);
+        if (hasAdvantage) {
+            diceRoll = Math.max(
+                Math.ceil(Math.random() * 20),
+                Math.ceil(Math.random() * 20));
+        } else {
+            diceRoll = Math.ceil(Math.random() * 20);
         }
+        return diceRoll + mod + (mod / 100);
+    }
 
-        function ProcessParticipantList(participants) {
-            var combatList = [];
-            for (var part in participants) {
-                var score = 0;
-                if (!participants[part].roll) {
-                    score= participants[part].mod;
+    function ProcessParticipantList(participants) {
+        var combatList = [];
+        for (var part in participants) {
+            var score = 0;
+            if (!participants[part].roll) {
+                score = participants[part].mod;
+            }
+            else {
+                score = RollInit(participants[part].mod, participants[part].adv);
+            }
+
+            combatList.push(
+                {
+                    'name': participants[part].name,
+                    'score': score,
+                    'status': '',
+                    'active': false,
+                    'damage': 0
                 }
-                else {
-                    score = RollInit(participants[part].mod, participants[part].adv);
-                }
-
-                combatList.push(
-                    {
-                        'name': participants[part].name,
-                        'score': score,
-                        'status': '',
-                        'active': false,
-                        'damage' : 0
-                    }
-                );
-            }
-            console.log(combatList);
-            return combatList;
+            );
         }
+        console.log(combatList);
+        return combatList;
+    }
 
-        function ToggleDivs()
-        {
-            $( "#participantsDiv" ).toggle(100);
-            $( "#initiativeDiv" ).toggle(100);
+    function ToggleDivs() {
+        $("#participantsDiv").toggle(100);
+        $("#initiativeDiv").toggle(100);
+    }
+
+    function CompareInitiatives(a, b) {
+        var numA = parseFloat(a.score);
+        var numB = parseFloat(b.score);
+
+        return (numA < numB) ? 1 : (numA > numB) ? -1 : 0;
+    }
+
+    function SaveParticipants(participantsList) {
+        localStorage.setItem("part",
+            JSON.stringify({ items: participantsList }))
+    }
+
+    function SaveInitiative(initiativeList) {
+        localStorage.setItem("init",
+            JSON.stringify({ items: initiativeList}))
+    }
+
+    function LoadParticipants() {
+        var storedParticipants = localStorage.getItem("part");
+        if (storedParticipants === null) {
+            return;
+        } else {
+            return JSON.parse(storedParticipants).items;
         }
+    }
 
-        function CompareInitiatives(a, b) {
-            var numA = parseFloat(a.score);
-            var numB = parseFloat(b.score);
-
-            return (numA < numB) ? 1 : (numA > numB) ? -1 : 0;
+    function LoadInitiative() {
+        var storedParticipants = localStorage.getItem("init");
+        if (storedParticipants === null) {
+            return;
+        } else {
+            return JSON.parse(storedParticipants).items;
         }
+    }
 
-        return {
-            Process : ProcessParticipantList,
-            SwitchModes : ToggleDivs,
-            Compare: CompareInitiatives
-        };
-    }());
+    return {
+        Process: ProcessParticipantList,
+        SwitchModes: ToggleDivs,
+        Compare: CompareInitiatives,
+        SaveParticipants: SaveParticipants,
+        SaveInitiative: SaveInitiative,
+        LoadInitiative: LoadInitiative,
+        LoadParticipants: LoadParticipants
+    };
+}();

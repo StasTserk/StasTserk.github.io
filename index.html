@@ -25,11 +25,18 @@
 <body ng-controller="InitiativeController">
 <nav class="navbar navbar-inverse navbar-static-top">
     <div class="container">
-        <div class="navbar-brand">Another Web-Based Initiative Tracker!</div>
+        <div class="navbar-header">
+            <div class="navbar-brand">Another Web-Based Initiative Tracker!</div>
+        </div>
+
     </div>
 </nav>
 <div id="participantsDiv" class="container">
-    Participants:
+    <h3>Participants:
+        <button type="button" ng-click="restoreLastInitiative()" class="btn btn-danger pull-right">I Accidentally closed it!</button>
+        <button type="button" ng-click="saveParticipants()" class="pull-right btn btn-success pull-right">Save</button>
+        <button type="button" ng-click="loadParticipants()" class="pull-right btn btn-success pull-right">Load</button>
+    </h3>
     <ul>
         <li ng-repeat="part in participants">
             <div class="well">
