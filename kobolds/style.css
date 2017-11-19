@@ -1,0 +1,12 @@
+#options {
+    width: 90%;
+}
+
+ul {
+    padding: 0;
+    list-style-type: none;
+}
+
+.entryWell {
+    max-width: 450px;
+}

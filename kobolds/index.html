@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <!--suppress ALL -->
-<html ng-app="initiativeTracker">
+<html ng-app="koboldController">
 <head>
-    <title>Neato Initiative Tracker</title>
+    <title>Kobolds Per Round Calculator</title>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
 
@@ -18,10 +18,66 @@
     <!-- Angular -->
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
 
+    <script src="combatController.js"></script>
     <script src="kobolds.js"></script>
+    
 
     <link rel="stylesheet" href="style.css"/>
 </head>
-<body ng-controller="KoboldsController">
-
+<nav class="navbar navbar-inverse navbar-static-top">
+    <div class="container">
+        <div class="navbar-header">
+            <div class="navbar-brand">Calculating Kobolds killed per round</div>
+        </div>
+    
+    </div>
+</nav>
+<body ng-controller="KoboldController">
+    <div class="options">
+        <div class="well entryWell">
+            <h3>Monster Stats</h3>
+            <label>
+                Armor Class:
+                <input type="number" class="form-control" ng-model="targetAc">
+            </label>
+            <label>
+                Hit Points:
+                <input type="number" class="form-control" ng-model="targetHp">
+            </label>
+            <label>
+                Rounds to Simulate:
+                <input type="number" class="form-control" ng-model="roundsToSim">
+            </label>
+        </div>
+        <div class="well entryWell">
+            <h3>Player</h3>
+            <label>
+                To Hit:
+                <input type="number" class="form-control" ng-model="attackBonus">
+            </label>
+            <label>
+                Damage:
+                <input type="text" class="form-control" ng-model="damageBonus">
+            </label>
+            <label>
+                Critical Hit Bonus:
+                <input type="text" class="form-control" ng-model="criticalHitDamage">
+            </label>
+            <label>
+                Attacks Per Round:
+                <input type="text" class="form-control" ng-model="attacksPerRound">
+            </label>
+        </div>
+    </div>
+    <div class="well">
+        <label>
+            Kill total
+            <input type="text" class="form-control" ng-model="simulator.killTotal" disabled>
+        </label>
+        <label>
+            Kills Per Round
+            <input type="text" class="form-control" ng-model="simulator.kpr" disabled>
+        </label>
+        <button type="button" ng-click="runSimulation()" class="btn btn-success">Run Simulation</button>
+    </div>
 </body>
