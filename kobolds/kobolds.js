@@ -2,8 +2,8 @@ var controller = new CombatController();
 var koboldController = angular.module('koboldController', []);
 
 koboldController.controller('KoboldController', function($scope) {
-    $scope.targetAc = 11;
-    $scope.targetHp = 8;
+    $scope.targetAc = 12;
+    $scope.targetHp = 5;
     $scope.attackBonus = 8;
     $scope.damageBonus = "1d6+4";
     $scope.criticalHitDamage = "1d6+0";
