@@ -2,11 +2,11 @@
     width: 90%;
 }
 
-ul {
-    padding: 0;
-    list-style-type: none;
-}
-
 .entryWell {
     max-width: 450px;
+}
+
+.hint {
+    font-size: 10px;
+    color: gray;
 }

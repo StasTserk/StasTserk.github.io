@@ -33,51 +33,58 @@
     </div>
 </nav>
 <body ng-controller="KoboldController">
-    <div class="options">
-        <div class="well entryWell">
-            <h3>Monster Stats</h3>
-            <label>
-                Armor Class:
-                <input type="number" class="form-control" ng-model="targetAc">
-            </label>
-            <label>
-                Hit Points:
-                <input type="number" class="form-control" ng-model="targetHp">
-            </label>
-            <label>
-                Rounds to Simulate:
-                <input type="number" class="form-control" ng-model="roundsToSim">
-            </label>
+    <div class="container">
+        <div class="row row-centered">
+            <div class="col-md-6 col-centered options">
+                <div class="well">
+                    <h4>Monster Stats</h4>
+                        <label>                            Armor Class: <span class="hint">(number)</span>
+                        <input type="number" class="form-control" ng-model="targetAc">
+                    </label>
+                    <label>
+                        Hit Points: <span class="hint">(number)</span>
+                        <input type="number" class="form-control" ng-model="targetHp">
+                    </label>
+                    <label>
+                        Rounds to Simulate: <span class="hint">(number)</span>
+                        <input type="number" class="form-control" ng-model="roundsToSim">
+                    </label>
+                </div>
+            </div>
+            <div class="col-md-6 col-centered options">
+                <div class="well">
+                    <h4>Player</h4>
+                    <label>
+                        To Hit: <span class="hint">(number)</span>
+                        <input type="number" class="form-control" ng-model="attackBonus">
+                    </label>
+                    <label>
+                        Damage: <span class="hint">[#]d[#] +/- [#]</span>
+                        <input type="text" class="form-control" ng-model="damageBonus">
+                    </label>
+                    <label>
+                        Critical Hit Bonus: <span class="hint">[#]d[#] +/- [#]</span>
+                        <input type="text" class="form-control" ng-model="criticalHitDamage">
+                    </label>
+                    <label>
+                        Attacks Per Round: <span class="hint">[#]d[#] +/- [#]</span>
+                        <input type="text" class="form-control" ng-model="attacksPerRound">
+                    </label>
+                </div>
+            </div>
         </div>
-        <div class="well entryWell">
-            <h3>Player</h3>
-            <label>
-                To Hit:
-                <input type="number" class="form-control" ng-model="attackBonus">
-            </label>
-            <label>
-                Damage:
-                <input type="text" class="form-control" ng-model="damageBonus">
-            </label>
-            <label>
-                Critical Hit Bonus:
-                <input type="text" class="form-control" ng-model="criticalHitDamage">
-            </label>
-            <label>
-                Attacks Per Round:
-                <input type="text" class="form-control" ng-model="attacksPerRound">
-            </label>
+        <div class="row row-centered"></div>
+            <div class="well">
+                <label>
+                    Kill total
+                    <input type="text" class="form-control" ng-model="simulator.killTotal" disabled>
+                </label>
+                <label>
+                    Kills Per Round
+                    <input type="text" class="form-control" ng-model="simulator.kpr" disabled>
+                </label>
+                <button type="button" ng-click="runSimulation()" class="btn btn-success">Run Simulation</button>
+            </div>
         </div>
-    </div>
-    <div class="well">
-        <label>
-            Kill total
-            <input type="text" class="form-control" ng-model="simulator.killTotal" disabled>
-        </label>
-        <label>
-            Kills Per Round
-            <input type="text" class="form-control" ng-model="simulator.kpr" disabled>
-        </label>
-        <button type="button" ng-click="runSimulation()" class="btn btn-success">Run Simulation</button>
     </div>
 </body>
