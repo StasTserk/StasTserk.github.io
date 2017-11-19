@@ -12,6 +12,14 @@ DamageDie.prototype.GetRoll = function() {
     return Math.ceil(Math.random() * this.sides);
 }
 
+function Player() {
+    this.attackBonus = 8;
+    this.damage = "1d6+4";
+    this.criticalHitDamage = "1d6+0";
+    this.attacksPerRound = 2;
+
+    return this;
+}
 
 // =========================================================================
 // Combat Controller Class
@@ -85,8 +93,8 @@ CombatController.prototype.parseDamageString = function(damageString)
     return false;
 };
 
-CombatController.parseCritString = function(critString) {
-    var result = parseString(damageString);
+CombatController.prototype.parseCritString = function(critString) {
+    var result = parseString(critString);
     if (result)
     {
         this.critBonusDice = result.dice;
