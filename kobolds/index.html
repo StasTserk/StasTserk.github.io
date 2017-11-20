@@ -51,8 +51,8 @@
                         <input type="text" class="form-control" ng-model="player1.criticalHitDamage">
                     </label>
                     <label>
-                        Attacks Per Round: <span class="hint">[#]d[#] +/- [#]</span>
-                        <input type="text" class="form-control" ng-model="player1.attacksPerRound">
+                        Attacks Per Round: <span class="hint">(number)</span>
+                        <input type="number" class="form-control" ng-model="player1.attacksPerRound">
                     </label>
                 </div>
             </div>
@@ -72,8 +72,8 @@
                         <input type="text" class="form-control" ng-model="player2.criticalHitDamage">
                     </label>
                     <label>
-                        Attacks Per Round: <span class="hint">[#]d[#] +/- [#]</span>
-                        <input type="text" class="form-control" ng-model="player2.attacksPerRound">
+                        Attacks Per Round: <span class="hint">(number)</span>
+                        <input type="number" class="form-control" ng-model="player2.attacksPerRound">
                     </label>
                 </div>
             </div>
@@ -116,6 +116,10 @@
                         Kills Per Round
                         <input type="text" class="form-control" ng-model="controller1.kpr" disabled>
                     </label>
+                    <label>
+                        Damage Per Round
+                        <input type="text" class="form-control" ng-model="controller1.dpr" disabled>
+                    </label>
                 </div>
             </div>
             <div class="col-md-6 col-centered options">
@@ -128,6 +132,10 @@
                     <label>
                         Kills Per Round
                         <input type="text" class="form-control" ng-model="controller2.kpr" disabled>
+                    </label>
+                    <label>
+                        Damage Per Round
+                        <input type="text" class="form-control" ng-model="controller2.dpr" disabled>
                     </label>
                 </div>
             </div>

@@ -41,6 +41,7 @@ function CombatController() {
     this.killTotal = 0;
     this.roundsTotal = 0;
     this.kpr = 0;
+    this.dpr = 0;
 
     return this;
 };
@@ -107,20 +108,24 @@ CombatController.prototype.parseCritString = function(critString) {
 CombatController.prototype.runSim = function()
 {
     var remainingHp = this.targetHp;
-    var damageDealt, timesAttacked;
+    var damageDealt, timesAttacked, damageSum = 0;
 
     this.killTotal = 0;
     this.roundsTotal = 0;
     for (this.roundsTotal = 0; this.roundsTotal < this.roundsToSim; this.roundsTotal ++) {
         for (timesAttacked = 0; timesAttacked < this.attacksPerRound; timesAttacked ++) {
             var damageDealt = this.doAttack();
+            damageSum += damageDealt;
             remainingHp -= damageDealt;
             if (remainingHp <= 0) {
                 this.killTotal ++;
+                this.damgeSum += remainingHp;
                 remainingHp = this.targetHp;
             }
         }
     }
+
+    this.dpr = damageSum / this.roundsTotal;
     this.kpr = this.killTotal / this.roundsTotal;
 };
 
