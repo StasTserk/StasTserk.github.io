@@ -488,134 +488,134 @@ var Table_Birthplace = [
     {
         roll: 1,
         text: function () {
-            return "Home";
+            return "in your family's home";
         }
     },
     {
         roll: 51,
         text: function () {
-            return "Home of a family friend";
+            return "in the home of a family friend";
         }
     },
     {
         roll: 56,
         text: function () {
-            return "Home of a healer or midwige";
+            return "in the home of a healer or midwige";
         }
     },
     {
         roll: 64,
         text: function () {
-            return option(["A Cart", "A Carriage", "A Wagon"]);
+            return "in a " + option(["cart", "carriage", "wagon"]);
         }
     },
     {
         roll: 66,
         text: function () {
-            return option(["A Barn", "A Shed", "A Outbuilding"]);
+            return "in a" + option([" barn", " shed", "n outbuilding"]);
         }
     },
     {
         roll: 69,
         text: function () {
-            return "A Cave";
+            return "in a Cave";
         }
     },
     {
         roll: 71,
         text: function () {
-            return "A field";
+            return "in a field";
         }
     },
     {
         roll: 73,
         text: function () {
-            return "A forest";
+            return "in a forest";
         }
     },
     {
         roll: 75,
         text: function () {
-            return "A temple";
+            return "in a temple";
         }
     },
     {
         roll: 78,
         text: function () {
-            return "A battlefield";
+            return "on a battlefield";
         }
     },
     {
         roll: 79,
         text: function () {
-            return "An alley";
+            return "in an alley";
         }
     },
     {
         roll: 81,
         text: function () {
-            return option(["A Brothel", "A Tavern", "An inn"]);
+            return "in a " + option(["a Brothel", "a Tavern", "an inn"]);
         }
     },
     {
         roll: 83,
         text: function () {
-            return option(["A castle", "A keep", "A tower", "A palace"]);
+            return "in a " + option(["castle", "keep", "tower", "palace"]);
         }
     },
     {
         roll: 85,
         text: function () {
-            return option(["A sewer", "A rubbish heap"]);
+            return "in a " + option(["sewer", "rubbish heap"]);
         }
     },
     {
         roll: 86,
         text: function () {
-            return "Among people of a different race";
+            return "among people of a different race";
         }
     },
     {
         roll: 89,
         text: function () {
-            return "On board a ship";
+            return "on board a ship";
         }
     },
     {
         roll: 92,
         text: function () {
-            return option(["In a prison of a secret organization"],
-                "In the headquarters of a secret organization");
+            return option(["in a prison of a secret organization"],
+                "in the headquarters of a secret organization");
         }
     },
     {
         roll: 94,
         text: function () {
-            return "In a sage's laboratory.";
+            return "in a sage's laboratory.";
         }
     },
     {
         roll: 96,
         text: function () {
-            return "In the feywild.";
+            return "in the feywild.";
         }
     },
     {
         roll: 97,
         text: function () {
-            return "In the Shadowfell.";
+            return "in the Shadowfell.";
         }
     },
     {
         roll: 98,
         text: function () {
-            return option(["On the Astral plane", "On the Ethereal plane"]);
+            return option(["on the Astral plane", "on the Ethereal plane"]);
         }
     },
     {
         roll: 99,
         text: function () {
-            return "On the plane of " + option([
+            return "on the plane of " + option([
                 "Fire", "Ash", "Air",
                 "Ice", "Water", "Ooze",
                 "Earth", "Magma"
@@ -625,7 +625,7 @@ var Table_Birthplace = [
     {
         roll: 100,
         text: function () {
-            return "In " + option([
+            return "in " + option([
                 "Bytopia", "Mount Celestia", "Elysium",
                 "the Beastlands", "Arborea", "Ysgard",
                 "Limbo", "Pandemonium", "the Abyss",
@@ -709,13 +709,13 @@ var Table_Family = [
     {
         roll: 36,
         text: function () {
-            return "by a single stepfather or father";
+            return "by a single " + option(["father", "stepfather"]);
         }
     },
     {
         roll: 56,
         text: function () {
-            return "by a single stepfather";
+            return "by a single " + option(["mother", "stepmother"]);
         }
     },
     {
@@ -802,55 +802,55 @@ var Table_ChildhoodHome = [
     {
         roll: -50,
         text: function () {
-            return "On the streets";
+            return "on the streets";
         }
     },
     {
         roll: 1,
         text: function () {
-            return "Rundown Shack";
+            return "in a rundown Shack";
         }
     },
     {
         roll: 21,
         text: function () {
-            return "No permanent residence; you moved around a lot";
+            return "at no permanent residence; you moved around a lot";
         }
     },
     {
         roll: 31,
         text: function () {
-            return option(["Encampment", "Village"]) + " in the wildreness";
+            return "in an " + option(["Encampment", "Village"]) + " in the wildreness";
         }
     },
     {
         roll: 41,
         text: function () {
-            return "Apartment in a rundown neighborhood.";
+            return "in an apartment in a rundown neighborhood.";
         }
     },
     {
         roll: 51,
         text: function () {
-            return "Small house";
+            return "in a small house";
         }
     },
     {
         roll: 71,
         text: function () {
-            return "Large house";
+            return "in a large house";
         }
     },
     {
         roll: 91,
         text: function () {
-            return "Mansion";
+            return "in a mansion";
         }
     },
     {
         roll: 111,
         text: function () {
-            return option(["Palace", "Castle"]);
+            return "in a " + option(["palace", "castle"]);
         }
     }
 ];
@@ -916,7 +916,7 @@ var Table_LifeEvents = [
     {
         roll: 21,
         text: function () {
-            return "Yuu fell in love or got married.";
+            return "You fell in love or got married.";
         }
     },
     {

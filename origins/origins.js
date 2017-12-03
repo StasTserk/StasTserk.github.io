@@ -153,7 +153,7 @@ Backstory.prototype.GenerateChildhood = function() {
     }
 
     // birthplace
-    this.childhoodText.push("Your birthplace: " + GetTableResult(d(100), Table_Birthplace));
+    this.childhoodText.push("you were born " + GetTableResult(d(100), Table_Birthplace));
 
     if (d(100) == 100) {
         this.childhoodText.push("Your birth was marked by " + option([
@@ -195,7 +195,7 @@ Backstory.prototype.GenerateChildhood = function() {
     if (lifestyleRoll > 12) { homeModifier = 10; }
     if (lifestyleRoll > 15) { homeModifier = 20; }
     if (lifestyleRoll > 17) { homeModifier = 40; }
-    this.childhoodText.push("Your childhood home growing: " + GetTableResult(d(100) + homeModifier, Table_ChildhoodHome));
+    this.childhoodText.push("You grew up " + GetTableResult(d(100) + homeModifier, Table_ChildhoodHome));
     
     // childhood memories
     this.childhoodText.push(GetTableResult(this.chaMod + d(6)+d(6)+d(6), Table_ChildhoodMemories));
