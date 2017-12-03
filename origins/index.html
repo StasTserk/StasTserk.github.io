@@ -58,10 +58,12 @@
             <button type="button" class="btn btn-warning btn-sm" ng-click="rollBackground()">Generate Backstory</button>
         </div>
         <div class="well" id="childhoodWell">
-            <h3>Childhood</h3>
+            <h3>Early Life</h3>
             <p ng-repeat="text in backstory.childhoodText">
                 {{text}}
             </p>
+            <p>{{backstory.backgroundReason}}</p>
+            <p>{{backstory.classReason}}</p>
         </div>
         <div class="well" id="lifeEventsWell">
             <h3>Life Events</h3>
@@ -70,10 +72,10 @@
             </p>
         </div>
         <div class="well" id="npcsWell">
-                <h3>Notable Npcs</h3>
-                <p ng-repeat="npc in backstory.knownNpcs">
-                    <b>{{npc.relationship}}:</b> {{npc.SimpleDescription()}}
-                </p>
-            </div>
+            <h3>Notable Npcs</h3>
+            <p ng-repeat="npc in backstory.knownNpcs">
+                <b>{{npc.relationship}}:</b> {{npc.SimpleDescription()}}
+            </p>
+        </div>
     </div>
 </body>
