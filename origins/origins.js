@@ -210,7 +210,17 @@ Backstory.prototype.GenerateLifeEvent = function() {
 
     if (eventRoll < 11) {
         // tragedy
-        eventText += " " + GetTableResult(d(12), Table_Tragedies);
+        var tragedyRoll = d(12);
+        eventText += " " + GetTableResult(tragedyRoll, Table_Tragedies);
+
+        if (tragedyRoll == 9) {
+            for ( var i = 0; i < this.knownNpcs.length; i ++) {
+                if (this.knownNpcs[i].relationship == "Parent") {
+                    this.knownNpcs[i].attitude = option(["Indifferent", "Hostile"]);
+                }
+            }
+            
+        }
     } else if (eventRoll < 21) {
         // fortune
         var boonRoll = d(12);

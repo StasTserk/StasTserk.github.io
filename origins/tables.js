@@ -1396,7 +1396,7 @@ var Table_Tragedies = [
     {
         roll: 9,
         text: function () {
-            return "You did something something that brought terrible shame to you in the eyes of your family. You might have been involved in a scandal, dabbled in dark magic, or offended someone important. The attitude of your family members twoards you becomes indifferent at best though they might forgive you.";
+            return "You did something that brought terrible shame to you in the eyes of your family. You might have been involved in a scandal, dabbled in dark magic, or offended someone important. The attitude of your family members twoards you becomes indifferent at best though they might forgive you.";
         }
     },
     {
