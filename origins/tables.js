@@ -500,7 +500,7 @@ var Table_Birthplace = [
     {
         roll: 56,
         text: function () {
-            return "in the home of a healer or midwige";
+            return "in the home of a healer or midwife";
         }
     },
     {

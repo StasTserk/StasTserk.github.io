@@ -9,15 +9,31 @@ originsController.controller('OriginsController', function($scope) {
     $scope.backstory = {};
     
     $scope.races = [
-        "Human",
+        "Aarakocra",
+        "Aasimar",
+        "Bugbear",
+        "Dragonborn",
         "Dwarf",
         "Elf",
-        "Half-Elf",
-        "Dragonborn",
-        "Half-Orc",
+        "Firbolg",
+        "Gensai",
         "Gnome",
+        "Goblin",
+        "Goliath",
+        "Half-elf",
         "Halfling",
-        "Tiefling"
+        "Half-orc",
+        "Hobgoblin",
+        "Human",
+        "Kenku",
+        "Kobold",
+        "Lizardfolk",
+        "Orc",
+        "Tabaxi",
+        "Tiefling",
+        "Tortle",
+        "Triton",
+        "Yuan-ti"
     ];
 
     $scope.classes = [
