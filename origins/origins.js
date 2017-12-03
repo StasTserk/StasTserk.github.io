@@ -59,7 +59,7 @@ function GetSimpleNpcText(npc) {
     var result = npc.alignment + " " 
         + npc.race + " "
         + (npc.class || npc.profession) + " who is " +
-        npc.attitude + " twoards you. They are " +
+        npc.attitude + " towards you. They are " +
         npc.status;
 
     return result;
@@ -260,6 +260,8 @@ Backstory.prototype.GenerateLifeEvent = function() {
     } else if (eventRoll < 76) {
         // met an important npc
         var importantNpc = GenerateNpc({ relationship: "Important Npc"});
+        eventText += " " + importantNpc.SimpleDescription();
+        this.knownNpcs.push(importantNpc);
     } else if (eventRoll < 81) {
         // you went on an adventure
         eventText += " " + GetTableResult(d(100), Table_Adventures);
