@@ -1103,7 +1103,7 @@ var Table_ArcaneMatters = [
     {
         roll: 9,
         text: function () {
-            return "Your fortune was read by a diviner.";
+            return "Your fortune was read by a diviner. Have your DM roll on the life events table twice. They pick one event as a portent for your future.";
         }
     },
     {

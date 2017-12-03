@@ -86,6 +86,7 @@ function Backstory(race, pClass, profession, chaMod, numEvents) {
     this.childhoodText = [];
     this.events = [];
     this.knownNpcs = [];
+    this.hasWife = false;
     // generate childhood
     this.GenerateChildhood();
     this.GenerateChoiceReasons();
@@ -219,7 +220,6 @@ Backstory.prototype.GenerateLifeEvent = function() {
                     this.knownNpcs[i].attitude = option(["Indifferent", "Hostile"]);
                 }
             }
-            
         }
     } else if (eventRoll < 21) {
         // fortune
@@ -233,8 +233,17 @@ Backstory.prototype.GenerateLifeEvent = function() {
         }
     } else if (eventRoll < 31) {
         // fell in love
-        var loveNpc = GenerateNpc({ attitude: "Friendly", relationship: "Love" });
-        eventText += " " + GetSimpleNpcText(loveNpc) + "; if this is not the first time rolling this option, you may choose this to be a child."; 
+        var loveNpc;
+        if (this.hasWife && coin()) {
+            // have a child instead of a wive
+            loveNpc = GenerateNpc({ attitude: "Friendly", relationship: "Child", race: this.race });
+            eventText = "You had a child with one of your love interests. They may grow up to be a";
+        } else {
+            loveNpc = GenerateNpc({ attitude: "Friendly", relationship: "Love" });
+        }
+        this.hasWife = true;
+
+        eventText += " " + GetSimpleNpcText(loveNpc) + ""; 
         this.knownNpcs.push(loveNpc);
     } else if (eventRoll < 41) {
         // enemy
@@ -270,7 +279,7 @@ Backstory.prototype.GenerateLifeEvent = function() {
         // something truly strange happened
         eventText += " " + GetTableResult(d(12), Table_WierdStuff);
     }
-    this.events.push(eventText);
+    this.events.push({ id: this.events.length, text: eventText });
 }
 
 Backstory.prototype.GenerateChoiceReasons = function () {
