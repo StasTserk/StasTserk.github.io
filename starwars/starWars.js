@@ -69,13 +69,12 @@ starWarsController.controller('StarWarsController', function($scope) {
 
     $scope.calculate = function() {
         const resultRange = new ResultRange([new Result(0, 0, 0, 1.0)]);
-        const final = resultRange
-            .multiplyByDie(yellow, $scope.yellow)
-            .multiplyByDie(green, $scope.green)
-            .multiplyByDie(blue, $scope.blue)
-            .multiplyByDie(red, $scope.red)
-            .multiplyByDie(purple, $scope.purple)
-            .multiplyByDie(black, $scope.black);
+        let final = resultRange.multiplyByDie(yellow, $scope.yellow);
+        final = final.multiplyByDie(green, $scope.green);
+        final = final.multiplyByDie(blue, $scope.blue);
+        final = final.multiplyByDie(red, $scope.red);
+        final = final.multiplyByDie(purple, $scope.purple);
+        final = final.multiplyByDie(black, $scope.black);
 
         let r;
         $scope.success = 0;
