@@ -35,31 +35,35 @@
     <div class="container">
         <div class="row row-centered">
             <div class="col-md-6 col-centered">
-                <div class="well">
+                <div class="well dice">
                     <h4>Dice Pool</h4>
                     <label>
-                        Yellow: <span class="hint">(number)</span>
-                        <input type="number" class="form-control" ng-model="yellow">
+                        Yellow:
+                        <input type="number" class="form-control die-input" ng-model="yellow">
                     </label>
                     <label>
-                        Green: <span class="hint">(number)</span>
-                        <input type="number" class="form-control" ng-model="green">
+                        Green:
+                        <input type="number" class="form-control die-input" ng-model="green">
                     </label>
                     <label>
-                        Blue: <span class="hint">(number)</span>
-                        <input type="number" class="form-control" ng-model="blue">
+                        Blue:
+                        <input type="number" class="form-control die-input" ng-model="blue">
                     </label>
                     <label>
-                        Red: <span class="hint">(number)</span>
-                        <input type="number" class="form-control" ng-model="red">
+                        Red:
+                        <input type="number" class="form-control die-input" ng-model="red">
                     </label>
                     <label>
-                        Purple: <span class="hint">(number)</span>
-                        <input type="number" class="form-control" ng-model="purple">
+                        Purple:
+                        <input type="number" class="form-control die-input" ng-model="purple">
                     </label>
                     <label>
-                        Black: <span class="hint">(number)</span>
-                        <input type="number" class="form-control" ng-model="black">
+                        Black:
+                        <input type="number" class="form-control die-input" ng-model="black">
+                    </label>
+                    <label>
+                        Advantage needed to trigger:
+                        <input type="number" class="form-control" ng-model="trigger" ng-change="calculateTrigger()">
                     </label>
                 </div>
             </div>
@@ -81,6 +85,11 @@
         <div class="row row-centered">
             <div class="well">
                 <h4>Probabilities:</h4>
+                <ul>
+                    <li ng-repeat="result in results">
+                        <span class="probLabel">{{result.label}}</span> {{result.probability * 100}}
+                    </li>
+                </ul>
             </div>
         </div>
     </div>

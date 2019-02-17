@@ -82,11 +82,28 @@ starWarsController.controller('StarWarsController', function($scope) {
         for (r of final.results) {
             if (r.success > 0) {
                 $scope.success += r.probability * 100;
-                if (r.advantage >= $scope.trigger || r.triumph) {
-                    $scope.abilityTriggered += r.probability * 100;
-                }
             }
         }
-        $scope.results = final.results;
+        $scope.results = final.results.sort(function(a, b) {
+            if (a.success !== b.success) {
+                return b.success - a.success;
+            }
+            if (a.advantage !== b.advantage) {
+                return b.advantage - a.advantage;
+            }
+            return b.triumph - a.triumph
+        });
+
+        $scope.calculateTrigger();
+    }
+
+    $scope.calculateTrigger = function() {
+        let triggerProb = 0;
+        for (r of $scope.results) {
+            if (r.success > 0 && r.advantage >= $scope.trigger || (r.triumph > 0)) {
+                triggerProb += r.probability * 100;
+            }
+        }
+        $scope.abilityTriggered = triggerProb;
     }
 });

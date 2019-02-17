@@ -35,7 +35,14 @@ class Result {
      * @returns {string} Readable label for the result 
      */
     get label() {
+        if (this.success === 0 && this.advantage === 0 && this.triumph === 0) {
+            return "Nothing";
+        }
 
+        let label = ((this.success >= 0) ? this.success + 'Su' : (-this.success) + 'Fa');
+        label = label + ' ' + ((this.advantage >= 0) ? this.advantage + 'Ad' : (-this.advantage) + 'Se');
+        label = label + ' ' + ((this.triumph >= 0) ? this.triumph + 'Tr' : (-this.triumph) + 'De');
+        return label;
     }
 
     /**
