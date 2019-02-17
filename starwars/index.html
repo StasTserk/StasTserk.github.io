@@ -39,27 +39,27 @@
                     <h4>Dice Pool</h4>
                     <label>
                         Proficiency
-                        <input type="number" class="form-control die-input yellow" ng-model="yellow">
+                        <input type="number" class="form-control die-input yellow" ng-model="yellow" ng-change="calculate()">
                     </label>
                     <label>
                         Ability
-                        <input type="number" class="form-control die-input green" ng-model="green">
+                        <input type="number" class="form-control die-input green" ng-model="green" ng-change="calculate()">
                     </label>
                     <label>
                         Boost
-                        <input type="number" class="form-control die-input blue" ng-model="blue">
+                        <input type="number" class="form-control die-input blue" ng-model="blue" ng-change="calculate()">
                     </label>
                     <label>
                         Challenge
-                        <input type="number" class="form-control die-input red" ng-model="red">
+                        <input type="number" class="form-control die-input red" ng-model="red" ng-change="calculate()">
                     </label>
                     <label>
                         Difficulty
-                        <input type="number" class="form-control die-input purple" ng-model="purple">
+                        <input type="number" class="form-control die-input purple" ng-model="purple" ng-change="calculate()">
                     </label>
                     <label>
                         Setback
-                        <input type="number" class="form-control die-input black" ng-model="black">
+                        <input type="number" class="form-control die-input black" ng-model="black" ng-change="calculate()">
                     </label>
                     <label>
                         Advantage needed to trigger:
@@ -71,12 +71,20 @@
                 <div class="well">
                     <h4>Outcome</h4>
                     <label>
-                        Success:
+                        Success %:
                         <input type="number" class="form-control" ng-model="success" disabled>
                     </label>
                     <label>
-                        Success with trigger:
+                        Success with trigger %:
                         <input type="number" class="form-control" ng-model="abilityTriggered" disabled>
+                    </label>
+                    <label>
+                        Average Successes Generated:
+                        <input type="number" class="form-control" ng-model="avgSuccess" disabled>
+                    </label>
+                    <label>
+                        Average Advantage On Success:
+                        <input type="number" class="form-control" ng-model="avgSuccessAdv" disabled>
                     </label>
                     <button type="button" ng-click="calculate()" class="btn-lg btn-block btn-success">Calculate</button>
                 </div>

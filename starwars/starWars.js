@@ -64,6 +64,8 @@ starWarsController.controller('StarWarsController', function($scope) {
     $scope.success = 0;
     $scope.abilityTriggered = 0;
     $scope.results = [];
+    $scope.avgSuccess = 0;
+    $scope.avgSuccessAdv = 0;
 
     $scope.calculate = function() {
         const resultRange = new ResultRange([new Result(0, 0, 0, 1.0)]);
@@ -78,12 +80,22 @@ starWarsController.controller('StarWarsController', function($scope) {
         let r;
         $scope.success = 0;
         $scope.abilityTriggered = 0;
+        $scope.avgSuccess = 0;
+        $scope.avgSuccessAdv = 0;
 
         for (r of final.results) {
+            
+            $scope.avgSuccess += r.success * r.probability;
+
             if (r.success > 0) {
                 $scope.success += r.probability * 100;
+                $scope.avgSuccessAdv += r.advantage * r.probability;
             }
         }
+        if ($scope.success !== 0) {
+            $scope.avgSuccessAdv /= ($scope.success/100);
+        }
+
         $scope.results = final.results.sort(function(a, b) {
             if (a.success !== b.success) {
                 return b.success - a.success;

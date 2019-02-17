@@ -130,7 +130,7 @@ class ResultRange {
      * @returns {ResultRange} modified set of new possible outcomes of the dice.
      */
     multiplyByDie(dieResults, times = 1) {
-        if (times === 0) {
+        if (times <= 0) {
             return new ResultRange(this.results);
         }
 
