@@ -70,8 +70,11 @@ starWarsController.controller('StarWarsController', function($scope) {
     $scope.advLabel = 0;
     $scope.maxAdvantage = 0;
 
+    $scope.bonusSuccesses = 0;
+    $scope.bonusAdvantages = 0;
+
     $scope.calculate = function() {
-        const resultRange = new ResultRange([new Result(0, 0, 0, 1.0)]);
+        const resultRange = new ResultRange([new Result($scope.bonusSuccesses, $scope.bonusAdvantages, 0, 1.0)]);
         let final = resultRange.multiplyByDie(yellow, $scope.yellow);
         final = final.multiplyByDie(green, $scope.green);
         final = final.multiplyByDie(blue, $scope.blue);
@@ -119,9 +122,7 @@ starWarsController.controller('StarWarsController', function($scope) {
             }
         }
         $scope.abilityTriggered = triggerProb;
-    }
 
-    $scope.generateGrid = function() {
         var result = new ResultGrid(this.results);
         $scope.advLabel = Array(result.maxAdvantage - result.minAdvantage + 1).fill(result.maxAdvantage);
         $scope.maxSuccess = result.maxSuccess;
