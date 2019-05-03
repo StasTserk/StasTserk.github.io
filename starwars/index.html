@@ -18,6 +18,7 @@
     <!-- Angular -->
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
 
+    <script src="gridCalculator.js"></script>
     <script src="starWarsController.js"></script>
     <script src="starWars.js"></script>
     
@@ -87,10 +88,23 @@
                         <input type="number" class="form-control" ng-model="avgSuccessAdv" disabled>
                     </label>
                     <button type="button" ng-click="calculate()" class="btn-lg btn-block btn-success">Calculate</button>
+                    <button type="button" ng-click="generateGrid()" class="btn-lg btn-block btn-success">Visualize</button>
                 </div>
             </div>
         </div>
         <div class="row row-centered">
+            <div class="well">
+                <h4>Visualization:</h4>
+                <table>
+                    <th></th>
+                    <th ng-repeat="label in advLabel track by $index">{{label - $index}}</th>
+                    <tr ng-repeat="row in gridResult track by $index">
+                        <!--span ng-repeat="col in row">{{ col }}</span-->
+                    <td>{{maxSuccess - $index}}</td>
+                    <td ng-repeat="col in row track by $index" ng-style="{'background-color':gridResult[$parent.$index][$index]}">&nbsp&nbsp&nbsp&nbsp&nbsp</td>
+                    </tr>
+                </table>
+            </div>
             <div class="well">
                 <h4>Probabilities:</h4>
                 <ul>
