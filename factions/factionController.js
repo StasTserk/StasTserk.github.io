@@ -1,12 +1,33 @@
 var factionController = angular.module('factionController', []);
 
 factionController.controller('FactionController', function($scope) {
-    $scope.modal = $("#contestModal");
+    
+    $scope.factions = [];
+
+    // UI elements
+    $scope.contest = $("#contestModal");
+    $scope.newFactionPopup = $('#factionModal');
+    $scope.newFactionData = new NewFactionPopupViewmodel();
+
     $scope.openContestPopup = function () {
-        $scope.modal.css('display', 'block');
+        $scope.contest.css('display', 'block');
     }
 
     $scope.closeContestPopup = function () {
-        $scope.modal.css('display', 'none');
+        $scope.contest.css('display', 'none');
+    }
+
+    $scope.openNewFactionPopup = function () {
+        $scope.newFactionPopup.css('display', 'block');
+        $scope.newFactionData.clear();
+    }
+    
+    $scope.closeNewFactionPopup = function () {
+        $scope.newFactionPopup.css('display', 'none');
+    }
+    $scope.acceptNewFactionPopup = function () {
+        var faction = $scope.newFactionData.submit();
+        $scope.factions.push(faction);
+        $scope.closeNewFactionPopup();
     }
 })

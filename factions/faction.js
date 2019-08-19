@@ -27,5 +27,4 @@ class Faction {
         }
         this.trouble += size;
     }
-    
 }
