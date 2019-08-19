@@ -44,6 +44,8 @@ class NewFactionPopupViewmodel {
 class ContestPopupViewmodel {
     constructor() {
         this.clear();
+        this.attackerFeatures = [];
+        this.defenderFeatures = [];
     }
 
     clear() {
@@ -52,13 +54,47 @@ class ContestPopupViewmodel {
         this.attackerMagical = false;
         this.attackerScale = false;
         this.attackerQuality = false;
-        this.attackerMiracle = false;
+        this.attackerImprobable = false;
+        this.attackerImpossible = false;
 
         this.defender = "";
         this.defenderFeature = "";
         this.defenderMagical = false;
         this.defenderScale = false;
         this.defenderQuality = false;
-        this.defenderMiracle = false;
+        this.defenderImprobable = false;
+        this.defenderImpossible = false;
+        this.defenderPoorFit = false;
+    }
+
+    doContest() {
+        var roll1 = this.attacker.getContestRoll(
+            this.attackerScale,
+            this.attackerQuality,
+            this.attackerMagical,
+            this.attackerImprobable,
+            this.attackerImpossible
+        );
+
+        var roll2 = this.defender.getContestRoll(
+            this.defenderScale,
+            this.defenderQuality,
+            this.defenderMagical,
+            this.defenderImprobable,
+            this.defenderImpossible
+        );
+        if (this.defenderPoorFit) {
+            roll2 = Math.min(this.defender.getContestRoll(
+                this.defenderScale,
+                this.defenderQuality,
+                this.defenderMagical,
+                this.defenderImprobable,
+                this.defenderImpossible
+            ));
+        }
+        if (roll1 > roll2) {
+            return "Victory!";
+        }
+        return "Defeat!";
     }
 }

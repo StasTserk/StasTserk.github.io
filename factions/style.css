@@ -58,3 +58,44 @@ ul {
     padding: 3px;
     list-style-type: none;
 }
+
+.sprite-box {
+    height: 32px;
+    width: 32px;
+    display: inline-block;
+    background: url("sprites.png");
+    border-width: 1px;
+    border-color: black;
+}
+
+.selected {
+    background-color: gold;
+}
+
+.unselected {
+    background-color: white;
+}
+
+.scale {
+    background-position: 0 0;
+}
+
+.quality {
+    background-position: 0 -32px;
+}
+
+.magic {
+    background-position: 0 -64px;
+}
+
+.improbable {
+    background-position: 0 -96px;
+}
+
+.impossible {
+    background-position: 0 -128px;
+}
+
+.poor-fit {
+    background-position: 0 -160px;
+}

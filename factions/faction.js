@@ -27,4 +27,52 @@ class Faction {
         }
         this.trouble += size;
     }
+
+    getRoll() {
+        switch(this.power) {
+            case 1: return this.getActionRoll(6);
+            case 2: return this.getActionRoll(8);
+            case 3: return this.getActionRoll(10);
+            case 4: return this.getActionRoll(12);
+            case 5: return this.getActionRoll(20);
+        }
+
+    }
+
+    getActionRoll(dieSize) {
+        return Math.ceil(Math.random() * dieSize);
+    }
+
+    getContestRoll(scale, quality, magic, improbable, impossible) {
+        let bonus = scale ? 1 : 0;
+        if (quality) { bonus ++; }
+        if (magic) { bonus ++; }
+        if (impossible) { bonus += 2; }
+        else if (improbable) { bonus ++; }
+        
+        const roll = this.getRoll();
+        console.log(this.name + " rolls " + roll + " + " + bonus);
+        return roll+bonus;
+    }
 }
+
+// some dfaults
+const faction1 = new Faction();
+faction1.name = "A big faction";
+faction1.power = 4;
+faction1.cohesion = 4;
+faction1.maxCohesion = 4;
+faction1.addProblem("A wanton disregard for the little guy.", 3);
+faction1.addProblem("A complete lack of empathy", 4);
+faction1.features = [
+    "A large and powerful standing army",
+    "A large collection of the finest wall scrolls in the land"
+];
+
+const faction2 = new Faction();
+faction2.name = "A small faction";
+faction2.power = 1;
+faction2.cohesion = 1;
+faction2.maxCohesion = 1;
+faction2.addProblem("A pretty severe inferiority complex", 2);
+faction2.features = ["A healthy respect for the little guy."];

@@ -38,14 +38,86 @@
     <div class="modal-content">
         <div class="modal-header">
             <span class="close" ng-click='closeContestPopup()'>&times;</span>
-            <h2>Modal Header</h2>
+            <h2>Perform Contest</h2>
         </div>
         <div class="modal-body">
-            <p>Some text in the Modal Body</p>
-            <p>Some other text...</p>
+            <label>Attacker:
+                    <select class="form-control"
+                        ng-change="updateAttackerFeatures()"
+                        data-ng-options="f.name for f in factions"
+                        data-ng-model="contestData.attacker">
+                    </select>
+            </label>
+            <label>Feature:
+                    <select class="form-control"
+                        data-ng-options="f for f in contestData.attackerFeatures"
+                        data-ng-model="contestData.attackerFeature">
+                    </select>
+            </label>
+            <label>Attacker Advantages:
+                <div>
+                <div title="Vastly Larger" class="sprite-box scale"
+                    ng-click="contestData.attackerScale = !contestData.attackerScale"
+                    ng-class="contestData.attackerScale ? 'selected' : 'unselected'"></div>
+                <div title="Vastly Better" class="sprite-box quality"
+                    ng-click="contestData.attackerQuality = !contestData.attackerQuality"
+                    ng-class="contestData.attackerQuality ? 'selected' : 'unselected'"></div>
+                <div title="Magical" class="sprite-box magic"
+                    ng-click="contestData.attackerMagical = !contestData.attackerMagical"
+                    ng-class="contestData.attackerMagical ? 'selected' : 'unselected'"></div>
+                <div title="Improbable Miracle" class="sprite-box improbable"
+                    ng-click="contestData.attackerImprobable = !contestData.attackerImprobable"
+                    ng-class="contestData.attackerImprobable ? 'selected' : 'unselected'"></div>
+                <div title="Impossible Miracle" class="sprite-box impossible"
+                    ng-click="contestData.attackerImpossible = !contestData.attackerImpossible"
+                    ng-class="contestData.attackerImpossible ? 'selected' : 'unselected'"></div>
+                </div>
+            </label>
+            <hr>
+            <label>Defender:
+                    <select class="form-control"
+                        ng-change="updateDefenderFeatures()"
+                        data-ng-options="f.name for f in factions"
+                        data-ng-model="contestData.defender">
+                    </select>
+            </label>
+            <label>Feature:
+                    <select class="form-control"
+                        data-ng-options="f for f in contestData.defenderFeatures"
+                        data-ng-model="contestData.defenderFeature">
+                    </select>
+            </label>
+            <label>Defender Advantages:
+                <div>
+                    <div title="Vastly Larger"
+                        class="sprite-box scale"
+                        ng-click="contestData.defenderScale = !contestData.defenderScale"
+                        ng-class="contestData.defenderScale ? 'selected' : 'unselected'"></div>
+                    <div title="Vastly Better"
+                        class="sprite-box quality"
+                        ng-click="contestData.defenderQuality = !contestData.defenderQuality"
+                        ng-class="contestData.defenderQuality ? 'selected' : 'unselected'"></div>
+                    <div title="Magical"
+                        class="sprite-box magic"
+                        ng-click="contestData.defenderMagical = !contestData.defenderMagical"
+                        ng-class="contestData.defenderMagical ? 'selected' : 'unselected'"></div>
+                    <div title="Improbable Miracle"
+                        class="sprite-box improbable"
+                        ng-click="contestData.defenderImprobable = !contestData.defenderImprobable"
+                        ng-class="contestData.defenderImprobable ? 'selected' : 'unselected'"></div>
+                    <div title="Impossible Miracle"
+                        class="sprite-box impossible"
+                        ng-click="contestData.defenderImpossible = !contestData.defenderImpossible"
+                        ng-class="contestData.defenderImpossible ? 'selected' : 'unselected'"></div>
+                    <div title="Feature is a poor fit"
+                        class="sprite-box poor-fit"
+                        ng-click="contestData.defenderPoorFit = !contestData.defenderPoorFit"
+                        ng-class="contestData.defenderPoorFit ? 'selected' : 'unselected'"></div>
+                </div>
+            </label>
         </div>
         <div class="modal-footer">
-            <h3>Modal Footer</h3>
+            <button class="btn" ng-click="doContest()">Run Contest.</button>
         </div>
     </div>
 </div>
