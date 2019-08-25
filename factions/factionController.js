@@ -3,13 +3,16 @@ var factionController = angular.module('factionController', []);
 factionController.controller('FactionController', function($scope) {
     
     $scope.factions = [ faction1, faction2 ];
+    $scope.eventLog = [];
 
     // ===============================================================
     //         faction contested roll functionality
     $scope.contestPopup = $("#contestModal");
     $scope.contestData = new ContestPopupViewmodel();
     $scope.openContestPopup = function () {
+        $scope.contestData.clear();
         $scope.contestPopup.css('display', 'block');
+
     };
 
     $scope.closeContestPopup = function () {
@@ -43,6 +46,8 @@ factionController.controller('FactionController', function($scope) {
     $scope.doContest = function() {
         var result = $scope.contestData.doContest();
         console.log(result);
+        this.eventLog.push(result);
+        $scope.closeContestPopup();
     };
 
     // ===============================================================

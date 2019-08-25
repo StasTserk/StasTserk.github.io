@@ -31,9 +31,7 @@
         </div>
     </div>
 </nav>
-<button id='testModal' ng-click='openContestPopup()'>Perform Action</button>
-<button id='testModal' ng-click='openNewFactionPopup()'>Add Faction</button>
-
+<!-- ======== START Main form layout ========================== -->
 <div class='container'>
     <div class='row'>
         <div class='col-md-6'>
@@ -43,22 +41,34 @@
                     <p>Power: {{faction.power}}</p>
                     <p>Cohesion: {{faction.cohesion}}/{{faction.cohesionMax}}</p>
                     <p>Trouble: {{faction.trouble}}</p>
+                    <p>Dominion: {{faction.dominion}}</p>
                 </div>
                 <h4>{{faction.name}}<span class="edit-label" ng-click="editFaction(faction)">(edit)</span></h4> 
+                <p class="faction-description">{{faction.description}}</p>
                 <strong>Features:</strong>
                 <div ng-repeat="feature in faction.features">&nbsp;&nbsp;{{feature}}</div>
                 <strong>Problems:</strong>
                 <div ng-repeat="pblm in faction.problems">&nbsp;&nbsp;{{pblm.text}} - <strong>{{pblm.size}}</strong></div>
             </div>
+            <button id='testModal' ng-click='openNewFactionPopup()'>Add Faction</button>
         </div>
         <div class='col-md-6'>
             <h3>Log</h3>
             <div class='well'>
-                
+                <div ng-repeat="event in eventLog">
+                    <b>{{event.headerText}}</b>
+                    <p class="log-subitems" ng-repeat="subItem in event.subItems">
+                        {{subItem}}
+                    </p>
+                    <hr/>
+                </div>
+                <button id='testModal' ng-click='openContestPopup()'>Perform simple Action</button>
             </div>
         </div>
     </div>
 </div>
+<!-- ======== END Main form layout ========================== -->
+<!-- ======== START Contest Modal description =============== -->
 <div id="contestModal" class="modal">
     <div class="modal-content">
         <div class="modal-header">
@@ -146,7 +156,8 @@
         </div>
     </div>
 </div>
-
+<!-- ======== END Contest Modal description ================= -->
+<!-- ======== START faction editing modal description ======= -->
 <div id="factionModal" class="modal">
   <div class="modal-content">
       <div class="modal-header">
@@ -186,4 +197,5 @@
       </div>
   </div>
 </div>
+<!-- ======== END faction editing modal description ========= -->
 </body>

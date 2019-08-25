@@ -95,9 +95,15 @@ class ContestPopupViewmodel {
                 this.defenderImpossible
             ));
         }
-        if (roll1 > roll2) {
-            return "Victory!";
+
+        const entry = new ActionEntry();
+        entry.headerText = this.attacker.name + " attempts to mess with " + this.defender.name;
+        entry.subItems.push("They use " + this.attackerFeature);
+        entry.subItems.push("It is defended with " + this.defenderFeature);
+        if (this.defenderPoorFit) {
+            entry.subItems.push("The defender's feature used is a poor fit");
         }
-        return "Defeat!";
+        entry.subItems.push(this.attacker.name + " rolls " + roll1 + " vs. " + roll2 + " resulting in " + (roll1 > roll2 ? "victory!" : "defeat!"));
+        return entry;
     }
 }

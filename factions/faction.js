@@ -56,9 +56,17 @@ class Faction {
     }
 }
 
+class ActionEntry {
+    constructor() {
+        this.headerText = "";
+        this.subItems = [];
+    }
+}
+
 // some dfaults
 const faction1 = new Faction();
 faction1.name = "A Big Faction";
+faction1.description = "A big faction that is there to fuck shit up";
 faction1.power = 4;
 faction1.cohesion = 4;
 faction1.cohesionMax = 4;
@@ -71,6 +79,7 @@ faction1.features = [
 
 const faction2 = new Faction();
 faction2.name = "A Small Faction";
+faction2.description = "A small faction that is only there to get rekt";
 faction2.power = 1;
 faction2.cohesion = 1;
 faction2.cohesionMax = 1;

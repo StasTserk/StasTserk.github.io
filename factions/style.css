@@ -81,6 +81,16 @@ ul {
     margin: 0;
 }
 
+.faction-description {
+    white-space: pre-wrap;
+    max-width: 390px;
+    margin-left: 10px;
+}
+
+.log-subitems {
+    margin: 0px 0px 0px 10px;
+}
+
 .sprite-box {
     height: 32px;
     width: 32px;
