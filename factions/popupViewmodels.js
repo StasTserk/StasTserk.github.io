@@ -9,6 +9,8 @@ class NewFactionPopupViewmodel {
         this.power = 1;
         this.features = [];
         this.problems = [];
+        this.acceptLabel = "Add faction";
+        this.onAccept = function () {};
     }
 
     addFeature() {
@@ -21,7 +23,7 @@ class NewFactionPopupViewmodel {
 
     submit() {
         this.features = this.features.filter(feature => feature.length > 0);
-        this.problems = this.problems.filter(problem => problem.name.length > 0 && problem.size > 0);
+        this.problems = this.problems.filter(problem => problem.text.length > 0 && problem.size > 0);
 
         let faction = new Faction();
         faction.power = this.power;
@@ -32,7 +34,7 @@ class NewFactionPopupViewmodel {
 
         faction.features = this.features;
         for(var i in this.problems) {
-            faction.addProblem(this.problems[i].name, this.problems[i].size);
+            faction.addProblem(this.problems[i].text, this.problems[i].size);
         }
 
         console.log(faction);
@@ -46,6 +48,7 @@ class ContestPopupViewmodel {
         this.clear();
         this.attackerFeatures = [];
         this.defenderFeatures = [];
+        this.onAccept = function () {};
     }
 
     clear() {
@@ -84,7 +87,7 @@ class ContestPopupViewmodel {
             this.defenderImpossible
         );
         if (this.defenderPoorFit) {
-            roll2 = Math.min(this.defender.getContestRoll(
+            roll2 = Math.min(roll2, this.defender.getContestRoll(
                 this.defenderScale,
                 this.defenderQuality,
                 this.defenderMagical,

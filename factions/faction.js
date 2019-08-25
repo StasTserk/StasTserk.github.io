@@ -19,11 +19,11 @@ class Faction {
      * @param {number} size 
      */
     addProblem(text, size){
-        if (this.problems[text]) {
-            this.problems[text] += size;
-        }
-        else {
-            this.problems[text] = size;
+        var p = this.problems.find(p => p.text === text);
+        if (p) {
+            p.size += size;
+        } else {
+            this.problems.push({ text: text, size: size });
         }
         this.trouble += size;
     }
@@ -58,10 +58,10 @@ class Faction {
 
 // some dfaults
 const faction1 = new Faction();
-faction1.name = "A big faction";
+faction1.name = "A Big Faction";
 faction1.power = 4;
 faction1.cohesion = 4;
-faction1.maxCohesion = 4;
+faction1.cohesionMax = 4;
 faction1.addProblem("A wanton disregard for the little guy.", 3);
 faction1.addProblem("A complete lack of empathy", 4);
 faction1.features = [
@@ -70,9 +70,10 @@ faction1.features = [
 ];
 
 const faction2 = new Faction();
-faction2.name = "A small faction";
+faction2.name = "A Small Faction";
 faction2.power = 1;
 faction2.cohesion = 1;
-faction2.maxCohesion = 1;
+faction2.cohesionMax = 1;
 faction2.addProblem("A pretty severe inferiority complex", 2);
+faction2.addProblem("A pretty severe inferiority complex", 1);
 faction2.features = ["A healthy respect for the little guy."];

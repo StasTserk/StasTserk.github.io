@@ -34,6 +34,31 @@
 <button id='testModal' ng-click='openContestPopup()'>Perform Action</button>
 <button id='testModal' ng-click='openNewFactionPopup()'>Add Faction</button>
 
+<div class='container'>
+    <div class='row'>
+        <div class='col-md-6'>
+            <h3>Factions</h3>
+            <div class='well' ng-repeat="faction in factions">
+                <div class="well stat-inlay">
+                    <p>Power: {{faction.power}}</p>
+                    <p>Cohesion: {{faction.cohesion}}/{{faction.cohesionMax}}</p>
+                    <p>Trouble: {{faction.trouble}}</p>
+                </div>
+                <h4>{{faction.name}}<span class="edit-label" ng-click="editFaction(faction)">(edit)</span></h4> 
+                <strong>Features:</strong>
+                <div ng-repeat="feature in faction.features">&nbsp;&nbsp;{{feature}}</div>
+                <strong>Problems:</strong>
+                <div ng-repeat="pblm in faction.problems">&nbsp;&nbsp;{{pblm.text}} - <strong>{{pblm.size}}</strong></div>
+            </div>
+        </div>
+        <div class='col-md-6'>
+            <h3>Log</h3>
+            <div class='well'>
+                
+            </div>
+        </div>
+    </div>
+</div>
 <div id="contestModal" class="modal">
     <div class="modal-content">
         <div class="modal-header">
@@ -126,7 +151,7 @@
   <div class="modal-content">
       <div class="modal-header">
           <span class="close" ng-click='closeNewFactionPopup()'>&times;</span>
-          <h2>Modal Header</h2>
+          <h2>Faction Details</h2>
       </div>
       <div class="modal-body">
           <div class='form-group'>
@@ -149,7 +174,7 @@
           <span class="add" ng-click="newFactionData.addProblem()">&plus;</span>
           <h3>Problems</h3>
           <div class="input-group" ng-repeat="problem in newFactionData.problems track by $index">
-              <input type="text" class="form-control" ng-model="problem.name">
+              <input type="text" class="form-control" ng-model="problem.text">
               <div class="input-group-addon">
                   Size
               </div>
@@ -157,7 +182,7 @@
           </div>
       </div>
       <div class="modal-footer">
-          <button ng-click="acceptNewFactionPopup()">Add Faction</button>
+          <button ng-click="acceptNewFactionPopup()">{{newFactionData.acceptLabel}}</button>
       </div>
   </div>
 </div>

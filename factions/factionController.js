@@ -10,11 +10,11 @@ factionController.controller('FactionController', function($scope) {
     $scope.contestData = new ContestPopupViewmodel();
     $scope.openContestPopup = function () {
         $scope.contestPopup.css('display', 'block');
-    }
+    };
 
     $scope.closeContestPopup = function () {
         $scope.contestPopup.css('display', 'none');
-    }
+    };
 
     $scope.updateAttackerFeatures = function () {
         const newFaction = $scope.factions.find(faction => 
@@ -26,7 +26,7 @@ factionController.controller('FactionController', function($scope) {
         else {
             $scope.contestData.attackerFeatures = [];
         }
-    }
+    };
 
     $scope.updateDefenderFeatures = function() {
         const newFaction = $scope.factions.find(faction => 
@@ -38,12 +38,12 @@ factionController.controller('FactionController', function($scope) {
         else {
             $scope.contestData.defenderFeatures = [];
         }
-    }
+    };
 
     $scope.doContest = function() {
         var result = $scope.contestData.doContest();
         console.log(result);
-    }
+    };
 
     // ===============================================================
     //          new faction related functionality
@@ -52,14 +52,37 @@ factionController.controller('FactionController', function($scope) {
     $scope.openNewFactionPopup = function () {
         $scope.newFactionPopup.css('display', 'block');
         $scope.newFactionData.clear();
-    }
+        $scope.newFactionData.onAccept = function () {
+            var faction = $scope.newFactionData.submit();
+            $scope.factions.push(faction);
+            $scope.closeNewFactionPopup();
+        };
+    };
     
     $scope.closeNewFactionPopup = function () {
         $scope.newFactionPopup.css('display', 'none');
-    }
+    };
     $scope.acceptNewFactionPopup = function () {
-        var faction = $scope.newFactionData.submit();
-        $scope.factions.push(faction);
-        $scope.closeNewFactionPopup();
-    }
-})
+        $scope.newFactionData.onAccept();
+    };
+    /**
+     * @param {Faction} f faction to edit
+     */
+    $scope.editFaction = function(f) {
+        const d = $scope.newFactionData;
+        const index = $scope.factions.indexOf(f);
+        d.name = f.name;
+        d.power = f.power;
+        d.description = f.description;
+        d.problems = f.problems;
+        d.features = f.features;
+        d.acceptLabel = "Update Faction";
+        $scope.newFactionPopup.css('display', 'block');
+        d.onAccept = function () {
+            $scope.factions[index] = d.submit();
+            $scope.newFactionPopup.css('display', 'none');
+        }
+    };
+
+    
+});
