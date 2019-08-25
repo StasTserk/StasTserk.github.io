@@ -7,6 +7,11 @@ class Faction {
         this.actionDie = 6;
         this.trouble = 0;
 
+        this.emblemClass = "em-shield";
+        this.emblemSymbolClass = "sm-tree";
+        this.emblemColour = "em-black";
+        this.emblemSymbolColour = "em-white";
+
         this.dominion = 0;
         this.features = [ "A useful feature" ];
         this.problems = [];
@@ -77,6 +82,11 @@ faction1.features = [
     "A large collection of the finest wall scrolls in the land"
 ];
 
+faction1.emblemClass = "em-banner";
+faction1.emblemColour = "em-red";
+faction1.symbolClass = "sm-skull";
+faction1.symbolColour = "em-white"
+
 const faction2 = new Faction();
 faction2.name = "A Small Faction";
 faction2.description = "A small faction that is only there to get rekt";
@@ -86,3 +96,8 @@ faction2.cohesionMax = 1;
 faction2.addProblem("A pretty severe inferiority complex", 2);
 faction2.addProblem("A pretty severe inferiority complex", 1);
 faction2.features = ["A healthy respect for the little guy."];
+
+faction2.emblemClass = "em-shield";
+faction2.emblemColour = "em-green";
+faction2.symbolClass = "sm-tree";
+faction2.symbolColour = "em-white"

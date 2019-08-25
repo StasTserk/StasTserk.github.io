@@ -1,3 +1,35 @@
+let emColour = 1;
+let smColour = 2;
+
+const colourClasses = [
+    "em-white",
+    "em-black",
+    "em-red",
+    "em-green",
+    "em-blue"
+];
+
+let emClass = 1;
+const emblemClasses = [
+    "em-circle",
+    "em-shield",
+    "em-banner",
+    "em-box",
+    "em-hex"
+];
+
+let smClass = 1;
+const symbolClasses = [
+    "sm-bolt",
+    "sm-mask",
+    "sm-eye",
+    "sm-skull",
+    "sm-sword",
+    "sm-book",
+    "sm-tree",
+    "sm-moon",
+]
+
 class NewFactionPopupViewmodel {
     constructor() {
         this.clear();
@@ -11,6 +43,16 @@ class NewFactionPopupViewmodel {
         this.problems = [];
         this.acceptLabel = "Add faction";
         this.onAccept = function () {};
+
+        this.emblemClass = "em-circle";
+        this.emblemColour = "em-black";
+        this.symbolClass = "sm-bolt";
+        this.symbolColour = "em-white";
+
+        emColour = 1;
+        smColour = 2;
+        emClass = 1;
+        smClass = 1;
     }
 
     addFeature() {
@@ -19,6 +61,31 @@ class NewFactionPopupViewmodel {
 
     addProblem() {
         this.problems.push({ name: "", size: 0 });
+    }
+
+    cycleEmblem() {
+        console.log("New emblem class is..." + emblemClasses[emClass])
+        this.emblemClass = emblemClasses[emClass];
+        emClass ++;
+        emClass = emClass % emblemClasses.length;
+    }
+
+    cycleEmblemColour() {
+        this.emblemColour = colourClasses[emColour];
+        emColour ++;
+        emColour = emColour % colourClasses.length;
+    }
+
+    cycleSymbol() {
+        this.symbolClass = symbolClasses[smClass];
+        smClass ++;
+        smClass = smClass % symbolClasses.length;
+    }
+
+    cycleSymbolColour() {
+        this.symbolColour = colourClasses[smColour];
+        smColour ++;
+        smColour = smColour % colourClasses.length;
     }
 
     submit() {
@@ -31,6 +98,11 @@ class NewFactionPopupViewmodel {
         faction.description = this.description;
         faction.cohesion = this.power;
         faction.cohesionMax = this.power;
+
+        faction.emblemColour = this.emblemColour;
+        faction.emblemClass = this.emblemClass;
+        faction.symbolColour = this.symbolColour;
+        faction.symbolClass = this.symbolClass;
 
         faction.features = this.features;
         for(var i in this.problems) {

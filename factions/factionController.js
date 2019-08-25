@@ -81,6 +81,12 @@ factionController.controller('FactionController', function($scope) {
         d.description = f.description;
         d.problems = f.problems;
         d.features = f.features;
+
+        d.emblemClass = f.emblemClass;
+        d.emblemColour = f.emblemColour;
+        d.symbolClass = f.symbolClass;
+        d.symbolColour = f.symbolColour;
+
         d.acceptLabel = "Update Faction";
         $scope.newFactionPopup.css('display', 'block');
         d.onAccept = function () {

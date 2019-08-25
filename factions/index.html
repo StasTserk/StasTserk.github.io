@@ -22,6 +22,7 @@
     <script src="factionController.js"></script>
 
     <link rel="stylesheet" href="style.css"/>
+    <link rel="stylesheet" href="sprites.css"/>
 </head>
 <body ng-controller="FactionController">
 <nav class="navbar navbar-inverse navbar-static-top">
@@ -38,6 +39,9 @@
             <h3>Factions</h3>
             <div class='well' ng-repeat="faction in factions">
                 <div class="well stat-inlay">
+                    <span ng-class="['faction-emblem', faction.emblemClass, faction.emblemColour]">
+                        <span ng-class="['faction-symbol', faction.symbolClass, faction.symbolColour]"></span>
+                    </span>
                     <p>Power: {{faction.power}}</p>
                     <p>Cohesion: {{faction.cohesion}}/{{faction.cohesionMax}}</p>
                     <p>Trouble: {{faction.trouble}}</p>
@@ -159,43 +163,54 @@
 <!-- ======== END Contest Modal description ================= -->
 <!-- ======== START faction editing modal description ======= -->
 <div id="factionModal" class="modal">
-  <div class="modal-content">
-      <div class="modal-header">
-          <span class="close" ng-click='closeNewFactionPopup()'>&times;</span>
-          <h2>Faction Details</h2>
-      </div>
-      <div class="modal-body">
-          <div class='form-group'>
-              <div class="row">
-                  <label class="col-xs-8">Name
-                  <input class="form-control" id="newFactionName" type="text" ng-model="newFactionData.name">
-                  </label>
-                  <label class="col-xs-2">Power
-                  <input class="form-control" id="newFactionPower" type="number" ng-model="newFactionData.power">
-                  </label>
-              </div>
-              <label for="newFactionDescription">Description</label>
-              <textarea class="form-control" id="newFactionDescription" rows="3" ng-model="newFactionData.description"></textarea>
-          </div>
-              <span class="add" ng-click="newFactionData.addFeature()">&plus;</span>
-              <h3>Features</h3>
-              <div ng-repeat="feature in newFactionData.features track by $index">
-                  <input type="text" class="form-control" ng-model="newFactionData.features[$index]">
-              </div>
-          <span class="add" ng-click="newFactionData.addProblem()">&plus;</span>
-          <h3>Problems</h3>
-          <div class="input-group" ng-repeat="problem in newFactionData.problems track by $index">
-              <input type="text" class="form-control" ng-model="problem.text">
-              <div class="input-group-addon">
-                  Size
-              </div>
-              <input type="number" class="form-control narrow-num-imput" ng-model="problem.size">
-          </div>
-      </div>
-      <div class="modal-footer">
-          <button ng-click="acceptNewFactionPopup()">{{newFactionData.acceptLabel}}</button>
-      </div>
-  </div>
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="close" ng-click='closeNewFactionPopup()'>&times;</span>
+            <h2>Faction Details</h2>
+        </div>
+        <div class="modal-body">
+            <div class="stat-inlay well">
+                <span ng-class="['faction-emblem', newFactionData.emblemClass, newFactionData.emblemColour]">
+                    <span ng-class="['faction-symbol', newFactionData.symbolClass, newFactionData.symbolColour]"></span>
+                </span>
+                <div style="z-index: 0">
+                    <button ng-click="newFactionData.cycleEmblem()">E</button>
+                    <button ng-click="newFactionData.cycleEmblemColour()">C</button>
+                    <button ng-click="newFactionData.cycleSymbol()">S</button>
+                    <button ng-click="newFactionData.cycleSymbolColour()">C</button>
+                </div>
+            </div>
+            <div class='form-group'>
+                <div class="row">
+                    <label class="col-xs-8">Name
+                    <input class="form-control" id="newFactionName" type="text" ng-model="newFactionData.name">
+                    </label>
+                    <label class="col-xs-2">Power
+                    <input class="form-control" id="newFactionPower" type="number" ng-model="newFactionData.power">
+                    </label>
+                </div>
+                <label for="newFactionDescription">Description</label>
+                <textarea class="form-control" id="newFactionDescription" rows="3" ng-model="newFactionData.description"></textarea>
+            </div>
+                <span class="add" ng-click="newFactionData.addFeature()">&plus;</span>
+                <h3>Features</h3>
+                <div ng-repeat="feature in newFactionData.features track by $index">
+                    <input type="text" class="form-control" ng-model="newFactionData.features[$index]">
+                </div>
+            <span class="add" ng-click="newFactionData.addProblem()">&plus;</span>
+            <h3>Problems</h3>
+            <div class="input-group" ng-repeat="problem in newFactionData.problems track by $index">
+                <input type="text" class="form-control" ng-model="problem.text">
+                <div class="input-group-addon">
+                    Size
+                </div>
+                <input type="number" class="form-control narrow-num-imput" ng-model="problem.size">
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button ng-click="acceptNewFactionPopup()">{{newFactionData.acceptLabel}}</button>
+        </div>
+    </div>
 </div>
 <!-- ======== END faction editing modal description ========= -->
 </body>

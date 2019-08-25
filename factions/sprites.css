@@ -1,0 +1,126 @@
+
+.sprite-box {
+    height: 32px;
+    width: 32px;
+    display: inline-block;
+    background: url("sprites.png");
+}
+
+.selected {
+    background-color: gold;
+}
+
+.unselected {
+    background-color: white;
+}
+
+.scale {
+    background-position: 0 0;
+}
+
+.quality {
+    background-position: 0 -32px;
+}
+
+.magic {
+    background-position: 0 -64px;
+}
+
+.improbable {
+    background-position: 0 -96px;
+}
+
+.impossible {
+    background-position: 0 -128px;
+}
+
+.poor-fit {
+    background-position: 0 -160px;
+}
+
+.faction-emblem {
+    background-image: url("sprites-emblem.png");
+    filter: drop-shadow(2px 4px 6px black);
+    height: 64px;
+    width: 64px;
+    display: inline-block;
+}
+
+.em-circle {
+    background-position-x: 0;
+}
+
+.em-shield {
+    background-position-x: -64px;
+}
+
+.em-banner {
+    background-position-x: -128px;
+}
+
+.em-box {
+    background-position-x: -192px;
+}
+
+.em-hex {
+    background-position-x: -256px;
+}
+
+.em-white {
+    background-position-y: 0;
+}
+
+.em-black {
+    background-position-y: -64px;
+}
+
+.em-red {
+    background-position-y: -128px;
+}
+
+.em-green {
+    background-position-y: -192px;
+}
+
+.em-blue {
+    background-position-y: -256px;
+}
+
+.faction-symbol {
+    background-image: url("sprites-symbols.png");
+    height: 64px;
+    width: 64px;
+    display: inline-block;
+}
+
+.sm-bolt {
+    background-position-x: 0;
+}
+
+.sm-mask {
+    background-position-x: -64px;
+}
+
+.sm-eye {
+    background-position-x: -128px;
+}
+
+.sm-sword {
+    background-position-x: -192px;
+}
+
+.sm-skull {
+    background-position-x: -256px;
+}
+
+.sm-book {
+    background-position-x: -320px;
+}
+
+.sm-tree {
+    background-position-x: -384px;
+}
+
+.sm-moon {
+    background-position-x: -448px;
+}
