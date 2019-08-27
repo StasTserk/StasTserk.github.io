@@ -2,7 +2,7 @@ var factionController = angular.module('factionController', []);
 
 factionController.controller('FactionController', function($scope) {
     
-    $scope.factions = [ faction1, faction2 ];
+    $scope.factions = [ faction1, faction2, faction3 ];
     $scope.eventLog = [];
 
     // ===============================================================
@@ -79,8 +79,10 @@ factionController.controller('FactionController', function($scope) {
         d.name = f.name;
         d.power = f.power;
         d.description = f.description;
+        d.dominion = f.dominion;
         d.problems = f.problems;
         d.features = f.features;
+        d.cohesion = f.cohesion;
 
         d.emblemClass = f.emblemClass;
         d.emblemColour = f.emblemColour;

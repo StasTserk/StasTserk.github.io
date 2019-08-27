@@ -4,7 +4,6 @@ class Faction {
         this.power = 1;
         this.cohesion = 1;
         this.cohesionMax = 1;
-        this.actionDie = 6;
         this.trouble = 0;
 
         this.emblemClass = "em-shield";
@@ -15,7 +14,7 @@ class Faction {
         this.dominion = 0;
         this.features = [ "A useful feature" ];
         this.problems = [];
-        this.influence = [ { target: "A faction", amount: 1 }];
+        this.interest = [ { target: "A faction", amount: 1 }];
     }
 
     /**
@@ -34,14 +33,17 @@ class Faction {
     }
 
     getRoll() {
-        switch(this.power) {
-            case 1: return this.getActionRoll(6);
-            case 2: return this.getActionRoll(8);
-            case 3: return this.getActionRoll(10);
-            case 4: return this.getActionRoll(12);
-            case 5: return this.getActionRoll(20);
-        }
+        return this.getActionRoll(this.getActionDie());
+    }
 
+    getActionDie() {
+        switch(this.power) {
+            case 1: return 6;
+            case 2: return 8;
+            case 3: return 10;
+            case 4: return 12;
+            default: return 20;
+        }
     }
 
     getActionRoll(dieSize) {
@@ -70,16 +72,15 @@ class ActionEntry {
 
 // some dfaults
 const faction1 = new Faction();
-faction1.name = "A Big Faction";
-faction1.description = "A big faction that is there to fuck shit up";
-faction1.power = 4;
-faction1.cohesion = 4;
-faction1.cohesionMax = 4;
-faction1.addProblem("A wanton disregard for the little guy.", 3);
-faction1.addProblem("A complete lack of empathy", 4);
+faction1.name = "A minor parasite god cult";
+faction1.description = "A parasite god and the group of followers they managed to attract.";
+faction1.power = 1;
+faction1.cohesion = 1;
+faction1.cohesionMax = 1;
+faction1.addProblem("Neighbors fear and hate them.", 1);
+faction1.addProblem("Their god makes cruel demands.", 1);
 faction1.features = [
-    "A large and powerful standing army",
-    "A large collection of the finest wall scrolls in the land"
+    "Their god deals savagely with threats.",
 ];
 
 faction1.emblemClass = "em-banner";
@@ -88,16 +89,38 @@ faction1.symbolClass = "sm-skull";
 faction1.symbolColour = "em-white"
 
 const faction2 = new Faction();
-faction2.name = "A Small Faction";
-faction2.description = "A small faction that is only there to get rekt";
-faction2.power = 1;
-faction2.cohesion = 1;
-faction2.cohesionMax = 1;
-faction2.addProblem("A pretty severe inferiority complex", 2);
-faction2.addProblem("A pretty severe inferiority complex", 1);
-faction2.features = ["A healthy respect for the little guy."];
+faction2.name = "Xilong, a city in the Dulimbai Regency";
+faction2.description = "A prosperous city state on the Patrian border, ruled benevolently by a magistrate";
+faction2.power = 2;
+faction2.cohesion = 2;
+faction2.cohesionMax = 2;
+faction2.addProblem("Collegium sorcerer-academics scheme to seize control of the city's ruling magistrate", 1);
+faction2.addProblem("Patrian agents of terror strive to disrupt the city's trade and peace.", 1);
+faction2.features = [
+    "The famed Bronze Collegium there teaches arts both magical and mundane.",
+    "Xilong is a proud jewel of the Regency, and the Regent is inclined to aid it in need."
+];
 
 faction2.emblemClass = "em-shield";
 faction2.emblemColour = "em-green";
-faction2.symbolClass = "sm-tree";
+faction2.symbolClass = "sm-eye";
 faction2.symbolColour = "em-white"
+
+const faction3 = new Faction();
+faction3.name = "The Unitary Church of Patria";
+faction3.description = "The dominant religioun in the kingdom of Patria, ruled by powerful clerics and deeply entrenched.";
+faction3.power = 3;
+faction3.cohesion = 3;
+faction3.cohesionMax = 3;
+faction3.addProblem("The Patrian emperor tends to view the church as his property.", 2);
+faction3.addProblem("Reformist priests are disrupting the church with their demands.", 1);
+faction3.features = [
+    "Most Patrians are loyal servants of the faith.",
+    "The church is extremely wealthy.",
+    "Many secrets are confessed to its priests."
+];
+
+faction3.emblemClass = "em-circle";
+faction3.emblemColour = "em-blue";
+faction3.symbolClass = "sm-bolt";
+faction3.symbolColour = "em-white"

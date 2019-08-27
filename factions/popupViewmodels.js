@@ -39,6 +39,8 @@ class NewFactionPopupViewmodel {
         this.name = "";
         this.description = "";
         this.power = 1;
+        this.dominion = 0;
+
         this.features = [];
         this.problems = [];
         this.acceptLabel = "Add faction";
@@ -98,6 +100,7 @@ class NewFactionPopupViewmodel {
         faction.description = this.description;
         faction.cohesion = this.power;
         faction.cohesionMax = this.power;
+        faction.dominion = this.dominion;
 
         faction.emblemColour = this.emblemColour;
         faction.emblemClass = this.emblemClass;

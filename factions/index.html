@@ -46,13 +46,16 @@
                     <p>Cohesion: {{faction.cohesion}}/{{faction.cohesionMax}}</p>
                     <p>Trouble: {{faction.trouble}}</p>
                     <p>Dominion: {{faction.dominion}}</p>
+                    <p>Action Die: 1d{{faction.getActionDie()}}</p>
                 </div>
                 <h4>{{faction.name}}<span class="edit-label" ng-click="editFaction(faction)">(edit)</span></h4> 
                 <p class="faction-description">{{faction.description}}</p>
                 <strong>Features:</strong>
                 <div ng-repeat="feature in faction.features">&nbsp;&nbsp;{{feature}}</div>
                 <strong>Problems:</strong>
-                <div ng-repeat="pblm in faction.problems">&nbsp;&nbsp;{{pblm.text}} - <strong>{{pblm.size}}</strong></div>
+                <div ng-repeat="pblm in faction.problems">&nbsp;&nbsp;{{pblm.text}} - <strong>{{pblm.size}} pts.</strong></div>
+                <strong>Interest:</strong>
+                <div ng-repeat="interest in faction.interest">&nbsp;&nbsp;{{interest.target}} - <strong>{{interest.amount}} pts.</strong></div>
             </div>
             <button id='testModal' ng-click='openNewFactionPopup()'>Add Faction</button>
         </div>
@@ -183,10 +186,21 @@
             <div class='form-group'>
                 <div class="row">
                     <label class="col-xs-8">Name
-                    <input class="form-control" id="newFactionName" type="text" ng-model="newFactionData.name">
+                        <input class="form-control" id="newFactionName" type="text" ng-model="newFactionData.name">
                     </label>
                     <label class="col-xs-2">Power
-                    <input class="form-control" id="newFactionPower" type="number" ng-model="newFactionData.power">
+                        <input class="form-control" id="newFactionPower" type="number" ng-model="newFactionData.power">
+                    </label>
+                    <label class="col-md-3">Cohesion
+                        <div class="input-group">
+                            <input class="form-control" id="newFactionPower" type="number" ng-model="newFactionData.cohesion">
+                            <div class="input-group-addon">
+                                /{{newFactionData.power}}
+                            </div>
+                        </div>
+                    </label>
+                    <label class="col-xs-2">Dominion
+                        <input class="form-control" id="newFactionPower" type="number" ng-model="newFactionData.dominion">
                     </label>
                 </div>
                 <label for="newFactionDescription">Description</label>
