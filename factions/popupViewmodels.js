@@ -35,6 +35,14 @@ class NewFactionPopupViewmodel {
         this.clear();
     }
 
+    open() {
+        $('#factionModal').css('display', 'block');
+    }
+
+    close() {
+        $('#factionModal').css('display', 'none');
+    }
+
     clear() {
         this.name = "";
         this.description = "";
@@ -126,6 +134,14 @@ class ContestPopupViewmodel {
         this.onAccept = function () {};
     }
 
+    open() {
+        $("#contestModal").css('display', 'block');
+    }
+
+    close() {
+        $("#contestModal").css('display', 'none');
+    }
+
     clear() {
         this.attacker = "";
         this.attackerFeature = "";
@@ -180,5 +196,41 @@ class ContestPopupViewmodel {
         }
         entry.subItems.push(this.attacker.name + " rolls " + roll1 + " vs. " + roll2 + " resulting in " + (roll1 > roll2 ? "victory!" : "defeat!"));
         return entry;
+    }
+}
+
+class FactionTurnViewModel {
+    constructor() {
+        this.clear();
+    }
+
+    open() {
+        $("#turnModal").css('display', 'block');
+    }
+    
+    close() {
+        $("#turnModal").css('display', 'none');
+    }
+
+    clear() {
+        this.faction = {};
+        this.internalAction = {};
+        this.externalActions = [];
+    }
+
+    updateFaction() {
+        this.externalActions = Array(this.faction.power);
+    }
+
+    startFactionTurn() {
+        this.internalAction.action();
+    }
+
+    doNextAction() {
+        if (this.externalActions.length) {
+            const nextAction = this.externalActions.shift();
+            
+            nextAction.action();
+        }
     }
 }

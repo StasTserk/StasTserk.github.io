@@ -70,6 +70,7 @@
                     <hr/>
                 </div>
                 <button id='testModal' ng-click='openContestPopup()'>Perform simple Action</button>
+                <button id='testModal' ng-click='openFactionTurnPopup()'>Do Faction Turn</button>
             </div>
         </div>
     </div>
@@ -227,4 +228,91 @@
     </div>
 </div>
 <!-- ======== END faction editing modal description ========= -->
+<!-- ======== START faction turn modal ====================== -->
+<div id="turnModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="close" ng-click='closeFactionTurnPopup()'>&times;</span>
+            <h2>Faction Turn</h2>
+        </div>
+        <div class="modal-body">
+            <label>Faction:
+                <select class="form-control"
+                    ng-change="factionTurnData.updateFaction()"
+                    data-ng-options="f.name for f in factions"
+                    data-ng-model="factionTurnData.faction">
+                </select>
+            </label>
+            <label>Internal Action:
+                    <select class="form-control"
+                    data-ng-options="ia.name for ia in internalActions"
+                    data-ng-model="factionTurnData.internalAction">
+                </select>
+            </label>
+            <label ng-repeat="action in factionTurnData.externalActions track by $index">
+                External Action {{$index+1}}
+                <select class="form-control"
+                    data-ng-options="ea.name for ea in externalActions"
+                    data-ng-model="factionTurnData.externalActions[$index]">
+                </select>
+            </label>
+        </div>
+        <div class="modal-footer">
+            <button ng-click="startFactionTurn()">Start</button>
+        </div>
+    </div>
+</div>
+<!-- ======== END faction turn modal ======================== -->
+<!-- ======== START message modal =========================== -->
+<div id="messageModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>{{ messageTitle }}</h2>
+            </div>
+            <div class="modal-body multiline">
+                {{ messageBody }}
+            </div>
+            <div class="modal-footer">
+                <button ng-click="dismissMessage()">OK</button>
+            </div>
+        </div>
+    </div>
+<!-- ======== END message modal ============================= -->
+<!-- ======== START message modal =========================== -->
+<div id="solveProblemModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Enact Change</h2>
+        </div>
+        <div class="modal-body">
+            [ Problem to fix goes here ]
+        </div>
+        <div class="modal-footer">
+            <button ng-click="dismissMessage()">OK</button>
+        </div>
+    </div>
+</div>
+<!-- ======== END message modal ============================= -->
+<!-- ======== START message modal =========================== -->
+<div id="newFeatureModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+        </div>
+        <div class="modal-body">
+            <label>New Feature:
+                <input type="text" class="form-control" ng-model="newFeatureName">
+            </label>
+            <label>New Problem:
+                <input type="text" class="form-control" ng-model="newProblemName">
+            </label>
+            <label>Dominion Cost:
+                <input type="number" class="form-control" ng-model="newFeatureCost">
+            </label>
+        </div>
+        <div class="modal-footer">
+            <button ng-click="addFeature()">OK</button>
+        </div>
+    </div>
+</div>
+<!-- ======== END message modal ============================= -->
 </body>
