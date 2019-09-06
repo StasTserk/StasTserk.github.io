@@ -14,7 +14,8 @@ class Faction {
         this.dominion = 0;
         this.features = [ "A useful feature" ];
         this.problems = [];
-        this.interest = [ { target: "A faction", amount: 1 }];
+        this.interest = [];
+        this.enemyInterest = [];
     }
 
     /**
@@ -30,6 +31,46 @@ class Faction {
             this.problems.push({ text: text, size: size });
         }
         this.trouble += size;
+    }
+
+    addInterest(faction) {
+        const entry = this.interest.find(i => i.target == faction)
+        if (entry) {
+            entry.amount ++;
+        }
+        else {
+            this.interest.push({ target: faction, amount: 1});
+        }
+    }
+
+    removeInterest(faction) {
+        const entry = this.interest.find(i => i.target == faction)
+        if (entry) {
+            entry.amount --;
+            if (entry.amount <= 0) {
+                this.interest.splice(this.interest.indexOf(entry), 1);
+            }
+        }
+    }
+
+    addEnemyInterest(faction) {
+        const entry = this.enemyInterest.find(i => i.target == faction)
+        if (entry) {
+            entry.amount ++;
+        }
+        else {
+            this.enemyInterest.push({ target: faction, amount: 1});
+        }
+    }
+
+    removeEnemyInterest(faction) {
+        const entry = this.enemyInterest.find(i => i.target == faction)
+        if (entry) {
+            entry.amount --;
+            if (entry.amount <= 0) {
+                this.enemyInterest.splice(this.enemyInterest.indexOf(entry), 1);
+            }
+        }
     }
 
     /**
@@ -141,3 +182,10 @@ faction3.emblemClass = "em-circle";
 faction3.emblemColour = "em-blue";
 faction3.symbolClass = "sm-bolt";
 faction3.symbolColour = "em-white"
+
+faction3.addInterest(faction1);
+faction1.addEnemyInterest(faction3);
+faction3.addInterest(faction1);
+faction1.addEnemyInterest(faction3);
+faction1.addInterest(faction2);
+faction2.addEnemyInterest(faction1);

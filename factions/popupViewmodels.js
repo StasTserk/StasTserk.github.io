@@ -159,6 +159,10 @@ class ContestPopupViewmodel {
         this.defenderImprobable = false;
         this.defenderImpossible = false;
         this.defenderPoorFit = false;
+
+        this.attackerRoll = 0;
+        this.defenderRoll = 0;
+        this.isVictory = false;
     }
 
     doContest() {
@@ -187,6 +191,8 @@ class ContestPopupViewmodel {
             ));
         }
 
+        this.attackerRoll = roll1;
+        this.defenderRoll = roll2;
         const entry = new ActionEntry();
         entry.headerText = this.attacker.name + " attempts to mess with " + this.defender.name;
         entry.subItems.push("They use " + this.attackerFeature);
@@ -194,7 +200,8 @@ class ContestPopupViewmodel {
         if (this.defenderPoorFit) {
             entry.subItems.push("The defender's feature used is a poor fit");
         }
-        entry.subItems.push(this.attacker.name + " rolls " + roll1 + " vs. " + roll2 + " resulting in " + (roll1 > roll2 ? "victory!" : "defeat!"));
+        this.isVictory = roll1 > roll2;
+        entry.subItems.push(this.attacker.name + " rolls " + roll1 + " vs. " + roll2 + " resulting in " + (this.victory ? "victory!" : "defeat!"));
         return entry;
     }
 }

@@ -50,12 +50,14 @@
                 </div>
                 <h4>{{faction.name}}<span class="edit-label" ng-click="editFaction(faction)">(edit)</span></h4> 
                 <p class="faction-description">{{faction.description}}</p>
-                <strong>Features:</strong>
+                <div><strong>Features:</strong></div>
                 <div ng-repeat="feature in faction.features">&nbsp;&nbsp;{{feature}}</div>
-                <strong>Problems:</strong>
+                <div><strong>Problems:</strong></div>
                 <div ng-repeat="pblm in faction.problems">&nbsp;&nbsp;{{pblm.text}} - <strong>{{pblm.size}} pts.</strong></div>
-                <strong>Interest:</strong>
-                <div ng-repeat="interest in faction.interest">&nbsp;&nbsp;{{interest.target}} - <strong>{{interest.amount}} pts.</strong></div>
+                <div><strong>Interest:</strong></div>
+                <div ng-repeat="interest in faction.interest">&nbsp;&nbsp;{{interest.target.name}} - <strong>{{interest.amount}} pts.</strong></div>
+                <div><strong>Enemy Interest:</strong></div>
+                <div ng-repeat="eInterest in faction.enemyInterest">&nbsp;&nbsp;{{eInterest.target.name}} - <strong>{{eInterest.amount}} pts.</strong></div>
             </div>
             <button id='testModal' ng-click='openNewFactionPopup()'>Add Faction</button>
         </div>
@@ -323,25 +325,46 @@
 <!-- ======== END message modal ============================= -->
 <!-- ======== START help ally modal========================== -->
 <div id="helpAllyModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>Help Ally - {{factionTurnData.faction.name}}</h3>
-            </div>
-            <div class="modal-body">
-                <label>Faction to Help:
-                    <select class="form-control"
-                        data-ng-options="f.name for f in factions"
-                        data-ng-model="helpAllyTarget">
-                    </select>
-                </label>
-                <label>Dominion to Gift:
-                    <input type="number" class="form-control" ng-model="helpAllyDominion">
-                </label>
-            </div>
-            <div class="modal-footer">
-                <button ng-click="helpAlly()">OK</button>
-            </div>
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Help Ally - {{factionTurnData.faction.name}}</h3>
+        </div>
+        <div class="modal-body">
+            <label>Faction to Help:
+                <select class="form-control"
+                    data-ng-options="f.name for f in factions"
+                    data-ng-model="helpAllyTarget">
+                </select>
+            </label>
+            <label>Dominion to Gift:
+                <input type="number" class="form-control" ng-model="helpAllyDominion">
+            </label>
+        </div>
+        <div class="modal-footer">
+            <button ng-click="helpAlly()">OK</button>
         </div>
     </div>
-<!-- ======== END help ally modal============================ -->
+</div>
+<!-- ======== END help ally modal =========================== -->
+<!-- ======== START hremove influence modal ================= -->
+<div id="removeInterestModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Remove Influence - {{factionTurnData.faction.name}}</h3>
+        </div>
+        <div class="modal-body">
+            <label>Faction to target:
+                <select class="form-control"
+                    data-ng-options="f.target.name for f in factionTurnData.faction.enemyInterest"
+                    data-ng-model="removeInterestTarget">
+                </select>
+            </label>
+        </div>
+        <div class="modal-footer">
+            <button ng-click="removeInterest()">OK</button>
+        </div>
+    </div>
+</div>
+<!-- ======== END remove influence modal ==================== -->
+
 </body>

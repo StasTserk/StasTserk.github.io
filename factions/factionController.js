@@ -13,7 +13,11 @@ factionController.controller('FactionController', function($scope) {
     $scope.openContestPopup = function () {
         $scope.contestData.clear();
         $scope.contestData.open();
-
+        $scope.contestData.onAccept = function () {
+            var result = $scope.contestData.doContest();
+            console.log(result);
+            $scope.eventLog.push(result);
+        }
     };
 
     $scope.closeContestPopup = function () {
@@ -45,9 +49,8 @@ factionController.controller('FactionController', function($scope) {
     };
 
     $scope.doContest = function() {
-        var result = $scope.contestData.doContest();
-        console.log(result);
-        this.eventLog.push(result);
+        $scope.contestData.doContest();
+        $scope.contestData.onAccept();
         $scope.closeContestPopup();
     };
 
@@ -247,7 +250,44 @@ factionController.controller('FactionController', function($scope) {
             name: "Remove Interest",
             action: function () {
                 console.log("Removing Interest");
-                $scope.factionTurnData.doNextAction();
+                $scope.removeInterestTarget = {};
+                $scope.onRemoveInterest = function() {
+                    if (!$scope.removeInterestTarget.target) {
+                        $scope.factionTurnData.doNextAction();
+                        return;
+                    }
+                    $scope.contestData.clear();
+                    $scope.contestData.attacker = $scope.factionTurnData.faction;
+                    $scope.updateAttackerFeatures();
+                    $scope.contestData.defender = $scope.removeInterestTarget.target;
+                    $scope.updateDefenderFeatures();
+                    $scope.contestData.onAccept = function () {
+                        if ($scope.contestData.isVictory) { 
+                            $scope.contestData.attacker.removeEnemyInterest(
+                                $scope.contestData.defender);
+                            
+                            $scope.contestData.defender.removeInterest(
+                                $scope.contestData.attacker);
+
+                            $scope.log($scope.contestData.attacker.name 
+                                + " attempts to clear influence from " 
+                                + $scope.contestData.defender.name,
+                                "They do so successfully rolling " + $scope.contestData.attackerRoll
+                                + " vs. " + $scope.contestData.defenderRoll);
+                        }
+                        else {
+                            $scope.log($scope.contestData.attacker.name 
+                                + " attempts to clear influence from " 
+                                + $scope.contestData.defender.name,
+                                "They fail rolling " + $scope.contestData.attackerRoll
+                                + " vs. " + $scope.contestData.defenderRoll);
+                        }
+                        $scope.contestData.close();
+                        $scope.factionTurnData.doNextAction();
+                    }
+                    $scope.contestData.open();
+                };
+                $("#removeInterestModal").css("display", "block");
             }
         },
     ];
@@ -325,6 +365,13 @@ factionController.controller('FactionController', function($scope) {
         $("#newFeatureModal").css("display", "none");
         $scope.addFeatureAccept();
     }
+
+    $scope.onRemoveInterest = function () {};
+    $scope.removeInterestTarget = {};
+    $scope.removeInterest = function () {
+        $("#removeInterestModal").css("display", "none");
+        $scope.onRemoveInterest();
+    };
 
     $scope.log = function (title, ...details) {
         $scope.eventLog.push({
