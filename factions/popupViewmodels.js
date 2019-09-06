@@ -201,7 +201,7 @@ class ContestPopupViewmodel {
             entry.subItems.push("The defender's feature used is a poor fit");
         }
         this.isVictory = roll1 > roll2;
-        entry.subItems.push(this.attacker.name + " rolls " + roll1 + " vs. " + roll2 + " resulting in " + (this.victory ? "victory!" : "defeat!"));
+        entry.subItems.push(this.attacker.name + " rolls " + roll1 + " vs. " + roll2 + " resulting in " + (this.isVictory ? "victory!" : "defeat!"));
         return entry;
     }
 }

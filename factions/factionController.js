@@ -243,7 +243,40 @@ factionController.controller('FactionController', function($scope) {
             name: "Extend Interest",
             action: function () {
                 console.log("Extending Interest");
-                $scope.factionTurnData.doNextAction();
+                $scope.extendInterestTarget = {};
+                $scope.onExtendInterest = function() {
+                    $scope.contestData.clear();
+                    $scope.contestData.attacker = $scope.factionTurnData.faction;
+                    $scope.updateAttackerFeatures();
+                    $scope.contestData.defender = $scope.extendInterestTarget;
+                    $scope.updateDefenderFeatures();
+                    $scope.contestData.onAccept = function () {
+                        if ($scope.contestData.isVictory) { 
+                            $scope.contestData.attacker.addInterest(
+                                $scope.contestData.defender);
+                            
+                            $scope.contestData.defender.addEnemyInterest(
+                                $scope.contestData.attacker);
+
+                            $scope.log($scope.contestData.attacker.name 
+                                + " attempts to extend influence with " 
+                                + $scope.contestData.defender.name,
+                                "They do so successfully rolling " + $scope.contestData.attackerRoll
+                                + " vs. " + $scope.contestData.defenderRoll);
+                        }
+                        else {
+                            $scope.log($scope.contestData.attacker.name 
+                                + " attempts to extend influence with " 
+                                + $scope.contestData.defender.name,
+                                "They fail rolling " + $scope.contestData.attackerRoll
+                                + " vs. " + $scope.contestData.defenderRoll);
+                        }
+                        $scope.contestData.close();
+                        $scope.factionTurnData.doNextAction();
+                    }
+                    $scope.contestData.open();
+                };
+                $("#extendInterestModal").css("display", "block");
             }
         },
         {
@@ -372,6 +405,13 @@ factionController.controller('FactionController', function($scope) {
         $("#removeInterestModal").css("display", "none");
         $scope.onRemoveInterest();
     };
+
+    $scope.onExtendInterest = function () {};
+    $scope.extendInterestTarget = {};
+    $scope.extendInterest = function () {
+        $("#extendInterestModal").css("display", "none");
+        $scope.onExtendInterest();
+    }
 
     $scope.log = function (title, ...details) {
         $scope.eventLog.push({
