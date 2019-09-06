@@ -32,6 +32,23 @@ class Faction {
         this.trouble += size;
     }
 
+    /**
+     * Reduces a given problem by an amount, possibly removing it
+     * @param {{ text: string, size: number}} problem problem to modify
+     * @param {number} size number of points to reduce the problem by
+     */
+    reduceProblem(problem, change = 1) {
+        if (problem.size < change) {
+            change = problem.size
+        }
+        problem.size -= change;
+        this.trouble -= change;
+        if (problem.size <= 0) {
+            const index = this.problems.indexOf(problem);
+            this.problems.splice(index, 1);
+        }
+    }
+
     getRoll() {
         return this.getActionRoll(this.getActionDie());
     }

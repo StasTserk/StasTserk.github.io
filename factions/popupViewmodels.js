@@ -229,8 +229,9 @@ class FactionTurnViewModel {
     doNextAction() {
         if (this.externalActions.length) {
             const nextAction = this.externalActions.shift();
-            
-            nextAction.action();
+            if (nextAction) {
+                nextAction.action();
+            }
         }
     }
 }

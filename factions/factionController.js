@@ -1,3 +1,5 @@
+"use strict";
+
 var factionController = angular.module('factionController', []);
 
 factionController.controller('FactionController', function($scope) {
@@ -122,7 +124,34 @@ factionController.controller('FactionController', function($scope) {
             name: "Restore Cohesion", 
             action: function () {
                 console.log("Restoring Cohesion");
-                $scope.factionTurnData.doNextAction();
+                const faction = $scope.factionTurnData.faction;
+                const cost = Math.pow(2, faction.power);
+                if (faction.dominion < cost) {
+                    $scope.messageTitle = "Not enough dominion to restore cohesion!";
+                    $scope.messageBody = faction.name + " only has " + faction.dominion
+                        + " dominion but the action would require " + cost;
+                    $("#messageModal").css("display", "block");
+                    $scope.onMessageAccept =
+                        $scope.factionTurnData.doNextAction.bind($scope.factionTurnData);
+                } else {
+                    faction.dominion -= cost;
+                    const roll = faction.getRoll();
+                    if (faction.trouble < roll) {
+                        faction.cohesion ++;
+                        if (faction.cohesion > faction.cohesionMax) {
+                            faction.cohesion = faction.cohesionMax;
+                        }
+                        $scope.log(faction.name + " tries to restore cohesion.",
+                            "They roll " + roll + " with a trouble score of " + faction.trouble
+                            + " and succeed.");
+                    }
+                    else {
+                        $scope.log(faction.name + " tries to restore cohesion.",
+                            "They roll " + roll + " with a trouble score of " + faction.trouble
+                            + " and fail.");
+                    }
+                    $scope.factionTurnData.doNextAction();
+                }
             }
         },
         {
@@ -132,7 +161,7 @@ factionController.controller('FactionController', function($scope) {
                 const faction = $scope.factionTurnData.faction;
                 const roll = faction.getRoll();
                 $scope.messageTitle = "Build Strength Outcome";
-                $scope.onMessageAccept = $scope.factionTurnData.doNextAction;
+                $scope.onMessageAccept = $scope.factionTurnData.doNextAction.bind($scope.factionTurnData);
                 if (roll > faction.trouble) {
                     faction.dominion += Math.ceil(faction.power / 2);
                     $scope.messageBody = "Dominion successfuly generated!\nRolled " + roll + " with trouble at " + faction.trouble;
@@ -154,7 +183,7 @@ factionController.controller('FactionController', function($scope) {
                 $scope.newFeatureCost = 0;
                 $scope.newFeatureName = "";
                 $scope.newProblemName = "";
-                $scope.addFeatureAccept = $scope.factionTurnData.doNextAction;
+                $scope.addFeatureAccept = $scope.factionTurnData.doNextAction.bind($scope.factionTurnData);
                 $("#newFeatureModal").css("display", "block");
             }
         },
@@ -162,7 +191,29 @@ factionController.controller('FactionController', function($scope) {
             name: "Enact Change (Solve Problem)",
             action: function () {
                 console.log("Solving problem");
-                $scope.factionTurnData.doNextAction();
+                $scope.targetProblem = "";
+                $scope.onFixProblem = function () {
+                    const faction = $scope.factionTurnData.faction;
+                    const roll = faction.getRoll();
+                    if (roll <= faction.trouble) {
+                        // problem is reduced
+                        $scope.log(faction.name + " attempts to reduce their trouble.",
+                            "They target " + $scope.targetProblem.text,
+                            "The roll of " + roll + " comapred to their trouble of " + faction.trouble
+                            + " results in success!");
+                        faction.reduceProblem($scope.targetProblem);
+
+                    } else {
+                        $scope.log(faction.name + " attempts to reduce their trouble.",
+                        "They target " + $scope.targetProblem.text,
+                        "The roll of " + roll + " comapred to their trouble of " + faction.trouble
+                        + " results in failure!");
+                    }
+
+                    $scope.factionTurnData.doNextAction();
+                };
+                $('#solveProblemModal').css('display', 'block');
+                
             }
         }
     ];
@@ -171,8 +222,11 @@ factionController.controller('FactionController', function($scope) {
         {
             name: "Aid an Ally",
             action: function () {
-                console.log("Solving problem");
-                $scope.factionTurnData.doNextAction();
+                console.log("Helping an Ally");
+                $scope.helpAllyDominion = 0;
+                $scope.helpAllyTarget = {};
+                $scope.onHelpAlly = $scope.factionTurnData.doNextAction.bind($scope.factionTurnData);
+                $("#helpAllyModal").css("display", "block");
             }
         },
         {
@@ -204,8 +258,42 @@ factionController.controller('FactionController', function($scope) {
     $scope.dismissMessage = function () {
         $("#messageModal").css("display", "none");
         $scope.onMessageAccept();
-    }
+    };
 
+    $scope.onHelpAlly = function() {};
+    $scope.helpAllyDominion = 0;
+    $scope.helpAllyTarget = {};
+    $scope.helpAlly = function () {
+        var faction = $scope.factionTurnData.faction;
+        var roll = faction.getRoll();
+        if (faction.dominion < $scope.helpAllyDominion) {
+            $scope.messageTitle = "Invalid action!";
+            $scope.messageBody = "Faction posesses only " + faction.dominion + " dominion, while the help costs " + $scope.helpAllyDominion;
+            $scope.onMessageAccept = function () { };
+            $("#messageModal").css("display", "block");
+            return;
+        }
+        faction.dominion -= $scope.helpAllyDominion;
+        if (roll > faction.trouble) {
+            $scope.log(faction.name + " sends aid to " + $scope.helpAllyTarget.name,
+                "They roll " + roll + " with a trouble score of " + faction.trouble,
+                $scope.helpAllyDominion + " dominion is transferred");
+                $scope.helpAllyTarget.dominion += $scope.helpAllyDominion;
+        } else {
+            $scope.log(faction.name + " sends aid to " + $scope.helpAllyTarget.name,
+                "They roll " + roll + " with a trouble score of " + faction.trouble,
+                $scope.helpAllyDominion + " dominion is lost");
+        }
+        $("#helpAllyModal").css("display", "none");
+        $scope.onHelpAlly();
+    };
+
+    $scope.onFixProblem = function () { };
+    $scope.targetProblem = "";
+    $scope.fixProblem = function () {
+        $('#solveProblemModal').css('display', 'none');
+        $scope.onFixProblem();
+    };
 
     $scope.newFeatureName = "";
     $scope.newFeatureCost = 1;

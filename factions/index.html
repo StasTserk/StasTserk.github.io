@@ -67,8 +67,8 @@
                     <p class="log-subitems" ng-repeat="subItem in event.subItems">
                         {{subItem}}
                     </p>
-                    <hr/>
                 </div>
+                <hr/>
                 <button id='testModal' ng-click='openContestPopup()'>Perform simple Action</button>
                 <button id='testModal' ng-click='openFactionTurnPopup()'>Do Faction Turn</button>
             </div>
@@ -265,27 +265,12 @@
 <!-- ======== END faction turn modal ======================== -->
 <!-- ======== START message modal =========================== -->
 <div id="messageModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>{{ messageTitle }}</h2>
-            </div>
-            <div class="modal-body multiline">
-                {{ messageBody }}
-            </div>
-            <div class="modal-footer">
-                <button ng-click="dismissMessage()">OK</button>
-            </div>
-        </div>
-    </div>
-<!-- ======== END message modal ============================= -->
-<!-- ======== START message modal =========================== -->
-<div id="solveProblemModal" class="modal">
     <div class="modal-content">
         <div class="modal-header">
-            <h2>Enact Change</h2>
+            <h2>{{ messageTitle }}</h2>
         </div>
-        <div class="modal-body">
-            [ Problem to fix goes here ]
+        <div class="modal-body multiline">
+            {{ messageBody }}
         </div>
         <div class="modal-footer">
             <button ng-click="dismissMessage()">OK</button>
@@ -294,9 +279,30 @@
 </div>
 <!-- ======== END message modal ============================= -->
 <!-- ======== START message modal =========================== -->
+<div id="solveProblemModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Enact Change - {{factionTurnData.faction.name}}</h2>
+        </div>
+        <div class="modal-body">
+            <label>Target Problem:
+                <select class="form-control"
+                    data-ng-options="f.text for f in factionTurnData.faction.problems"
+                    data-ng-model="targetProblem">
+                </select>
+            </label>
+        </div>
+        <div class="modal-footer">
+            <button ng-click="fixProblem()">OK</button>
+        </div>
+    </div>
+</div>
+<!-- ======== END message modal ============================= -->
+<!-- ======== START message modal =========================== -->
 <div id="newFeatureModal" class="modal">
     <div class="modal-content">
         <div class="modal-header">
+            <h3>Enact Change - {{factionTurnData.faction.name}}</h3>
         </div>
         <div class="modal-body">
             <label>New Feature:
@@ -315,4 +321,27 @@
     </div>
 </div>
 <!-- ======== END message modal ============================= -->
+<!-- ======== START help ally modal========================== -->
+<div id="helpAllyModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Help Ally - {{factionTurnData.faction.name}}</h3>
+            </div>
+            <div class="modal-body">
+                <label>Faction to Help:
+                    <select class="form-control"
+                        data-ng-options="f.name for f in factions"
+                        data-ng-model="helpAllyTarget">
+                    </select>
+                </label>
+                <label>Dominion to Gift:
+                    <input type="number" class="form-control" ng-model="helpAllyDominion">
+                </label>
+            </div>
+            <div class="modal-footer">
+                <button ng-click="helpAlly()">OK</button>
+            </div>
+        </div>
+    </div>
+<!-- ======== END help ally modal============================ -->
 </body>
