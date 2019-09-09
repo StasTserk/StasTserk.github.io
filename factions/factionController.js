@@ -15,8 +15,23 @@ factionController.controller('FactionController', function($scope) {
         $scope.contestData.open();
         $scope.contestData.onAccept = function () {
             var result = $scope.contestData.doContest();
-            console.log(result);
-            $scope.eventLog.push(result);
+            
+            if ($scope.contestData.isVictory) {
+                $scope.outcomeData.clear();
+                $scope.outcomeData.faction = $scope.contestData.defender;
+                $scope.outcomeData.damage = Math.max( // higher power faction inflict more damage
+                    ($scope.contestData.attacker.power + 1 - $scope.contestData.defender.power),
+                    1);
+                $scope.outcomeData.onSubmit = function () {
+                    switch ($scope.outcomeData.modalChoice) {
+                        case "c": result.subItems.push("Defenders chose to take cohesion damage"); break;
+                        case "p": result.subItems.push("Defenders chose to accept a new problem"); break;
+                        default: result.subItems.push("Defenders sacrificed a feature to absorb the attack"); break;
+                    }
+                    $scope.eventLog.push(result);
+                };
+                $scope.outcomeData.open();
+            }
         }
     };
 
@@ -236,7 +251,31 @@ factionController.controller('FactionController', function($scope) {
             name: "Attack Rival",
             action: function () {
                 console.log("Attacking rival");
-                $scope.factionTurnData.doNextAction();
+                $scope.contestData.clear();
+                $scope.contestData.attacker = $scope.factionTurnData.faction;
+                $scope.updateAttackerFeatures();
+                $scope.contestData.open();
+                $scope.contestData.onAccept = function () {
+                    var result = $scope.contestData.doContest();
+
+                    if ($scope.contestData.isVictory) {
+                        $scope.outcomeData.clear();
+                        $scope.outcomeData.faction = $scope.contestData.defender;
+                        $scope.outcomeData.damage = Math.max( // higher power faction inflict more damage
+                            ($scope.contestData.attacker.power + 1 - $scope.contestData.defender.power),
+                            1);
+                        $scope.outcomeData.onSubmit = function () {
+                            switch ($scope.outcomeData.modalChoice) {
+                                case "c": result.subItems.push("Defenders chose to take cohesion damage"); break;
+                                case "p": result.subItems.push("Defenders chose to accept a new problem"); break;
+                                default: result.subItems.push("Defenders sacrificed a feature to absorb the attack"); break;
+                            }
+                            $scope.eventLog.push(result);
+                            $scope.factionTurnData.doNextAction();
+                        };
+                        $scope.outcomeData.open();
+                    }
+                }
             }
         },
         {
@@ -411,7 +450,9 @@ factionController.controller('FactionController', function($scope) {
     $scope.extendInterest = function () {
         $("#extendInterestModal").css("display", "none");
         $scope.onExtendInterest();
-    }
+    };
+
+    $scope.outcomeData = new ContestOutcomeViewModel();
 
     $scope.log = function (title, ...details) {
         $scope.eventLog.push({

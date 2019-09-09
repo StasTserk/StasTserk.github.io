@@ -242,3 +242,44 @@ class FactionTurnViewModel {
         }
     }
 }
+
+class ContestOutcomeViewModel {
+    constructor() {
+        this.clear();
+    }
+
+    clear() {
+        this.faction = {};
+        this.damage = 1;
+
+        this.modalChoice = "c";
+
+        this.problem = "";
+        this.feature = "";
+    }
+
+    onSubmit = function () { };
+
+    open() {
+        $("#outcomeModal").css("display", "block");
+    }
+    
+    close() {
+        $("#outcomeModal").css("display", "none");
+    }
+
+    accept() {
+        if (this.modalChoice === "c") {
+            // take cohesion damage
+            this.faction.cohesion -= this.damage;
+        } else if (this.modalChoice === "p") {
+            // gain a new problem related to the attack
+            this.faction.addProblem(this.problem, this.damage);
+        } else {
+            // sacrifice a feature
+            this.faction.features.splice(this.faction.features.indexOf(this.feature), 1);
+        }
+        this.close();
+        this.onSubmit();
+    }
+}

@@ -366,7 +366,7 @@
     </div>
 </div>
 <!-- ======== END remove influence modal ==================== -->
-<!-- ======== START hremove influence modal ================= -->
+<!-- ======== START remove influence modal ================= -->
 <div id="extendInterestModal" class="modal">
     <div class="modal-content">
         <div class="modal-header">
@@ -386,4 +386,34 @@
     </div>
 </div>
 <!-- ======== END remove influence modal ==================== -->
+<!-- ======== START resolve attack outcome modal ============ -->
+<div id="outcomeModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Attack Rival Outcome - {{factionTurnData.faction.name}}</h3>
+        </div>
+        <div class="modal-body">
+            <div class="radio"><input type="radio" ng-model="outcomeData.modalChoice" value="c">Take {{ outcomeData.damage }} Cohesion Damage</div>
+            <div class="radio"><input type="radio" ng-model="outcomeData.modalChoice" value="p">Gain {{ outcomeData.damage }} Point Problem</div>
+            <div class="radio"><input type="radio" ng-model="outcomeData.modalChoice" value="s">Sacrifice Feature</div>
+            <div ng-show="outcomeData.modalChoice == 'p'">
+                <label>Problem Name:
+                    <input class="form-control" type="text" ng-model="outcomeData.problem">
+                </label>
+            </div>
+            <div ng-show="outcomeData.modalChoice == 's'">
+                Feature Lost:
+                <select
+                    class="form-control"
+                    data-ng-options="f for f in outcomeData.faction.features"
+                    data-ng-model="outcomeData.feature">
+                </select>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button ng-click="outcomeData.accept()">OK</button>
+        </div>
+    </div>
+</div>
+<!-- ======== END resolve attack outcome modal ============== -->
 </body>
