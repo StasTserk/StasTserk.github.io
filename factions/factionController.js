@@ -31,6 +31,8 @@ factionController.controller('FactionController', function($scope) {
                     $scope.eventLog.push(result);
                 };
                 $scope.outcomeData.open();
+            } else {
+                $scope.eventLog.push(result);
             }
         }
     };
@@ -144,34 +146,6 @@ factionController.controller('FactionController', function($scope) {
         $scope.factionTurnData.startFactionTurn();
     };
 
-    $scope.saveData = function() {
-        localStorage.setItem("factions",
-            JSON.stringify($scope.factions));
-        localStorage.setItem("log",
-            JSON.stringify($scope.eventLog));
-    };
-
-    $scope.loadData = function () {
-        var storedFactions = localStorage.getItem("factions");
-        var storedLog = localStorage.getItem("log");
-        if (!storedFactions) {
-            return;
-        } else {
-            this.factions = LoadData(JSON.parse(storedFactions));
-            this.eventLog = JSON.parse(storedLog);
-        }
-    };
-
-    /**
-     * Converts parsed json to faction objects
-     * @param {Array} parsedFactions objects parsed from json
-     * @returns {Faction[]} array of faction objects from parsed values
-     */
-    function LoadData(parsedFactions) {
-        return parsedFactions.map((f) => new Faction().fromJson(f));
-    };
-
-    $scope.loadData();
 
     // ============================================================
     //            faction turn action delegates
@@ -312,6 +286,8 @@ factionController.controller('FactionController', function($scope) {
                             $scope.factionTurnData.doNextAction();
                         };
                         $scope.outcomeData.open();
+                    } else {
+                        $scope.eventLog.push(result);
                     }
                 }
             }
@@ -402,6 +378,9 @@ factionController.controller('FactionController', function($scope) {
         },
     ];
 
+
+    // ============================================================
+    //            minor helper/info popup funcitnality
     $scope.onMessageAccept = function () { };
     $scope.messageTitle = "Message Form";
     $scope.messageBody = "Message Body";
@@ -492,12 +471,40 @@ factionController.controller('FactionController', function($scope) {
 
     $scope.outcomeData = new ContestOutcomeViewModel();
 
+    // ==========================================================
+    //           logging related functionality
     $scope.log = function (title, ...details) {
         $scope.eventLog.push({
             headerText: title,
             subItems: details
         });
     };
+    $scope.deleteLog = function(index) {
+        $scope.eventLog.splice(index, 1);
+    }
+
+
+    // ==========================================================
+    //           load and save related functionality
+    $scope.saveData = function() {
+        localStorage.setItem("factions",
+            JSON.stringify($scope.factions));
+        localStorage.setItem("log",
+            JSON.stringify($scope.eventLog));
+    };
+
+    $scope.loadData = function () {
+        var storedFactions = localStorage.getItem("factions");
+        var storedLog = localStorage.getItem("log") || [];
+        if (!storedFactions) {
+            return;
+        } else {
+            this.factions = LoadData(JSON.parse(storedFactions));
+            this.eventLog = JSON.parse(storedLog);
+        }
+    };
+
+    $scope.loadData();
 
     $scope.import = function () {
         $scope.importLabel = "Import Data";
@@ -506,8 +513,8 @@ factionController.controller('FactionController', function($scope) {
         $scope.importCallback = function () {
             var data = JSON.parse($scope.importText);
             if (data) {
-                $scope.factions = LoadData(data.factions);
-                $scope.eventLog = data.eventLog;
+                $scope.factions = LoadData(data.factions || []);
+                $scope.eventLog = data.eventLog || [];
             }
         };
     };
@@ -516,7 +523,7 @@ factionController.controller('FactionController', function($scope) {
         $scope.importLabel = "Export Data";
         $scope.importText = JSON.stringify({
             factions: $scope.factions,
-            log: $scope.eventLog
+            log: $scope.eventLog || []
         });
 
         $("#exportModal").css("display", "block");
@@ -535,3 +542,12 @@ factionController.controller('FactionController', function($scope) {
         $("#exportModal").css("display", "none");
     }
 });
+
+/**
+ * Converts parsed json to faction objects
+ * @param {Array} parsedFactions objects parsed from json
+ * @returns {Faction[]} array of faction objects from parsed values
+ */
+function LoadData(parsedFactions) {
+    return parsedFactions.map((f) => new Faction().fromJson(f));
+};

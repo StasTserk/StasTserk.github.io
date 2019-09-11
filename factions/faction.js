@@ -6,10 +6,12 @@ class Faction {
         this.cohesionMax = 1;
         this.trouble = 0;
 
+        this.description = "";
+        
         this.emblemClass = "em-shield";
-        this.emblemSymbolClass = "sm-tree";
+        this.symbolClass = "sm-tree";
         this.emblemColour = "em-black";
-        this.emblemSymbolColour = "em-white";
+        this.symbolColour = "em-white";
 
         this.dominion = 0;
         this.features = [ "A useful feature" ];
@@ -25,16 +27,17 @@ class Faction {
         this.cohesionMax = f.cohesionMax;
         this.trouble = f.trouble;
         this.emblemClass = f.emblemClass;
-        this.emblemSymbolClass = f.emblemSymbolClass;
+        this.symbolClass = f.symbolClass;
         this.emblemColour = f.emblemColour;
-        this.emblemSymbolColour = f.emblemSymbolColour;
+        this.symbolColour = f.symbolColour;
 
         this.dominion = 0;
         this.features = f.features;
-        this.intereset = f.interest;
+        this.interest = f.interest;
         this.enemyInterest = f.enemyInterest;
         this.problems = f.problems;
         this.features = f.features;
+        this.description = f.description;
 
         return this;
     }

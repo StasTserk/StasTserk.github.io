@@ -74,6 +74,7 @@
             </h3>
             <div class='well'>
                 <div ng-repeat="event in eventLog">
+                    <span class="close" ng-click="deleteLog($index)">&times;</span>
                     <b>{{event.headerText}}</b>
                     <p class="log-subitems" ng-repeat="subItem in event.subItems">
                         {{subItem}}

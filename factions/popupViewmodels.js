@@ -80,7 +80,6 @@ class NewFactionPopupViewmodel {
     }
 
     cycleEmblem() {
-        console.log("New emblem class is..." + emblemClasses[emClass])
         this.emblemClass = emblemClasses[emClass];
         emClass ++;
         emClass = emClass % emblemClasses.length;
