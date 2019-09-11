@@ -18,6 +18,27 @@ class Faction {
         this.enemyInterest = [];
     }
 
+    fromJson(f) {
+        this.name = f.name;
+        this.power = f.power;
+        this.cohesion = f.cohesion;
+        this.cohesionMax = f.cohesionMax;
+        this.trouble = f.trouble;
+        this.emblemClass = f.emblemClass;
+        this.emblemSymbolClass = f.emblemSymbolClass;
+        this.emblemColour = f.emblemColour;
+        this.emblemSymbolColour = f.emblemSymbolColour;
+
+        this.dominion = 0;
+        this.features = f.features;
+        this.intereset = f.interest;
+        this.enemyInterest = f.enemyInterest;
+        this.problems = f.problems;
+        this.features = f.features;
+
+        return this;
+    }
+
     /**
      * Adds a {size} sized problem called {text}. Adds to problem if it already exists
      * @param {string} text 

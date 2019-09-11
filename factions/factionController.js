@@ -149,7 +149,7 @@ factionController.controller('FactionController', function($scope) {
             JSON.stringify($scope.factions));
         localStorage.setItem("log",
             JSON.stringify($scope.eventLog));
-    }
+    };
 
     $scope.loadData = function () {
         var storedFactions = localStorage.getItem("factions");
@@ -157,10 +157,21 @@ factionController.controller('FactionController', function($scope) {
         if (!storedFactions) {
             return;
         } else {
-            this.factions = JSON.parse(storedFactions);
+            this.factions = LoadData(JSON.parse(storedFactions));
             this.eventLog = JSON.parse(storedLog);
         }
-    }
+    };
+
+    /**
+     * Converts parsed json to faction objects
+     * @param {Array} parsedFactions objects parsed from json
+     * @returns {Faction[]} array of faction objects from parsed values
+     */
+    function LoadData(parsedFactions) {
+        return parsedFactions.map((f) => new Faction().fromJson(f));
+    };
+
+    $scope.loadData();
 
     // ============================================================
     //            faction turn action delegates
@@ -490,12 +501,12 @@ factionController.controller('FactionController', function($scope) {
 
     $scope.import = function () {
         $scope.importLabel = "Import Data";
-        $scope.importData = "";
+        $scope.importText = "";
         $("#exportModal").css("display", "block");
-        $scope.acceptImport = function () {
+        $scope.importCallback = function () {
             var data = JSON.parse($scope.importText);
             if (data) {
-                $scope.factions = data.factions;
+                $scope.factions = LoadData(data.factions);
                 $scope.eventLog = data.eventLog;
             }
         };
@@ -509,7 +520,7 @@ factionController.controller('FactionController', function($scope) {
         });
 
         $("#exportModal").css("display", "block");
-        $scope.acceptImport = function () { };
+        $scope.importCallback = function () { };
     };
 
     $scope.importLabel = "";
@@ -519,6 +530,7 @@ factionController.controller('FactionController', function($scope) {
         $("#exportModal").css("display", "none");
         $scope.importCallback();
     };
+
     $scope.closeExportModal = function () {
         $("#exportModal").css("display", "none");
     }
