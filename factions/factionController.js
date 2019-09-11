@@ -107,6 +107,9 @@ factionController.controller('FactionController', function($scope) {
         d.symbolClass = f.symbolClass;
         d.symbolColour = f.symbolColour;
 
+        d.interest = f.interest;
+        d.enemyInterest = f.enemyInterest;
+
         d.acceptLabel = "Update Faction";
         $scope.newFactionData.open();
         d.onAccept = function () {

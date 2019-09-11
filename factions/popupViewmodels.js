@@ -62,6 +62,9 @@ class NewFactionPopupViewmodel {
         this.symbolClass = "sm-bolt";
         this.symbolColour = "em-white";
 
+        this.interest = [];
+        this.enemyInterest = [];
+
         emColour = 1;
         smColour = 2;
         emClass = 1;
@@ -117,6 +120,9 @@ class NewFactionPopupViewmodel {
         faction.emblemClass = this.emblemClass;
         faction.symbolColour = this.symbolColour;
         faction.symbolClass = this.symbolClass;
+
+        faction.interest = this.interest;
+        faction.enemyInterest = this.enemyInterest;
 
         faction.features = this.features;
         for(var i in this.problems) {
