@@ -86,6 +86,10 @@
     background-position-y: -256px;
 }
 
+.em-gold {
+    background-position-y: -320px;
+}
+
 .faction-symbol {
     background-image: url("sprites-symbols.png");
     height: 64px;
@@ -123,4 +127,12 @@
 
 .sm-moon {
     background-position-x: -448px;
+}
+
+.sm-hand {
+    background-position-x: -512px;
+}
+
+.sm-cup {
+    background-position-x: -576px;
 }

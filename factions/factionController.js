@@ -115,6 +115,13 @@ factionController.controller('FactionController', function($scope) {
         };
     };
 
+    /** 
+     * Binding for delete faction span
+     * @param f faction to delete.
+     */
+    $scope.deleteFaction = function(f) {
+        $scope.factions.splice($scope.factions.indexOf(f), 1);
+    }
     // ===========================================================
     //          faction turn functionality
     $scope.factionTurnPopup = $("#turnModal");

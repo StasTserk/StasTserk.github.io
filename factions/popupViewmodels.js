@@ -6,7 +6,8 @@ const colourClasses = [
     "em-black",
     "em-red",
     "em-green",
-    "em-blue"
+    "em-blue",
+    "em-gold"
 ];
 
 let emClass = 1;
@@ -28,6 +29,8 @@ const symbolClasses = [
     "sm-book",
     "sm-tree",
     "sm-moon",
+    "sm-hand",
+    "sm-cup"
 ]
 
 class NewFactionPopupViewmodel {
