@@ -34,17 +34,17 @@ class Faction {
     }
 
     addInterest(faction) {
-        const entry = this.interest.find(i => i.target == faction)
+        const entry = this.interest.find(i => i.target == faction.name)
         if (entry) {
             entry.amount ++;
         }
         else {
-            this.interest.push({ target: faction, amount: 1});
+            this.interest.push({ target: faction.name, amount: 1});
         }
     }
 
     removeInterest(faction) {
-        const entry = this.interest.find(i => i.target == faction)
+        const entry = this.interest.find(i => i.target == faction.name)
         if (entry) {
             entry.amount --;
             if (entry.amount <= 0) {
@@ -54,17 +54,17 @@ class Faction {
     }
 
     addEnemyInterest(faction) {
-        const entry = this.enemyInterest.find(i => i.target == faction)
+        const entry = this.enemyInterest.find(i => i.target == faction.name)
         if (entry) {
             entry.amount ++;
         }
         else {
-            this.enemyInterest.push({ target: faction, amount: 1});
+            this.enemyInterest.push({ target: faction.name, amount: 1});
         }
     }
 
     removeEnemyInterest(faction) {
-        const entry = this.enemyInterest.find(i => i.target == faction)
+        const entry = this.enemyInterest.find(i => i.target == faction.name)
         if (entry) {
             entry.amount --;
             if (entry.amount <= 0) {

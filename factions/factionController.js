@@ -141,6 +141,23 @@ factionController.controller('FactionController', function($scope) {
         $scope.factionTurnData.startFactionTurn();
     };
 
+    $scope.saveData = function() {
+        localStorage.setItem("factions",
+            JSON.stringify($scope.factions));
+        localStorage.setItem("log",
+            JSON.stringify($scope.eventLog));
+    }
+
+    $scope.loadData = function () {
+        var storedFactions = localStorage.getItem("factions");
+        var storedLog = localStorage.getItem("log");
+        if (!storedFactions) {
+            return;
+        } else {
+            this.factions = JSON.parse(storedFactions);
+            this.eventLog = JSON.parse(storedLog);
+        }
+    }
 
     // ============================================================
     //            faction turn action delegates
@@ -338,7 +355,7 @@ factionController.controller('FactionController', function($scope) {
                     $scope.contestData.clear();
                     $scope.contestData.attacker = $scope.factionTurnData.faction;
                     $scope.updateAttackerFeatures();
-                    $scope.contestData.defender = $scope.removeInterestTarget.target;
+                    $scope.contestData.defender = $scope.factions.find((f) => f.name === $scope.removeInterestTarget.target);
                     $scope.updateDefenderFeatures();
                     $scope.contestData.onAccept = function () {
                         if ($scope.contestData.isVictory) { 
@@ -466,5 +483,40 @@ factionController.controller('FactionController', function($scope) {
             headerText: title,
             subItems: details
         });
+    };
+
+    $scope.import = function () {
+        $scope.importLabel = "Import Data";
+        $scope.importData = "";
+        $("#exportModal").css("display", "block");
+        $scope.acceptImport = function () {
+            var data = JSON.parse($scope.importText);
+            if (data) {
+                $scope.factions = data.factions;
+                $scope.eventLog = data.eventLog;
+            }
+        };
+    };
+
+    $scope.export = function () {
+        $scope.importLabel = "Export Data";
+        $scope.importText = JSON.stringify({
+            factions: $scope.factions,
+            log: $scope.eventLog
+        });
+
+        $("#exportModal").css("display", "block");
+        $scope.acceptImport = function () { };
+    };
+
+    $scope.importLabel = "";
+    $scope.importText = "";
+    $scope.importCallback = function () {};
+    $scope.acceptImport = function () {
+        $("#exportModal").css("display", "none");
+        $scope.importCallback();
+    };
+    $scope.closeExportModal = function () {
+        $("#exportModal").css("display", "none");
     }
 });
