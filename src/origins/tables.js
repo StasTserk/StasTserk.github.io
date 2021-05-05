@@ -42,6 +42,7 @@ var Table_Alignment = [
         }
     }
 ];
+
 var Table_Class = [
     {
         roll: 1,
@@ -116,6 +117,7 @@ var Table_Class = [
         }
     }
 ];
+
 var Table_Occupation = [
     {
         roll: 1,
@@ -214,6 +216,7 @@ var Table_Occupation = [
         }
     }
 ];
+
 var Table_Race = [
     {
         roll: 1,
@@ -276,6 +279,7 @@ var Table_Race = [
         }
     }
 ];
+
 var Table_Relationship = [
     {
         roll: 3,
@@ -296,6 +300,7 @@ var Table_Relationship = [
         }
     }
 ];
+
 var Table_Status = [
     {
         roll: 3,
@@ -305,7 +310,7 @@ var Table_Status = [
     },
     {
         roll: 4,
-        text: function () {
+        text: function () { 
             return "Missing/Unknown";
         }
     },
@@ -317,13 +322,13 @@ var Table_Status = [
     },
     {
         roll: 9,
-        text: function () {
+        text: function () { 
             return "Alive and well";
         }
     },
     {
         roll: 13,
-        text: function () {
+        text: function () { 
             return "Alive and quite successful";
         }
     },
@@ -335,11 +340,12 @@ var Table_Status = [
     },
     {
         roll: 18,
-        text: function () {
+        text: function () { 
             return "Alive and famous";
         }
     }
 ];
+
 var Table_CauseOfDeath = [
     {
         roll: 1,
@@ -380,20 +386,22 @@ var Table_CauseOfDeath = [
         }
     }
 ];
+
 var Table_Parents = [
     {
         roll: 1,
         text: function () {
-            return "You know who your parents are/were.";
+            return "You know who your parents are/were."
         }
     },
     {
         roll: 96,
         text: function () {
-            return "You do not know who your parents were.";
+            return "You do not know who your parents were."
         }
     }
 ];
+
 var Table_HalfElfParents = [
     {
         roll: 1,
@@ -420,6 +428,7 @@ var Table_HalfElfParents = [
         }
     }
 ];
+
 var Table_HalfOrcParents = [
     {
         roll: 1,
@@ -446,6 +455,7 @@ var Table_HalfOrcParents = [
         }
     }
 ];
+
 var Table_TieflingParents = [
     {
         roll: 1,
@@ -472,7 +482,9 @@ var Table_TieflingParents = [
         }
     }
 ];
+
 var Table_Birthplace = [
+
     {
         roll: 1,
         text: function () {
@@ -572,7 +584,8 @@ var Table_Birthplace = [
     {
         roll: 92,
         text: function () {
-            return option(["in a prison of a secret organization"], "in the headquarters of a secret organization");
+            return option(["in a prison of a secret organization"],
+                "in the headquarters of a secret organization");
         }
     },
     {
@@ -622,26 +635,28 @@ var Table_Birthplace = [
         }
     },
 ];
+
 var Table_BirthOrder = [
     {
         roll: 2,
-        text: function () {
+        text: function() {
             return "Twin, triplet of quadruplet";
         }
     },
     {
         roll: 3,
-        text: function () {
+        text: function() {
             return "Older";
         }
     },
     {
         roll: 8,
-        text: function () {
+        text: function() {
             return "Younger";
         }
     }
 ];
+
 var Table_Family = [
     {
         roll: 1,
@@ -710,6 +725,7 @@ var Table_Family = [
         }
     }
 ];
+
 var Table_AbsentParent = [
     {
         roll: 1,
@@ -736,6 +752,7 @@ var Table_AbsentParent = [
         }
     }
 ];
+
 var Table_FamilyLifestyle = [
     {
         roll: 3,
@@ -780,6 +797,7 @@ var Table_FamilyLifestyle = [
         }
     }
 ];
+
 var Table_ChildhoodHome = [
     {
         roll: -50,
@@ -836,6 +854,7 @@ var Table_ChildhoodHome = [
         }
     }
 ];
+
 var Table_ChildhoodMemories = [
     {
         roll: -5,
@@ -880,6 +899,7 @@ var Table_ChildhoodMemories = [
         }
     }
 ];
+
 var Table_LifeEvents = [
     {
         roll: 1,
@@ -914,7 +934,7 @@ var Table_LifeEvents = [
     {
         roll: 51,
         text: function () {
-            return "You spent time working a job relating to your background and earned " + (d(6) + d(6)) + "gp.";
+            return "You spent time working a job relating to your background and earned " + (d(6)+d(6)) + "gp.";
         }
     },
     {
@@ -960,6 +980,7 @@ var Table_LifeEvents = [
         }
     }
 ];
+
 var Table_Adventures = [
     {
         roll: 1,
@@ -982,8 +1003,8 @@ var Table_Adventures = [
     {
         roll: 31,
         text: function () {
-            return "You contracted a disease while exploring a filthy warren. You recovered from the disease but you have " +
-                option(["a persistent cough.", "pickmarks on your skin.", "prematurely gray hair."]);
+            return "You contracted a disease while exploring a filthy warren. You recovered from the disease but you have " + 
+            option(["a persistent cough.", "pickmarks on your skin.", "prematurely gray hair."]);
         }
     },
     {
@@ -1029,6 +1050,7 @@ var Table_Adventures = [
         }
     }
 ];
+
 var Table_ArcaneMatters = [
     {
         roll: 1,
@@ -1091,6 +1113,7 @@ var Table_ArcaneMatters = [
         }
     }
 ];
+
 var Table_Boons = [
     {
         roll: 1,
@@ -1153,6 +1176,7 @@ var Table_Boons = [
         }
     }
 ];
+
 var Table_Crime = [
     {
         roll: 1,
@@ -1203,6 +1227,7 @@ var Table_Crime = [
         }
     }
 ];
+
 var Table_Punishment = [
     {
         roll: 1,
@@ -1226,10 +1251,11 @@ var Table_Punishment = [
         roll: 9,
         text: function () {
             return "You were caught and convicted. You spent time " + option(["in jail", "chained to an oar", "performing hard labor"]) + ". You served a sentence of " +
-                d(4) + " years or succeeded in escaping after that much time.";
+            d(4) + " years or succeeded in escaping after that much time.";
         }
     }
 ];
+
 var Table_SupernaturalEvents = [
     {
         roll: 1,
@@ -1246,7 +1272,7 @@ var Table_SupernaturalEvents = [
     {
         roll: 11,
         text: function () {
-            return "A devil tempted you. Make a DC 10 Wisdom saving throw. On a failed save your alignment shifts one step towards evil (if not evil already), and you start the game with an additional " + (d(20) + 50) + " gp";
+            return "A devil tempted you. Make a DC 10 Wisdom saving throw. On a failed save your alignment shifts one step towards evil (if not evil already), and you start the game with an additional " + (d(20)+50) + " gp";
         }
     },
     {
@@ -1323,6 +1349,7 @@ var Table_SupernaturalEvents = [
         }
     }
 ];
+
 var Table_Tragedies = [
     {
         roll: 1,
@@ -1390,127 +1417,130 @@ var Table_Tragedies = [
             var causeOfDeathRoll = d(12);
             var confirmationRoll = causeOfDeathRoll == 2 ? d(12) : 12;
             var result = "A current or prospective romantic partner of yours died. Cause of death: " + GetTableResult(causeOfDeathRoll, Table_CauseOfDeath);
-            if (confirmationRoll == 1) {
-                result = result + ". You were " + option(["directly", "indirectly"]) + " responsible.";
+            if (confirmationRoll == 1)
+            {
+                result = result + ". You were " + option(["directly", "indirectly"]) + " responsible."
             }
             return result;
         }
     }
 ];
+
 var Table_War = [
     {
         roll: 1,
-        text: function () {
+        text: function() {
             return "You were knocked out and left for dead. you woke up hours later with no recollection of the battle.";
         }
     },
     {
         roll: 2,
-        text: function () {
+        text: function() {
             return "You were badly injured in the fight, and you still bear the awful scars of those wounds.";
         }
     },
     {
         roll: 4,
-        text: function () {
+        text: function() {
             return "You ran away from battle and still feel the shame of your cowardice.";
         }
     },
     {
         roll: 5,
-        text: function () {
+        text: function() {
             return "You suffered only minor injuries, and the wounds all healed without leaving scars.";
         }
     },
     {
         roll: 8,
-        text: function () {
+        text: function() {
             return "You survived the battle, but you suffer from terrible nightmares in which you relive the experience.";
         }
     },
     {
         roll: 10,
-        text: function () {
+        text: function() {
             return "You escaped the battle unscathed, though many of your friends were injured or lost.";
         }
     },
     {
         roll: 12,
-        text: function () {
+        text: function() {
             return "You acquitted yourself well in battle and are remembered as a hero. You might have recieved a medal for your bravery.";
         }
     }
 ];
+
 var Table_WierdStuff = [
     {
         roll: 1,
-        text: function () {
+        text: function() {
             return "You were turned into a toad and remained in that form for " + d(4) + " weeks.";
         }
     },
     {
         roll: 2,
-        text: function () {
+        text: function() {
             return "You were petrified and remained a stone statue for a time until someone freed you.";
         }
     },
     {
         roll: 3,
-        text: function () {
+        text: function() {
             return "You were enslaved by a hag, a satyr, or some other being and lived in that creature's thrall for " + d(6) + "years.";
         }
     },
     {
         roll: 4,
-        text: function () {
+        text: function() {
             return "A dragon held you as a prisoner for " + d(4) + " months until adventurers killed it.";
         }
     },
     {
         roll: 5,
-        text: function () {
+        text: function() {
             return "You were taken captive by " + option(["drow", "kuo-toa", "quaggoths"]) + ". You lived as a slave in the Underdark until you escaped.";
         }
     },
     {
         roll: 6,
-        text: function () {
+        text: function() {
             return "You served a powerful adventurer as a hireling. You have only recently left that service.";
         }
     },
     {
         roll: 7,
-        text: function () {
+        text: function() {
             return "You went insane for " + d(6) + " years and recently regained your sanity. A tic or some other odd behaviour might linger.";
         }
     },
     {
         roll: 8,
-        text: function () {
+        text: function() {
             return "A lover of yours was secretly a silver dragon.";
         }
     },
     {
         roll: 9,
-        text: function () {
+        text: function() {
             return "You were captured by a cult and nearly sacrificed on an altar to the fould being the cultists served. You escaped but fear they will find you.";
         }
     },
     {
         roll: 10,
-        text: function () {
+        text: function() {
             return "You met " + option(["a demigod", "an archdevil", "an archfey", "a demon lord", "a titan"]) + "and lived to tell the tale.";
         }
     },
     {
         roll: 11,
-        text: function () {
+        text: function() {
             return "You were swallowed by a giant fish and spent a month it its gullet before you escaped.";
         }
     },
     {
         roll: 12,
-        text: function () {
+        text: function() {
             return "A powerful being granted you a wish, but you sqandered it on something frivolous.";
         }
     }

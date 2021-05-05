@@ -1,0 +1,25 @@
+#participants, #initiative {
+    width: 90%;
+}
+
+body {
+    min-width: 410px;
+}
+
+ul {
+    padding: 0;
+    list-style-type: none;
+}
+
+#activePlayerHeading {
+    height: 51px;
+    font-weight: bold;
+}
+
+.input-group {
+    padding-bottom: 5px;
+}
+
+#initiativeDiv {
+    display: none;
+}

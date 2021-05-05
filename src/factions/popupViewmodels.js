@@ -1,6 +1,7 @@
-var emColour = 1;
-var smColour = 2;
-var colourClasses = [
+let emColour = 1;
+let smColour = 2;
+
+const colourClasses = [
     "em-white",
     "em-black",
     "em-red",
@@ -8,16 +9,18 @@ var colourClasses = [
     "em-blue",
     "em-gold"
 ];
-var emClass = 1;
-var emblemClasses = [
+
+let emClass = 1;
+const emblemClasses = [
     "em-circle",
     "em-shield",
     "em-banner",
     "em-box",
     "em-hex"
 ];
-var smClass = 1;
-var symbolClasses = [
+
+let smClass = 1;
+const symbolClasses = [
     "sm-bolt",
     "sm-mask",
     "sm-eye",
@@ -28,102 +31,126 @@ var symbolClasses = [
     "sm-moon",
     "sm-hand",
     "sm-cup"
-];
-var NewFactionPopupViewmodel = /** @class */ (function () {
-    function NewFactionPopupViewmodel() {
+]
+
+class NewFactionPopupViewmodel {
+    constructor() {
         this.clear();
     }
-    NewFactionPopupViewmodel.prototype.open = function () {
+
+    open() {
         $('#factionModal').css('display', 'block');
-    };
-    NewFactionPopupViewmodel.prototype.close = function () {
+    }
+
+    close() {
         $('#factionModal').css('display', 'none');
-    };
-    NewFactionPopupViewmodel.prototype.clear = function () {
+    }
+
+    clear() {
         this.name = "";
         this.description = "";
         this.power = 1;
         this.dominion = 0;
+
         this.features = [];
         this.problems = [];
         this.acceptLabel = "Add faction";
-        this.onAccept = function () { };
+        this.onAccept = function () {};
+
         this.emblemClass = "em-circle";
         this.emblemColour = "em-black";
         this.symbolClass = "sm-bolt";
         this.symbolColour = "em-white";
+
         this.interest = [];
         this.enemyInterest = [];
+
         emColour = 1;
         smColour = 2;
         emClass = 1;
         smClass = 1;
-    };
-    NewFactionPopupViewmodel.prototype.addFeature = function () {
+    }
+
+    addFeature() {
         this.features.push("");
-    };
-    NewFactionPopupViewmodel.prototype.addProblem = function () {
+    }
+
+    addProblem() {
         this.problems.push({ name: "", size: 0 });
-    };
-    NewFactionPopupViewmodel.prototype.cycleEmblem = function () {
+    }
+
+    cycleEmblem() {
         this.emblemClass = emblemClasses[emClass];
-        emClass++;
+        emClass ++;
         emClass = emClass % emblemClasses.length;
-    };
-    NewFactionPopupViewmodel.prototype.cycleEmblemColour = function () {
+    }
+
+    cycleEmblemColour() {
         this.emblemColour = colourClasses[emColour];
-        emColour++;
+        emColour ++;
         emColour = emColour % colourClasses.length;
-    };
-    NewFactionPopupViewmodel.prototype.cycleSymbol = function () {
+    }
+
+    cycleSymbol() {
         this.symbolClass = symbolClasses[smClass];
-        smClass++;
+        smClass ++;
         smClass = smClass % symbolClasses.length;
-    };
-    NewFactionPopupViewmodel.prototype.cycleSymbolColour = function () {
+    }
+
+    cycleSymbolColour() {
         this.symbolColour = colourClasses[smColour];
-        smColour++;
+        smColour ++;
         smColour = smColour % colourClasses.length;
-    };
-    NewFactionPopupViewmodel.prototype.submit = function () {
-        this.features = this.features.filter(function (feature) { return feature.length > 0; });
-        this.problems = this.problems.filter(function (problem) { return problem.text.length > 0 && problem.size > 0; });
-        var faction = new Faction();
+    }
+
+    submit() {
+        this.features = this.features.filter(feature => feature.length > 0);
+        this.problems = this.problems.filter(problem => problem.text.length > 0 && problem.size > 0);
+
+        let faction = new Faction();
         faction.power = this.power;
         faction.name = this.name;
         faction.description = this.description;
         faction.cohesion = this.power;
         faction.cohesionMax = this.power;
         faction.dominion = this.dominion;
+
         faction.emblemColour = this.emblemColour;
         faction.emblemClass = this.emblemClass;
         faction.symbolColour = this.symbolColour;
         faction.symbolClass = this.symbolClass;
+
         faction.interest = this.interest;
         faction.enemyInterest = this.enemyInterest;
+
         faction.features = this.features;
-        for (var i in this.problems) {
+        for(var i in this.problems) {
             faction.addProblem(this.problems[i].text, this.problems[i].size);
         }
+
         console.log(faction);
+
         return faction;
-    };
-    return NewFactionPopupViewmodel;
-}());
-var ContestPopupViewmodel = /** @class */ (function () {
-    function ContestPopupViewmodel() {
+    }
+}
+
+class ContestPopupViewmodel {
+    constructor() {
         this.clear();
         this.attackerFeatures = [];
         this.defenderFeatures = [];
-        this.onAccept = function () { };
+        this.onAccept = function () {};
     }
-    ContestPopupViewmodel.prototype.open = function () {
+
+    open() {
         $("#contestModal").css('display', 'block');
-    };
-    ContestPopupViewmodel.prototype.close = function () {
+    }
+
+    close() {
         $("#contestModal").css('display', 'none');
-    };
-    ContestPopupViewmodel.prototype.clear = function () {
+    }
+
+    clear() {
         this.attacker = "";
         this.attackerFeature = "";
         this.attackerMagical = false;
@@ -131,6 +158,7 @@ var ContestPopupViewmodel = /** @class */ (function () {
         this.attackerQuality = false;
         this.attackerImprobable = false;
         this.attackerImpossible = false;
+
         this.defender = "";
         this.defenderFeature = "";
         this.defenderMagical = false;
@@ -139,19 +167,41 @@ var ContestPopupViewmodel = /** @class */ (function () {
         this.defenderImprobable = false;
         this.defenderImpossible = false;
         this.defenderPoorFit = false;
+
         this.attackerRoll = 0;
         this.defenderRoll = 0;
         this.isVictory = false;
-    };
-    ContestPopupViewmodel.prototype.doContest = function () {
-        var roll1 = this.attacker.getContestRoll(this.attackerScale, this.attackerQuality, this.attackerMagical, this.attackerImprobable, this.attackerImpossible);
-        var roll2 = this.defender.getContestRoll(this.defenderScale, this.defenderQuality, this.defenderMagical, this.defenderImprobable, this.defenderImpossible);
+    }
+
+    doContest() {
+        var roll1 = this.attacker.getContestRoll(
+            this.attackerScale,
+            this.attackerQuality,
+            this.attackerMagical,
+            this.attackerImprobable,
+            this.attackerImpossible
+        );
+
+        var roll2 = this.defender.getContestRoll(
+            this.defenderScale,
+            this.defenderQuality,
+            this.defenderMagical,
+            this.defenderImprobable,
+            this.defenderImpossible
+        );
         if (this.defenderPoorFit) {
-            roll2 = Math.min(roll2, this.defender.getContestRoll(this.defenderScale, this.defenderQuality, this.defenderMagical, this.defenderImprobable, this.defenderImpossible));
+            roll2 = Math.min(roll2, this.defender.getContestRoll(
+                this.defenderScale,
+                this.defenderQuality,
+                this.defenderMagical,
+                this.defenderImprobable,
+                this.defenderImpossible
+            ));
         }
+
         this.attackerRoll = roll1;
         this.defenderRoll = roll2;
-        var entry = new ActionEntry();
+        const entry = new ActionEntry();
         entry.headerText = this.attacker.name + " attempts to mess with " + this.defender.name;
         entry.subItems.push("They use " + this.attackerFeature);
         entry.subItems.push("It is defended with " + this.defenderFeature);
@@ -161,73 +211,83 @@ var ContestPopupViewmodel = /** @class */ (function () {
         this.isVictory = roll1 > roll2;
         entry.subItems.push(this.attacker.name + " rolls " + roll1 + " vs. " + roll2 + " resulting in " + (this.isVictory ? "victory!" : "defeat!"));
         return entry;
-    };
-    return ContestPopupViewmodel;
-}());
-var FactionTurnViewModel = /** @class */ (function () {
-    function FactionTurnViewModel() {
+    }
+}
+
+class FactionTurnViewModel {
+    constructor() {
         this.clear();
     }
-    FactionTurnViewModel.prototype.open = function () {
+
+    open() {
         $("#turnModal").css('display', 'block');
-    };
-    FactionTurnViewModel.prototype.close = function () {
+    }
+    
+    close() {
         $("#turnModal").css('display', 'none');
-    };
-    FactionTurnViewModel.prototype.clear = function () {
+    }
+
+    clear() {
         this.faction = {};
         this.internalAction = {};
         this.externalActions = [];
-    };
-    FactionTurnViewModel.prototype.updateFaction = function () {
+    }
+
+    updateFaction() {
         this.externalActions = Array(this.faction.power);
-    };
-    FactionTurnViewModel.prototype.startFactionTurn = function () {
+    }
+
+    startFactionTurn() {
         this.internalAction.action();
-    };
-    FactionTurnViewModel.prototype.doNextAction = function () {
+    }
+
+    doNextAction() {
         if (this.externalActions.length) {
-            var nextAction = this.externalActions.shift();
+            const nextAction = this.externalActions.shift();
             if (nextAction) {
                 nextAction.action();
             }
         }
-    };
-    return FactionTurnViewModel;
-}());
-var ContestOutcomeViewModel = /** @class */ (function () {
-    function ContestOutcomeViewModel() {
-        this.onSubmit = function () { };
+    }
+}
+
+class ContestOutcomeViewModel {
+    constructor() {
         this.clear();
     }
-    ContestOutcomeViewModel.prototype.clear = function () {
+
+    clear() {
         this.faction = {};
         this.damage = 1;
+
         this.modalChoice = "c";
+
         this.problem = "";
         this.feature = "";
-    };
-    ContestOutcomeViewModel.prototype.open = function () {
+    }
+
+    onSubmit = function () { };
+
+    open() {
         $("#outcomeModal").css("display", "block");
-    };
-    ContestOutcomeViewModel.prototype.close = function () {
+    }
+    
+    close() {
         $("#outcomeModal").css("display", "none");
-    };
-    ContestOutcomeViewModel.prototype.accept = function () {
+    }
+
+    accept() {
         if (this.modalChoice === "c") {
             // take cohesion damage
             this.faction.cohesion -= this.damage;
-        }
-        else if (this.modalChoice === "p") {
+        } else if (this.modalChoice === "p") {
             // gain a new problem related to the attack
             this.faction.addProblem(this.problem, this.damage);
-        }
-        else {
+        } else {
             // sacrifice a feature
             this.faction.features.splice(this.faction.features.indexOf(this.feature), 1);
         }
         this.close();
         this.onSubmit();
-    };
-    return ContestOutcomeViewModel;
-}());
+    }
+}

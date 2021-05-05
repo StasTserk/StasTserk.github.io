@@ -1,0 +1,21 @@
+{
+    "compilerOptions": {
+        "jsx": "react",
+        "module": "None",
+        "skipLibCheck": true,
+        "lib": [
+            "es2019",
+            "DOM"
+        ],
+        "allowJs": true
+    },
+    "include": [
+        "**/*.ts",
+        "**/*.tsx",
+        "**/*.js",
+    ],
+    "exclude": [
+        "node_modules",
+        "./gulpfile.js"
+    ]
+}

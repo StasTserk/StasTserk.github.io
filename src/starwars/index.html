@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<!--suppress ALL -->
+<html ng-app="starWarsController">
+<head>
+    <title>Star Wars Dice Calculator</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+
+    <!-- Angular -->
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+
+    <script src="gridCalculator.js"></script>
+    <script src="starWarsController.js"></script>
+    <script src="starWars.js"></script>
+    
+
+    <link rel="stylesheet" href="style.css"/>
+</head>
+<nav class="navbar navbar-inverse navbar-static-top">
+    <div class="container">
+        <div class="navbar-header">
+            <div class="navbar-brand">Calculating Star Wars Dice Probabilities</div>
+        </div>
+    </div>
+</nav>
+<body ng-controller="StarWarsController">
+    <div class="container">
+        <div class="row row-centered">
+            <div class="col-md-6 col-centered">
+                <div class="well dice">
+                    <h4>Dice Pool</h4>
+                    <label>
+                        Proficiency
+                        <input type="number" class="form-control die-input yellow" ng-model="yellow" ng-change="calculate()">
+                    </label>
+                    <label>
+                        Ability
+                        <input type="number" class="form-control die-input green" ng-model="green" ng-change="calculate()">
+                    </label>
+                    <label>
+                        Boost
+                        <input type="number" class="form-control die-input blue" ng-model="blue" ng-change="calculate()">
+                    </label>
+                    <label>
+                        Challenge
+                        <input type="number" class="form-control die-input red" ng-model="red" ng-change="calculate()">
+                    </label>
+                    <label>
+                        Difficulty
+                        <input type="number" class="form-control die-input purple" ng-model="purple" ng-change="calculate()">
+                    </label>
+                    <label>
+                        Setback
+                        <input type="number" class="form-control die-input black" ng-model="black" ng-change="calculate()">
+                    </label>
+                    <label>
+                        Advantage needed to trigger:
+                        <input type="number" class="form-control" ng-model="trigger" ng-change="calculateTrigger()">
+                    </label>
+                    <label>
+                        Initial Successes
+                        <input type="number" class="form-control" ng-model="bonusSuccesses" ng-change="calculate()">
+                    </label>
+                    <label>
+                        Initial Advantage
+                        <input type="number" class="form-control" ng-model="bonusAdvantages" ng-change="calculate()">
+                    </label>
+                </div>
+            </div>
+            <div class="col-md-6 col-centered">
+                <div class="well">
+                    <h4>Outcome</h4>
+                    <label>
+                        Success %:
+                        <input type="number" class="form-control" ng-model="success" disabled>
+                    </label>
+                    <label>
+                        Success with trigger %:
+                        <input type="number" class="form-control" ng-model="abilityTriggered" disabled>
+                    </label>
+                    <label>
+                        Average Successes Generated:
+                        <input type="number" class="form-control" ng-model="avgSuccess" disabled>
+                    </label>
+                    <label>
+                        Average Advantage On Success:
+                        <input type="number" class="form-control" ng-model="avgSuccessAdv" disabled>
+                    </label>
+                    <button type="button" ng-click="calculate()" class="btn-lg btn-block btn-success">Calculate</button>
+                </div>
+            </div>
+        </div>
+        <div class="row row-centered">
+            <div class="well">
+                <h4>Visualization:</h4>
+                <table>
+                    <th></th>
+                    <th ng-repeat="label in advLabel track by $index">{{label - $index}}</th>
+                    <tr ng-repeat="row in gridResult track by $index">
+                        <!--span ng-repeat="col in row">{{ col }}</span-->
+                    <td>{{maxSuccess - $index}}</td>
+                    <td ng-repeat="col in row track by $index" ng-style="{'background-color':gridResult[$parent.$index][$index]}">&nbsp&nbsp&nbsp&nbsp&nbsp</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="well">
+                <h4>Probabilities:</h4>
+                <ul>
+                    <li ng-repeat="result in results">
+                        <span class="probLabel">{{result.label}}</span> {{result.probability * 100}}
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>

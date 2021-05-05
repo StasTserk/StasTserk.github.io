@@ -1,0 +1,43 @@
+.hint {
+    font-size: 10px;
+    color: gray;
+}
+
+ul {
+    padding: 0;
+    list-style-type: none;
+}
+
+.probLabel {
+    min-width: 100px;
+    width: 100px;
+    display: inline-block;
+}
+
+.dice > label > .die-input {
+    width: 80px;
+}
+
+.yellow {
+    background-color: #FFFF99;
+}
+
+.green {
+    background-color: rgb(189, 252, 189);
+}
+
+.blue {
+    background-color: rgb(209, 233, 255)
+}
+
+.red {
+    background-color: rgb(255, 211, 208)
+}
+
+.purple {
+    background-color: rgb(215, 199, 253)
+}
+
+.black {
+    background-color: rgb(155, 155, 155)
+}

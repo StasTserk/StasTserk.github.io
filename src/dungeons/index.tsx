@@ -1,0 +1,1 @@
+ReactDOM.render(<Greeter />, document.getElementById('root'))

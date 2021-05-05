@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<!--suppress ALL -->
+<html ng-app="originsController">
+<head>
+    <title>Origin Stories on Demand</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+
+    <!-- Angular -->
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+
+    <script src="tables.js"></script>
+    <script src="origins.js"></script>
+    <script src="originsController.js"></script>
+
+    <link rel="stylesheet" href="style.css"/>
+</head>
+<nav class="navbar navbar-inverse navbar-static-top">
+    <div class="container">
+        <div class="navbar-header">
+            <div class="navbar-brand">Origin Stories On Demand</div>
+        </div>
+    </div>
+</nav>
+<body ng-controller="OriginsController">
+    <div id="content">
+        <div class="well" id="inputArea">
+            <label>
+                Race:
+                <select class="form-control input-sm" data-ng-options="p for p in races" data-ng-model="race"></select>
+            </label>
+            <label>
+                Class:
+                <select class="form-control input-sm" data-ng-options="p for p in classes" data-ng-model="class"></select>
+            </label>
+            <label>
+                Background:
+                <select class="form-control input-sm" data-ng-options="p for p in backgrounds" data-ng-model="background"></select>
+            </label>
+            <label>
+                Charisma Modifier:
+                <input type="number" class="form-control input-sm" ng-model="chaMod">
+            </label>
+            <label>
+                Life Events:
+                <input type="number" class="form-control input-sm" ng-model="numEvents">
+            </label>
+            <button type="button" class="btn btn-warning btn-sm" ng-click="rollBackground()">Generate Backstory</button>
+        </div>
+        <div class="well" id="childhoodWell">
+            <h3>Early Life</h3>
+            <p ng-repeat="text in backstory.childhoodText">
+                {{text}}
+            </p>
+            <p>{{backstory.backgroundReason}}</p>
+            <p>{{backstory.classReason}}</p>
+        </div>
+        <div class="well" id="lifeEventsWell">
+            <h3>Life Events</h3>
+            <p ng-repeat="event in backstory.events">
+                {{event.text}}
+            </p>
+        </div>
+        <div class="well" id="npcsWell">
+            <h3>Notable Npcs</h3>
+            <p ng-repeat="npc in backstory.knownNpcs">
+                <b>{{npc.relationship}}:</b> {{npc.SimpleDescription()}}
+            </p>
+        </div>
+    </div>
+</body>

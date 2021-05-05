@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html ng-app="initiativeTracker">
+<head>
+    <title>Neato Initiative Tracker</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+
+    <!-- Angular -->
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+
+    <script src="initiative.js"></script>
+
+    <link rel="stylesheet" href="style.css"/>
+</head>
+<body ng-controller="InitiativeController">
+<nav class="navbar navbar-inverse navbar-static-top">
+    <div class="container">
+        <div class="navbar-header">
+            <div class="navbar-brand">Another Web-Based Initiative Tracker!</div>
+        </div>
+
+    </div>
+</nav>
+<div id="participantsDiv" class="container">
+    <h3>Participants:
+        <button type="button" ng-click="restoreLastInitiative()" class="btn btn-danger pull-right">I Accidentally closed it!</button>
+        <button type="button" ng-click="saveParticipants()" class="pull-right btn btn-success pull-right">Save</button>
+        <button type="button" ng-click="loadParticipants()" class="pull-right btn btn-success pull-right">Load</button>
+    </h3>
+    <ul>
+        <li ng-repeat="part in participants">
+            <div class="well">
+                <label>
+                    Name:
+                    <input type="text" class="form-control" ng-model="part.name">
+                </label>
+                <label>
+                    Mod:
+                    <input type="text" class="form-control" ng-model="part.mod">
+                </label>
+                <div class="btn-group">
+                    <button type="button" ng-click="toggleAdvantage(part)" ng-attr-class="{{part.adv && 'btn btn-success' || 'btn btn-default'}}">Adv</button>
+                    <button type="button" ng-click="toggleShouldRoll(part)" ng-attr-class="{{part.roll && 'btn btn-success' || 'btn btn-default'}}">Roll</button>
+                </div>
+                <button type="button" class="btn btn-danger" ng-click="remove(part)">Remove</button>
+            </div>
+        </li>
+    </ul>
+    <button type="button" class="btn btn-success btn-block btn-lg" ng-click="addNew()">Add Combatant</button>
+    <button type="button" class="btn btn-warning btn-block btn-lg" ng-click="rollInitiative()">Start Combat</button>
+</div>
+
+    <!-- START OF COMBAT SECTION -->
+
+<div id="initiativeDiv" class="container">
+    <button type="button" class="btn btn-warning btn-block btn-lg" ng-click="endCombat()">End Combat</button><br/>
+    <div class="container">
+        <div class="row row-centered">
+            <div class="col-md-6 col-centered">
+                <h3>Active player</h3>
+                <div class="panel panel-primary" id="activePlayerInfoDiv">
+                    <div class="panel-heading" id="activePlayerHeading">{{activePlayer.name}}</div>
+                    <div class="panel-body">
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                Status Effects
+                            </div>
+                            <input type="text" class="form-control" ng-model="activePlayer.status">
+                        </div>
+                        <div class="input-group" id="damageDealHealInputsActivePlayer">
+                            <div class="input-group-addon">
+                                Damage
+                            </div>
+                            <span class="input-group-btn">
+                                <button class="btn btn-success" ng-click="damage(activePlayer, -10)">-10</button>
+                                <button class="btn btn-success" ng-click="damage(activePlayer, -1)">-1</button>
+                            </span>
+                            <input type="text" class="form-control" ng-model="activePlayer.damage">
+                            <span class="input-group-btn">
+                                <button class="btn btn-danger" ng-click="damage(activePlayer, 1)">+1</button>
+                                <button class="btn btn-danger" ng-click="damage(activePlayer, 10)">+10</button>
+                            </span>
+                        </div>
+                        <span class="input-group-btn" >
+                            <button class="btn btn-info" style="width:80%" ng-click="nextTurn()">Done turn.</button>
+                            <button type="button" style="width:20%" class="btn btn-danger" ng-click="kill(activePlayer)">Kill</button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-centered">
+                <h3>Target Player</h3>
+                <div class="panel panel-primary" id="targetPlayerDiv">
+                    <div class="panel-heading">
+                        <select class="form-control input-sm" data-ng-options="p.name for p in combatList" data-ng-model="targetPlayer"></select>
+                    </div>
+                    <div class="panel-body">
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                Status Effects
+                            </div>
+                            <input type="text" class="form-control" ng-model="targetPlayer.status">
+                        </div>
+                        <div class="input-group" id="damageDealHealInputsTargetPlayer">
+                            <div class="input-group-addon">
+                                Damage
+                            </div>
+                            <span class="input-group-btn">
+                                <button class="btn btn-success" ng-click="damage(targetPlayer, -10)">-10</button>
+                                <button class="btn btn-success" ng-click="damage(targetPlayer, -1)">-1</button>
+                            </span>
+                            <input type="text" class="form-control" ng-model="targetPlayer.damage">
+                            <span class="input-group-btn">
+                                <button class="btn btn-danger" ng-click="damage(targetPlayer, 1)">+1</button>
+                                <button class="btn btn-danger" ng-click="damage(targetPlayer, 10)">+10</button>
+                            </span>
+                        </div>
+                        <button type="button" class="btn btn-danger btn-block" ng-click="kill(targetPlayer)">Kill</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <h3>Initiative</h3>
+    <ul id="initiativeListUl">
+        <li ng-repeat="guy in combatList">
+            <div ng-attr-class="{{guy.active && 'panel panel-primary' || 'panel panel-default'}}">
+                <div class="panel-heading"><b>{{guy.name}}</b>  Initiative: {{guy.score}}</div>
+                <div class="panel-body">
+                    <div class="input-group">
+                        <div class="input-group-addon">
+                            Status Effects
+                        </div>
+                        <input type="text" class="form-control" ng-model="guy.status">
+                    </div>
+                    <div class="input-group" id="damageDealHealInputs">
+                        <div class="input-group-addon">
+                            Damage
+                        </div>
+                        <span class="input-group-btn">
+                            <button class="btn btn-success" ng-click="damage(guy, -10)">-10</button>
+                            <button class="btn btn-success" ng-click="damage(guy, -1)">-1</button>
+                        </span>
+                        <input type="text" class="form-control" ng-model="guy.damage">
+                        <span class="input-group-btn">
+                            <button class="btn btn-danger" ng-click="damage(guy, 1)">+1</button>
+                            <button class="btn btn-danger" ng-click="damage(guy, 10)">+10</button>
+                            <button type="button" class="btn btn-danger" ng-click="kill(guy)">Kill</button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>
+</body>
+</html>

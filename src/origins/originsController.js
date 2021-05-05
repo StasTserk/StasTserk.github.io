@@ -1,11 +1,13 @@
 var originsController = angular.module('originsController', []);
-originsController.controller('OriginsController', function ($scope) {
+
+originsController.controller('OriginsController', function($scope) {
     $scope.numEvents = 4;
-    $scope["class"] = "Fighter";
+    $scope.class = "Fighter";
     $scope.race = "Human";
     $scope.background = "Acolyte";
     $scope.chaMod = 0;
     $scope.backstory = {};
+    
     $scope.races = [
         "Aarakocra",
         "Aasimar",
@@ -33,6 +35,7 @@ originsController.controller('OriginsController', function ($scope) {
         "Triton",
         "Yuan-ti"
     ];
+
     $scope.classes = [
         "Barbarian",
         "Bard",
@@ -47,6 +50,7 @@ originsController.controller('OriginsController', function ($scope) {
         "Warlock",
         "Wizard"
     ];
+
     $scope.backgrounds = [
         "Acolyte",
         "Charlatan",
@@ -61,9 +65,10 @@ originsController.controller('OriginsController', function ($scope) {
         "Sailor",
         "Soldier",
         "Urchin"
-    ];
-    $scope.rollBackground = function () {
-        var bs = new Backstory($scope.race, $scope["class"], $scope.background, $scope.chaMod, $scope.numEvents);
+    ]
+
+    $scope.rollBackground = function() {
+        var bs = new Backstory($scope.race, $scope.class, $scope.background, $scope.chaMod, $scope.numEvents)
         $scope.backstory = bs;
-    };
+    }
 });

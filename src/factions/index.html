@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html ng-app="factionController">
+<head>
+    <title>Godbound Faction Turn Tool</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+
+    <!-- Angular -->
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+
+    <script src="popupViewmodels.js"></script>
+    <script src="faction.js"></script>
+    <script src="factionController.js"></script>
+
+    <link rel="stylesheet" href="style.css"/>
+    <link rel="stylesheet" href="sprites.css"/>
+</head>
+<body ng-controller="FactionController">
+<nav class="navbar navbar-inverse navbar-static-top">
+    <div class="container">
+        <div class="navbar-header">
+            <div class="navbar-brand">Godbound Faction Turn</div>
+        </div>
+    </div>
+</nav>
+<!-- ======== START Main form layout ========================== -->
+<div class='container'>
+    <div class='row'>
+        <div class='col-md-6'>
+            <h3>Factions
+                <div style="float: right">
+                    <button class="btn" ng-click='openNewFactionPopup()'>Add Faction</button>
+                    <button class="btn btn-success" ng-click='openFactionTurnPopup()'>Do Faction Turn</button>
+                    <button class="btn" ng-click='openContestPopup()'>Perform simple Action</button>
+                </div>
+            </h3>
+            <div class='well' ng-repeat="faction in factions">
+                <div class="well stat-inlay">
+                    <span ng-class="['faction-emblem', faction.emblemClass, faction.emblemColour]">
+                        <span ng-class="['faction-symbol', faction.symbolClass, faction.symbolColour]"></span>
+                    </span>
+                    <p>Power: {{faction.power}}</p>
+                    <p>Cohesion: {{faction.cohesion}}/{{faction.cohesionMax}}</p>
+                    <p>Trouble: {{faction.trouble}}</p>
+                    <p>Dominion: {{faction.dominion}}</p>
+                    <p>Action Die: 1d{{faction.getActionDie()}}</p>
+                </div>
+                <h4>{{faction.name}}
+                    <span class="edit-label" ng-click="editFaction(faction)">(edit)</span>
+                    <span class="edit-label" ng-click="deleteFaction(faction)">(delete)</span>
+                </h4> 
+                <p class="faction-description">{{faction.description}}</p>
+                <div><strong>Features:</strong></div>
+                <div ng-repeat="feature in faction.features">&nbsp;&nbsp;{{feature}}</div>
+                <div><strong>Problems:</strong></div>
+                <div ng-repeat="pblm in faction.problems">&nbsp;&nbsp;{{pblm.text}} - <strong>{{pblm.size}} pts.</strong></div>
+                <div><strong>Interest:</strong></div>
+                <div ng-repeat="interest in faction.interest">&nbsp;&nbsp;{{interest.target}} - <strong>{{interest.amount}} pts.</strong></div>
+                <div><strong>Enemy Interest:</strong></div>
+                <div ng-repeat="eInterest in faction.enemyInterest">&nbsp;&nbsp;{{eInterest.target}} - <strong>{{eInterest.amount}} pts.</strong></div>
+            </div>
+        </div>
+        <div class='col-md-6'>
+            <h3>Log
+            </h3>
+            <div class='well'>
+                <div ng-repeat="event in eventLog">
+                    <span class="close" ng-click="deleteLog($index)">&times;</span>
+                    <b>{{event.headerText}}</b>
+                    <p class="log-subitems" ng-repeat="subItem in event.subItems">
+                        {{subItem}}
+                    </p>
+                </div>
+                <hr/>
+                <div>
+                    <h4>Data options:</h4>
+                    <button class="btn" ng-click='saveData()'>Save</button>
+                    <button class="btn" ng-click='loadData()'>Load</button>
+                    <button class="btn" ng-click='import()'>Import</button>
+                    <button class="btn" ng-click='export()'>Export</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ======== END Main form layout ========================== -->
+<!-- ======== START Contest Modal description =============== -->
+<div id="contestModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="close" ng-click='closeContestPopup()'>&times;</span>
+            <h2>Perform Contest</h2>
+        </div>
+        <div class="modal-body">
+            <label>Attacker:
+                    <select class="form-control"
+                        ng-change="updateAttackerFeatures()"
+                        data-ng-options="f.name for f in factions"
+                        data-ng-model="contestData.attacker">
+                    </select>
+            </label>
+            <label>Feature:
+                    <select class="form-control"
+                        data-ng-options="f for f in contestData.attackerFeatures"
+                        data-ng-model="contestData.attackerFeature">
+                    </select>
+            </label>
+            <label>Attacker Advantages:
+                <div>
+                <div title="Vastly Larger" class="sprite-box scale"
+                    ng-click="contestData.attackerScale = !contestData.attackerScale"
+                    ng-class="contestData.attackerScale ? 'selected' : 'unselected'"></div>
+                <div title="Vastly Better" class="sprite-box quality"
+                    ng-click="contestData.attackerQuality = !contestData.attackerQuality"
+                    ng-class="contestData.attackerQuality ? 'selected' : 'unselected'"></div>
+                <div title="Magical" class="sprite-box magic"
+                    ng-click="contestData.attackerMagical = !contestData.attackerMagical"
+                    ng-class="contestData.attackerMagical ? 'selected' : 'unselected'"></div>
+                <div title="Improbable Miracle" class="sprite-box improbable"
+                    ng-click="contestData.attackerImprobable = !contestData.attackerImprobable"
+                    ng-class="contestData.attackerImprobable ? 'selected' : 'unselected'"></div>
+                <div title="Impossible Miracle" class="sprite-box impossible"
+                    ng-click="contestData.attackerImpossible = !contestData.attackerImpossible"
+                    ng-class="contestData.attackerImpossible ? 'selected' : 'unselected'"></div>
+                </div>
+            </label>
+            <hr>
+            <label>Defender:
+                    <select class="form-control"
+                        ng-change="updateDefenderFeatures()"
+                        data-ng-options="f.name for f in factions"
+                        data-ng-model="contestData.defender">
+                    </select>
+            </label>
+            <label>Feature:
+                    <select class="form-control"
+                        data-ng-options="f for f in contestData.defenderFeatures"
+                        data-ng-model="contestData.defenderFeature">
+                    </select>
+            </label>
+            <label>Defender Advantages:
+                <div>
+                    <div title="Vastly Larger"
+                        class="sprite-box scale"
+                        ng-click="contestData.defenderScale = !contestData.defenderScale"
+                        ng-class="contestData.defenderScale ? 'selected' : 'unselected'"></div>
+                    <div title="Vastly Better"
+                        class="sprite-box quality"
+                        ng-click="contestData.defenderQuality = !contestData.defenderQuality"
+                        ng-class="contestData.defenderQuality ? 'selected' : 'unselected'"></div>
+                    <div title="Magical"
+                        class="sprite-box magic"
+                        ng-click="contestData.defenderMagical = !contestData.defenderMagical"
+                        ng-class="contestData.defenderMagical ? 'selected' : 'unselected'"></div>
+                    <div title="Improbable Miracle"
+                        class="sprite-box improbable"
+                        ng-click="contestData.defenderImprobable = !contestData.defenderImprobable"
+                        ng-class="contestData.defenderImprobable ? 'selected' : 'unselected'"></div>
+                    <div title="Impossible Miracle"
+                        class="sprite-box impossible"
+                        ng-click="contestData.defenderImpossible = !contestData.defenderImpossible"
+                        ng-class="contestData.defenderImpossible ? 'selected' : 'unselected'"></div>
+                    <div title="Feature is a poor fit"
+                        class="sprite-box poor-fit"
+                        ng-click="contestData.defenderPoorFit = !contestData.defenderPoorFit"
+                        ng-class="contestData.defenderPoorFit ? 'selected' : 'unselected'"></div>
+                </div>
+            </label>
+        </div>
+        <div class="modal-footer">
+            <button class="btn" ng-click="doContest()">Run Contest.</button>
+        </div>
+    </div>
+</div>
+<!-- ======== END Contest Modal description ================= -->
+<!-- ======== START faction editing modal description ======= -->
+<div id="factionModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="close" ng-click='closeNewFactionPopup()'>&times;</span>
+            <h2>Faction Details</h2>
+        </div>
+        <div class="modal-body">
+            <div class="stat-inlay well">
+                <span ng-class="['faction-emblem', newFactionData.emblemClass, newFactionData.emblemColour]">
+                    <span ng-class="['faction-symbol', newFactionData.symbolClass, newFactionData.symbolColour]"></span>
+                </span>
+                <div style="z-index: 0">
+                    <button ng-click="newFactionData.cycleEmblem()">E</button>
+                    <button ng-click="newFactionData.cycleEmblemColour()">C</button>
+                    <button ng-click="newFactionData.cycleSymbol()">S</button>
+                    <button ng-click="newFactionData.cycleSymbolColour()">C</button>
+                </div>
+            </div>
+            <div class='form-group'>
+                <div class="row">
+                    <label class="col-xs-8">Name
+                        <input class="form-control" id="newFactionName" type="text" ng-model="newFactionData.name">
+                    </label>
+                    <label class="col-xs-2">Power
+                        <input class="form-control" id="newFactionPower" type="number" ng-model="newFactionData.power">
+                    </label>
+                    <label class="col-md-3">Cohesion
+                        <div class="input-group">
+                            <input class="form-control" id="newFactionPower" type="number" ng-model="newFactionData.cohesion">
+                            <div class="input-group-addon">
+                                /{{newFactionData.power}}
+                            </div>
+                        </div>
+                    </label>
+                    <label class="col-xs-2">Dominion
+                        <input class="form-control" id="newFactionPower" type="number" ng-model="newFactionData.dominion">
+                    </label>
+                </div>
+                <label for="newFactionDescription">Description</label>
+                <textarea class="form-control" id="newFactionDescription" rows="3" ng-model="newFactionData.description"></textarea>
+            </div>
+                <span class="add" ng-click="newFactionData.addFeature()">&plus;</span>
+                <h3>Features</h3>
+                <div ng-repeat="feature in newFactionData.features track by $index">
+                    <input type="text" class="form-control" ng-model="newFactionData.features[$index]">
+                </div>
+            <span class="add" ng-click="newFactionData.addProblem()">&plus;</span>
+            <h3>Problems</h3>
+            <div class="input-group" ng-repeat="problem in newFactionData.problems track by $index">
+                <input type="text" class="form-control" ng-model="problem.text">
+                <div class="input-group-addon">
+                    Size
+                </div>
+                <input type="number" class="form-control narrow-num-imput" ng-model="problem.size">
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button ng-click="acceptNewFactionPopup()">{{newFactionData.acceptLabel}}</button>
+        </div>
+    </div>
+</div>
+<!-- ======== END faction editing modal description ========= -->
+<!-- ======== START faction turn modal ====================== -->
+<div id="turnModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="close" ng-click='closeFactionTurnPopup()'>&times;</span>
+            <h2>Faction Turn</h2>
+        </div>
+        <div class="modal-body">
+            <label>Faction:
+                <select class="form-control"
+                    ng-change="factionTurnData.updateFaction()"
+                    data-ng-options="f.name for f in factions"
+                    data-ng-model="factionTurnData.faction">
+                </select>
+            </label>
+            <label>Internal Action:
+                    <select class="form-control"
+                    data-ng-options="ia.name for ia in internalActions"
+                    data-ng-model="factionTurnData.internalAction">
+                </select>
+            </label>
+            <label ng-repeat="action in factionTurnData.externalActions track by $index">
+                External Action {{$index+1}}
+                <select class="form-control"
+                    data-ng-options="ea.name for ea in externalActions"
+                    data-ng-model="factionTurnData.externalActions[$index]">
+                </select>
+            </label>
+        </div>
+        <div class="modal-footer">
+            <button ng-click="startFactionTurn()">Start</button>
+        </div>
+    </div>
+</div>
+<!-- ======== END faction turn modal ======================== -->
+<!-- ======== START message modal =========================== -->
+<div id="messageModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>{{ messageTitle }}</h2>
+        </div>
+        <div class="modal-body multiline">
+            {{ messageBody }}
+        </div>
+        <div class="modal-footer">
+            <button ng-click="dismissMessage()">OK</button>
+        </div>
+    </div>
+</div>
+<!-- ======== END message modal ============================= -->
+<!-- ======== START message modal =========================== -->
+<div id="solveProblemModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Enact Change - {{factionTurnData.faction.name}}</h2>
+        </div>
+        <div class="modal-body">
+            <label>Target Problem:
+                <select class="form-control"
+                    data-ng-options="f.text for f in factionTurnData.faction.problems"
+                    data-ng-model="targetProblem">
+                </select>
+            </label>
+        </div>
+        <div class="modal-footer">
+            <button ng-click="fixProblem()">OK</button>
+        </div>
+    </div>
+</div>
+<!-- ======== END message modal ============================= -->
+<!-- ======== START message modal =========================== -->
+<div id="newFeatureModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Enact Change - {{factionTurnData.faction.name}}</h3>
+        </div>
+        <div class="modal-body">
+            <label>New Feature:
+                <input type="text" class="form-control" ng-model="newFeatureName">
+            </label>
+            <label>New Problem:
+                <input type="text" class="form-control" ng-model="newProblemName">
+            </label>
+            <label>Dominion Cost:
+                <input type="number" class="form-control" ng-model="newFeatureCost">
+            </label>
+        </div>
+        <div class="modal-footer">
+            <button ng-click="addFeature()">OK</button>
+        </div>
+    </div>
+</div>
+<!-- ======== END message modal ============================= -->
+<!-- ======== START help ally modal========================== -->
+<div id="helpAllyModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Help Ally - {{factionTurnData.faction.name}}</h3>
+        </div>
+        <div class="modal-body">
+            <label>Faction to Help:
+                <select class="form-control"
+                    data-ng-options="f.name for f in factions"
+                    data-ng-model="helpAllyTarget">
+                </select>
+            </label>
+            <label>Dominion to Gift:
+                <input type="number" class="form-control" ng-model="helpAllyDominion">
+            </label>
+        </div>
+        <div class="modal-footer">
+            <button ng-click="helpAlly()">OK</button>
+        </div>
+    </div>
+</div>
+<!-- ======== END help ally modal =========================== -->
+<!-- ======== START hremove influence modal ================= -->
+<div id="removeInterestModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Remove Influence - {{factionTurnData.faction.name}}</h3>
+        </div>
+        <div class="modal-body">
+            <label>Faction to target:
+                <select class="form-control"
+                    data-ng-options="f.target for f in factionTurnData.faction.enemyInterest"
+                    data-ng-model="removeInterestTarget">
+                </select>
+            </label>
+        </div>
+        <div class="modal-footer">
+            <button ng-click="removeInterest()">OK</button>
+        </div>
+    </div>
+</div>
+<!-- ======== END remove influence modal ==================== -->
+<!-- ======== START remove influence modal ================= -->
+<div id="extendInterestModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Extend Influence - {{factionTurnData.faction.name}}</h3>
+        </div>
+        <div class="modal-body">
+            <label>Faction to target:
+                <select class="form-control"
+                    data-ng-options="f.name for f in factions"
+                    data-ng-model="extendInterestTarget">
+                </select>
+            </label>
+        </div>
+        <div class="modal-footer">
+            <button ng-click="extendInterest()">OK</button>
+        </div>
+    </div>
+</div>
+<!-- ======== END remove influence modal ==================== -->
+<!-- ======== START resolve attack outcome modal ============ -->
+<div id="outcomeModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Attack Rival Outcome - {{factionTurnData.faction.name}}</h3>
+        </div>
+        <div class="modal-body">
+            <div class="radio"><input type="radio" ng-model="outcomeData.modalChoice" value="c">Take {{ outcomeData.damage }} Cohesion Damage</div>
+            <div class="radio"><input type="radio" ng-model="outcomeData.modalChoice" value="p">Gain {{ outcomeData.damage }} Point Problem</div>
+            <div class="radio"><input type="radio" ng-model="outcomeData.modalChoice" value="s">Sacrifice Feature</div>
+            <div ng-show="outcomeData.modalChoice == 'p'">
+                <label>Problem Name:
+                    <input class="form-control" type="text" ng-model="outcomeData.problem">
+                </label>
+            </div>
+            <div ng-show="outcomeData.modalChoice == 's'">
+                Feature Lost:
+                <select
+                    class="form-control"
+                    data-ng-options="f for f in outcomeData.faction.features"
+                    data-ng-model="outcomeData.feature">
+                </select>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button ng-click="outcomeData.accept()">OK</button>
+        </div>
+    </div>
+</div>
+<div id="exportModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="close" ng-click='closeExportModal()'>&times;</span>
+            <h3>{{ importLabel }}</h3>
+        </div>
+        <div class="modal-body">
+            <textarea class="form-control" rows="15" ng-model="importText"></textarea>
+        </div>
+        <div class="modal-footer">
+            <button class="btn" ng-click="acceptImport()">Accept</button>
+        </div>
+    </div>
+</div>
+<!-- ======== END resolve attack outcome modal ============== -->
+</body>
