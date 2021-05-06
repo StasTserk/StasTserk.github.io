@@ -41,6 +41,8 @@ const build = gulp.series(
 
 function watch() {
     gulp.watch("**/*.ts", tsTask);
+    gulp.watch("**/*.tsx", tsTask);
+    gulp.watch("**/*.js", tsTask);
     gulp.watch("**/*.scss", sassTask);
     gulp.watch("**/*.css", sassTask);
     gulp.watch("**/*.html", htmlTask);
