@@ -16,4 +16,30 @@ var rooms = [
     __assign(__assign({}, getRoomDescription()), { id: "4" }),
     __assign(__assign({}, getRoomDescription()), { id: "5" }),
 ];
+var subscriptions = {};
+function subscribe(topic, callback) {
+    if (!subscriptions[topic]) {
+        subscriptions[topic] = [];
+    }
+    if (subscriptions[topic].indexOf(callback) === -1) {
+        subscriptions[topic].push(callback);
+    }
+}
+function unsubscribe(topic, callback) {
+    var subs = subscriptions[topic];
+    if (subs) {
+        var index = subs.indexOf(callback);
+        if (index !== -1) {
+            subscriptions[topic] = subs.splice(index, 1);
+        }
+    }
+}
+function notify(topic, value) {
+    var subs = subscriptions[topic];
+    if (subs) {
+        subs.forEach(function (s) {
+            s(value);
+        });
+    }
+}
 ReactDOM.render(React.createElement(Layout, { rooms: rooms }), document.getElementById('root'));
