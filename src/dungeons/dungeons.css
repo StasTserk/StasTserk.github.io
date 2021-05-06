@@ -1,0 +1,15 @@
+.dungeon-layout {
+    position: relative;
+    background-color: darkgray;
+    width: 570px;
+    height: 570px;
+    padding: 10px;
+}
+.room {
+    width: 100px;
+    height: 100px;
+    position: absolute;
+    border: 3px solid black;
+    border-radius: 3px;
+    background-color: white;
+}
