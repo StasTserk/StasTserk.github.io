@@ -6,6 +6,13 @@ const rooms = [
     { ...getRoomDescription(), id: "5" },
 ];
 
+const halls = [
+    linkRoom(rooms[0], randomDirection(), rooms[1], randomDirection()),
+    linkRoom(rooms[1], randomDirection(), rooms[2], randomDirection()),
+    linkRoom(rooms[2], randomDirection(), rooms[3], randomDirection()),
+    linkRoom(rooms[3], randomDirection(), rooms[4], randomDirection())
+];
+
 const subscriptions: { [k: string]: ((value: unknown) => void)[] } = {}
 
 function subscribe(topic: string, callback: (value: unknown) => void) {
@@ -36,4 +43,4 @@ function notify(topic: string, value: unknown): void {
     }
 }
 
-ReactDOM.render(<Layout rooms={rooms}/>, document.getElementById('root'))
+ReactDOM.render(<Layout rooms={rooms} halls={halls}/>, document.getElementById('root'))

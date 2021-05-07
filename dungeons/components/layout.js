@@ -1,11 +1,26 @@
 var Layout = function (props) {
+    var x = dimensions.x, y = dimensions.y, size = dimensions.size, padding = dimensions.padding;
     return (React.createElement(React.Fragment, null,
-        React.createElement("div", { className: "dungeon-layout" }, props.rooms.map(function (r) { return React.createElement(Room, { room: r, key: r.id }); })),
+        React.createElement(Hallways, { halls: props.halls }),
+        React.createElement("div", { className: "dungeon-layout", style: {
+                width: x * (size + padding) + padding,
+                height: y * (size + padding) + padding
+            } }, props.rooms.map(function (r) { return React.createElement(Room, { room: r, key: r.id }); })),
         React.createElement(RoomDetail, { room: props.rooms[0] })));
 };
+var Hallways = function (props) {
+    var x = dimensions.x, y = dimensions.y, size = dimensions.size, padding = dimensions.padding;
+    return (React.createElement("svg", { style: {
+            width: x * (size + padding) + padding,
+            height: y * (size + padding) + padding
+        } }, props.halls.map(function (hall, index) {
+        return (React.createElement("polyline", { key: index, fill: "none", stroke: "black", points: hall.path.map(function (p) { return p.x + ", " + p.y; }).join(' ') }));
+    })));
+};
 var Room = function (props) {
+    var size = dimensions.size, padding = dimensions.padding;
     var room = props.room;
-    return (React.createElement("div", { className: "room", style: { top: room.location.y * 110 + 10, left: room.location.x * 110 + 10 }, onMouseEnter: function () { return notify('hover', room); } },
+    return (React.createElement("div", { className: "room", style: { top: room.location.y * (size + padding) + padding, left: room.location.x * (size + padding) + padding }, onMouseEnter: function () { return notify('hover', room); } },
         React.createElement("strong", null, room.type),
         " - ",
         room.subtype));

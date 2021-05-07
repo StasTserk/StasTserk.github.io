@@ -34,16 +34,3 @@ var roomTypes = [
         ]
     }
 ];
-function getRoomDescription() {
-    var type = roomTypes[Math.floor(Math.random() * roomTypes.length)];
-    var subtype = type.subtypes[Math.floor(Math.random() * type.subtypes.length)];
-    return {
-        type: type.type,
-        subtype: subtype,
-        numExits: Math.floor(Math.random() * 4) + 1,
-        location: {
-            x: Math.floor(Math.random() * 5),
-            y: Math.floor(Math.random() * 5)
-        }
-    };
-}

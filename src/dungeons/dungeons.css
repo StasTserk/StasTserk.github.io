@@ -1,10 +1,20 @@
+.root {
+    display: grid;
+    grid-template-columns: 1fr;
+}
+
 .dungeon-layout {
     position: relative;
-    background-color: darkgray;
-    width: 570px;
-    height: 570px;
     padding: 10px;
+    grid-area: 1 / 1 / 2 / 2;
 }
+
+svg {
+    background-color: darkgray;
+    grid-area: 1 / 1 / 2 / 2;
+    
+}
+
 .room {
     width: 100px;
     height: 100px;
@@ -12,4 +22,5 @@
     border: 3px solid black;
     border-radius: 3px;
     background-color: white;
+    filter: drop-shadow(0 0 10px black)
 }

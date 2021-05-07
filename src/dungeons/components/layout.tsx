@@ -1,7 +1,15 @@
-const Layout = (props: React.PropsWithChildren<{ rooms: RoomDescription[] }>) => {
+const Layout = (props: React.PropsWithChildren<{ rooms: RoomDescription[], halls: Hallway[] }>) => {
+    const { x, y, size, padding} = dimensions
     return (
         <>
-            <div className={ "dungeon-layout" }>
+            <Hallways halls={props.halls} />
+            <div
+                className={"dungeon-layout"}
+                style={{
+                    width: x * (size + padding) + padding,
+                    height: y * (size + padding) + padding,
+                }}
+            >
                 {props.rooms.map(r => { return <Room room={r} key={r.id} />; })}
             </div>
             <RoomDetail room={ props.rooms[0] }/>
@@ -9,12 +17,31 @@ const Layout = (props: React.PropsWithChildren<{ rooms: RoomDescription[] }>) =>
     );
 }
 
+const Hallways = (props: React.PropsWithChildren<{ halls: Hallway[] }>) => {
+    const { x, y, size, padding} = dimensions
+    return (
+        <svg style={{
+            width: x * (size + padding) + padding,
+            height: y * (size + padding) + padding,
+        }}>
+            {props.halls.map((hall, index) => {
+                return (<polyline key={index}
+                    fill={"none"}
+                    stroke={"black"}
+                    points={hall.path.map(p => `${p.x}, ${p.y}`).join(' ')}
+                />);
+            })}
+        </svg>
+    );
+}
+
 const Room = (props: React.PropsWithChildren<{ room: RoomDescription }>) => {
+    const { size, padding } = dimensions;
     const { room } = props;
     return (
         <div
             className="room"
-            style={{ top: room.location.y * 110 + 10, left: room.location.x * 110 + 10 }}
+            style={{ top: room.location.y * (size + padding) + padding, left: room.location.x * (size + padding) + padding }}
             onMouseEnter={ () => notify('hover', room)}
         >
             <strong>{room.type}</strong> - {room.subtype}

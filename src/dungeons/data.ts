@@ -34,24 +34,3 @@ const roomTypes: { type: string, subtypes: string[] }[] = [
         ]
     }
 ];
-declare type RoomDescription = {
-    id?: string,
-    type: string,
-    subtype: string,
-    numExits: number;
-    location: { x: number, y: number };
-};
-
-function getRoomDescription(): RoomDescription {
-    const type = roomTypes[Math.floor(Math.random() * roomTypes.length)];
-    const subtype = type.subtypes[Math.floor(Math.random() * type.subtypes.length)];
-    return {
-        type: type.type,
-        subtype,
-        numExits: Math.floor(Math.random() * 4) + 1,
-        location: {
-            x: Math.floor(Math.random() * 5),
-            y: Math.floor(Math.random() * 5)
-        }
-    };
-}

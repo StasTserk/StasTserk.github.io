@@ -16,6 +16,12 @@ var rooms = [
     __assign(__assign({}, getRoomDescription()), { id: "4" }),
     __assign(__assign({}, getRoomDescription()), { id: "5" }),
 ];
+var halls = [
+    linkRoom(rooms[0], randomDirection(), rooms[1], randomDirection()),
+    linkRoom(rooms[1], randomDirection(), rooms[2], randomDirection()),
+    linkRoom(rooms[2], randomDirection(), rooms[3], randomDirection()),
+    linkRoom(rooms[3], randomDirection(), rooms[4], randomDirection())
+];
 var subscriptions = {};
 function subscribe(topic, callback) {
     if (!subscriptions[topic]) {
@@ -42,4 +48,4 @@ function notify(topic, value) {
         });
     }
 }
-ReactDOM.render(React.createElement(Layout, { rooms: rooms }), document.getElementById('root'));
+ReactDOM.render(React.createElement(Layout, { rooms: rooms, halls: halls }), document.getElementById('root'));
