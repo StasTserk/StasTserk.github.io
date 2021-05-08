@@ -13,10 +13,9 @@ function linkRoom(
         x: b.location.x * (dimensions.size + dimensions.padding) + dimensions.padding + (dimensions.size / 2),
         y: b.location.y * (dimensions.size + dimensions.padding) + dimensions.padding + (dimensions.size / 2),
     }
-    const aDrift = ((Math.random() - 0.5) * dimensions.size / 2)
-    const aStub = getHallStub(aCenter, exitDirection, aDrift);
-    const bDrift = ((Math.random()-0.5) * dimensions.size / 2)
-    const bStub = getHallStub(bCenter, entryDirection, bDrift);
+
+    const aStub = getHallStub(aCenter, exitDirection, jitter(dimensions.size / 2));
+    const bStub = getHallStub(bCenter, entryDirection, jitter(dimensions.size / 2));
 
     const aCorner = getNearestCorner(aStub[1], exitDirection, bCenter);
     const bCorner = getNearestCorner(bStub[1], entryDirection, aCenter);
@@ -38,6 +37,7 @@ function linkRoom(
 function getNearestCorner(start: Point, dir: Direction, hint: Point) {
     const { size, padding } = dimensions;
     const gridSize = size + padding;
+    const drift = jitter(padding / 2);
 
     switch (dir) {
         case "N": case "S":
@@ -47,12 +47,12 @@ function getNearestCorner(start: Point, dir: Direction, hint: Point) {
             const nearestWest = Math.floor(relevantDimension / gridSize) * gridSize + padding / 2;
             if (relevantDimension > hint.x) {
                 return {
-                    x: nearestWest,
+                    x: nearestWest + drift,
                     y: start.y
                 };
             }
             return {
-                x: nearestEast,
+                x: nearestEast + drift,
                 y: start.y
             };
         default:
@@ -63,12 +63,12 @@ function getNearestCorner(start: Point, dir: Direction, hint: Point) {
             if (relevantDim > hint.y) {
                 return {
                     x: start.x,
-                    y: nearestNorth
+                    y: nearestNorth + drift
                 };
             }
             return {
                 x: start.x,
-                y: nearestSouth
+                y: nearestSouth + drift
             };
     }
 }
@@ -110,7 +110,7 @@ declare type RoomDescription = {
 const dimensions = {
     x: 5,
     y: 5,
-    padding: 40,
+    padding: 50,
     size: 100,
 }
 
@@ -154,6 +154,10 @@ function east(p: Point, amount: number): Point {
 }
 function west(p: Point, amount: number): Point {
     return east(p, -amount);
+}
+
+function jitter(magnitude: number): number {
+    return (Math.random() - 0.5) * magnitude;
 }
 
 declare type Direction = "N" | "W" | "E" | "S";

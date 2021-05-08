@@ -1,8 +1,8 @@
-var ResultGrid = /** @class */ (function () {
+class ResultGrid {
     /**
      * @param {Result[]} range
      */
-    function ResultGrid(range) {
+    constructor(range) {
         this.range = range;
         this.maxProbability = 0.0;
         this.maxSuccess = 0;
@@ -11,7 +11,7 @@ var ResultGrid = /** @class */ (function () {
         this.minAdvantage = 0;
         this.calculateParameters(range);
         this.gridResult = this.createResultArray();
-        var i, x, y, roll;
+        let i, x, y, roll;
         var maxX = this.maxSuccess - this.minSuccess;
         var maxY = this.maxAdvantage - this.minAdvantage;
         for (i in range) {
@@ -27,10 +27,10 @@ var ResultGrid = /** @class */ (function () {
         this.convertResultToColour();
         return true;
     }
-    ResultGrid.prototype.convertResultToColour = function () {
+    convertResultToColour() {
         var x = this.maxSuccess - this.minSuccess + 1;
         var y = this.maxAdvantage - this.minAdvantage + 1;
-        var i, j, p, rgbNumber, rgbString;
+        let i, j, p, rgbNumber, rgbString;
         for (i = 0; i < x; i++) {
             for (j = 0; j < y; j++) {
                 p = this.gridResult[i][j] / this.maxProbability;
@@ -39,8 +39,8 @@ var ResultGrid = /** @class */ (function () {
                 this.gridResult[i][j] = rgbString;
             }
         }
-    };
-    ResultGrid.prototype.createResultArray = function () {
+    }
+    createResultArray() {
         var x = this.maxSuccess - this.minSuccess + 1;
         var y = this.maxAdvantage - this.minAdvantage + 1;
         var array = Array(x);
@@ -48,10 +48,10 @@ var ResultGrid = /** @class */ (function () {
             array[i] = Array(y).fill(0);
         }
         return array;
-    };
-    ResultGrid.prototype.calculateParameters = function (range) {
+    }
+    calculateParameters(range) {
         var maxS = 0, minS = 0, maxV = 0, minV = 0;
-        var i;
+        let i;
         for (i in range) {
             if (maxS < range[i].success) {
                 maxS = range[i].success;
@@ -70,9 +70,8 @@ var ResultGrid = /** @class */ (function () {
         this.minSuccess = minS;
         this.maxAdvantage = maxV;
         this.minAdvantage = minV;
-    };
-    return ResultGrid;
-}());
+    }
+}
 function pad(n, width, z) {
     z = z || '0';
     n = n + '';

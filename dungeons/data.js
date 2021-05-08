@@ -1,4 +1,4 @@
-var roomTypes = [
+const roomTypes = [
     {
         type: "Residential",
         subtypes: [

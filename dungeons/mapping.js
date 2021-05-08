@@ -1,79 +1,72 @@
-var __spreadArray = (this && this.__spreadArray) || function (to, from) {
-    for (var i = 0, il = from.length, j = to.length; i < il; i++, j++)
-        to[j] = from[i];
-    return to;
-};
 function linkRoom(a, exitDirection, b, entryDirection) {
-    var aCenter = {
+    const aCenter = {
         x: a.location.x * (dimensions.size + dimensions.padding) + dimensions.padding + (dimensions.size / 2),
-        y: a.location.y * (dimensions.size + dimensions.padding) + dimensions.padding + (dimensions.size / 2)
+        y: a.location.y * (dimensions.size + dimensions.padding) + dimensions.padding + (dimensions.size / 2),
     };
-    var bCenter = {
+    const bCenter = {
         x: b.location.x * (dimensions.size + dimensions.padding) + dimensions.padding + (dimensions.size / 2),
-        y: b.location.y * (dimensions.size + dimensions.padding) + dimensions.padding + (dimensions.size / 2)
+        y: b.location.y * (dimensions.size + dimensions.padding) + dimensions.padding + (dimensions.size / 2),
     };
-    var aDrift = ((Math.random() - 0.5) * dimensions.size / 2);
-    var aStub = getHallStub(aCenter, exitDirection, aDrift);
-    var bDrift = ((Math.random() - 0.5) * dimensions.size / 2);
-    var bStub = getHallStub(bCenter, entryDirection, bDrift);
-    var aCorner = getNearestCorner(aStub[1], exitDirection, bCenter);
-    var bCorner = getNearestCorner(bStub[1], entryDirection, aCenter);
+    const aStub = getHallStub(aCenter, exitDirection, jitter(dimensions.size / 2));
+    const bStub = getHallStub(bCenter, entryDirection, jitter(dimensions.size / 2));
+    const aCorner = getNearestCorner(aStub[1], exitDirection, bCenter);
+    const bCorner = getNearestCorner(bStub[1], entryDirection, aCenter);
     return {
         start: { x: aCenter.x, y: aCenter.y, direction: exitDirection },
         end: { x: bCenter.x, y: bCenter.y, direction: entryDirection },
-        path: __spreadArray(__spreadArray(__spreadArray(__spreadArray([
-            aCenter
-        ], aStub), [
+        path: [
+            aCenter,
+            ...aStub,
             aCorner,
             { x: aCorner.x, y: bCorner.y },
-            bCorner
-        ]), bStub.reverse()), [
+            bCorner,
+            ...bStub.reverse(),
             bCenter
-        ])
+        ]
     };
 }
 function getNearestCorner(start, dir, hint) {
-    var size = dimensions.size, padding = dimensions.padding;
-    var gridSize = size + padding;
+    const { size, padding } = dimensions;
+    const gridSize = size + padding;
+    const drift = jitter(padding / 2);
     switch (dir) {
         case "N":
         case "S":
             // we have to go either east or west
-            var relevantDimension = start.x;
-            var nearestEast = Math.ceil(relevantDimension / gridSize) * gridSize + padding / 2;
-            var nearestWest = Math.floor(relevantDimension / gridSize) * gridSize + padding / 2;
+            const relevantDimension = start.x;
+            const nearestEast = Math.ceil(relevantDimension / gridSize) * gridSize + padding / 2;
+            const nearestWest = Math.floor(relevantDimension / gridSize) * gridSize + padding / 2;
             if (relevantDimension > hint.x) {
                 return {
-                    x: nearestWest,
+                    x: nearestWest + drift,
                     y: start.y
                 };
             }
             return {
-                x: nearestEast,
+                x: nearestEast + drift,
                 y: start.y
             };
         default:
             // we have to go north or south
-            var relevantDim = start.y;
-            var nearestSouth = Math.ceil(relevantDim / gridSize) * gridSize + padding / 2;
-            var nearestNorth = Math.floor(relevantDim / gridSize) * gridSize + padding / 2;
+            const relevantDim = start.y;
+            const nearestSouth = Math.ceil(relevantDim / gridSize) * gridSize + padding / 2;
+            const nearestNorth = Math.floor(relevantDim / gridSize) * gridSize + padding / 2;
             if (relevantDim > hint.y) {
                 return {
                     x: start.x,
-                    y: nearestNorth
+                    y: nearestNorth + drift
                 };
             }
             return {
                 x: start.x,
-                y: nearestSouth
+                y: nearestSouth + drift
             };
     }
 }
-function getHallStub(p, d, jitter) {
-    if (jitter === void 0) { jitter = 0; }
-    var size = dimensions.size, padding = dimensions.padding;
-    var edgePoint;
-    var nextPoint;
+function getHallStub(p, d, jitter = 0) {
+    const { size, padding } = dimensions;
+    let edgePoint;
+    let nextPoint;
     switch (d) {
         case 'E':
             edgePoint = north(east(p, (size / 2)), jitter);
@@ -94,23 +87,23 @@ function getHallStub(p, d, jitter) {
     }
     return [edgePoint, nextPoint];
 }
-var dimensions = {
+const dimensions = {
     x: 5,
     y: 5,
-    padding: 40,
-    size: 100
+    padding: 50,
+    size: 100,
 };
-var directions = ["N", "W", "E", "S"];
+const directions = ["N", "W", "E", "S"];
 function randomDirection() {
     return directions[Math.floor(Math.random() * directions.length)];
 }
 function getRoomDescription() {
-    var x = dimensions.x, y = dimensions.y;
-    var type = roomTypes[Math.floor(Math.random() * roomTypes.length)];
-    var subtype = type.subtypes[Math.floor(Math.random() * type.subtypes.length)];
+    const { x, y } = dimensions;
+    const type = roomTypes[Math.floor(Math.random() * roomTypes.length)];
+    const subtype = type.subtypes[Math.floor(Math.random() * type.subtypes.length)];
     return {
         type: type.type,
-        subtype: subtype,
+        subtype,
         numExits: Math.floor(Math.random() * 4) + 1,
         location: {
             x: Math.floor(Math.random() * x),
@@ -135,4 +128,7 @@ function east(p, amount) {
 }
 function west(p, amount) {
     return east(p, -amount);
+}
+function jitter(magnitude) {
+    return (Math.random() - 0.5) * magnitude;
 }

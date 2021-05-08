@@ -1,6 +1,6 @@
 function Npc() {
     this.race = "";
-    this["class"] = "";
+    this.class = "";
     this.alignment = "";
     this.profession = "";
     this.attitude = "";
@@ -20,7 +20,7 @@ function GenerateNpc(setProperties, addClass) {
     npc.status = setProperties.status || GetTableResult(d(6) + d(6) + d(6), Table_Status);
     npc.relationship = setProperties.relationship || "None";
     if (addClass || npc.profession == "Adventurer") {
-        npc["class"] = setProperties["class"] || GetTableResult(d(100), Table_Class);
+        npc.class = setProperties.class || GetTableResult(d(100), Table_Class);
     }
     return npc;
 }
@@ -52,7 +52,7 @@ function GetTableResult(roll, table) {
 function GetSimpleNpcText(npc) {
     var result = npc.alignment + " "
         + npc.race + " "
-        + (npc["class"] || npc.profession) + " who is " +
+        + (npc.class || npc.profession) + " who is " +
         npc.attitude + " towards you. They are " +
         npc.status;
     return result;
@@ -66,7 +66,7 @@ function Backstory(race, pClass, profession, chaMod, numEvents) {
     chaMod = chaMod || 0;
     numEvents = numEvents || 10;
     this.race = race;
-    this["class"] = pClass;
+    this.class = pClass;
     this.profession = profession;
     this.chaMod = chaMod;
     this.numEvents = numEvents;
@@ -292,8 +292,8 @@ Backstory.prototype.GenerateLifeEvent = function () {
     this.events.push({ id: this.events.length, text: eventText });
 };
 Backstory.prototype.GenerateChoiceReasons = function () {
-    this.classReason = "You became a " + this["class"] + " because ";
-    switch (this["class"]) {
+    this.classReason = "You became a " + this.class + " because ";
+    switch (this.class) {
         case "Barbarian":
             this.classReason += option([
                 "your devotion to your people lifted you in battle, making you powerful and dangerous.",

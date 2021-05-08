@@ -1,28 +1,17 @@
-var __assign = (this && this.__assign) || function () {
-    __assign = Object.assign || function(t) {
-        for (var s, i = 1, n = arguments.length; i < n; i++) {
-            s = arguments[i];
-            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-                t[p] = s[p];
-        }
-        return t;
-    };
-    return __assign.apply(this, arguments);
-};
-var rooms = [
-    __assign(__assign({}, getRoomDescription()), { id: "1" }),
-    __assign(__assign({}, getRoomDescription()), { id: "2" }),
-    __assign(__assign({}, getRoomDescription()), { id: "3" }),
-    __assign(__assign({}, getRoomDescription()), { id: "4" }),
-    __assign(__assign({}, getRoomDescription()), { id: "5" }),
+const rooms = [
+    { ...getRoomDescription(), id: "1" },
+    { ...getRoomDescription(), id: "2" },
+    { ...getRoomDescription(), id: "3" },
+    { ...getRoomDescription(), id: "4" },
+    { ...getRoomDescription(), id: "5" },
 ];
-var halls = [
+const halls = [
     linkRoom(rooms[0], randomDirection(), rooms[1], randomDirection()),
     linkRoom(rooms[1], randomDirection(), rooms[2], randomDirection()),
     linkRoom(rooms[2], randomDirection(), rooms[3], randomDirection()),
     linkRoom(rooms[3], randomDirection(), rooms[4], randomDirection())
 ];
-var subscriptions = {};
+const subscriptions = {};
 function subscribe(topic, callback) {
     if (!subscriptions[topic]) {
         subscriptions[topic] = [];
@@ -32,18 +21,18 @@ function subscribe(topic, callback) {
     }
 }
 function unsubscribe(topic, callback) {
-    var subs = subscriptions[topic];
+    const subs = subscriptions[topic];
     if (subs) {
-        var index = subs.indexOf(callback);
+        const index = subs.indexOf(callback);
         if (index !== -1) {
             subscriptions[topic] = subs.splice(index, 1);
         }
     }
 }
 function notify(topic, value) {
-    var subs = subscriptions[topic];
+    const subs = subscriptions[topic];
     if (subs) {
-        subs.forEach(function (s) {
+        subs.forEach(s => {
             s(value);
         });
     }

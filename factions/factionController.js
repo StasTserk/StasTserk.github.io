@@ -41,9 +41,7 @@ factionController.controller('FactionController', function ($scope) {
         $scope.contestData.close();
     };
     $scope.updateAttackerFeatures = function () {
-        var newFaction = $scope.factions.find(function (faction) {
-            return faction === $scope.contestData.attacker;
-        });
+        const newFaction = $scope.factions.find(faction => faction === $scope.contestData.attacker);
         if (newFaction) {
             $scope.contestData.attackerFeatures = newFaction.features;
         }
@@ -52,9 +50,7 @@ factionController.controller('FactionController', function ($scope) {
         }
     };
     $scope.updateDefenderFeatures = function () {
-        var newFaction = $scope.factions.find(function (faction) {
-            return faction === $scope.contestData.defender;
-        });
+        const newFaction = $scope.factions.find(faction => faction === $scope.contestData.defender);
         if (newFaction) {
             $scope.contestData.defenderFeatures = newFaction.features;
         }
@@ -89,8 +85,8 @@ factionController.controller('FactionController', function ($scope) {
      * @param {Faction} f faction to edit
      */
     $scope.editFaction = function (f) {
-        var d = $scope.newFactionData;
-        var index = $scope.factions.indexOf(f);
+        const d = $scope.newFactionData;
+        const index = $scope.factions.indexOf(f);
         d.name = f.name;
         d.power = f.power;
         d.description = f.description;
@@ -140,8 +136,8 @@ factionController.controller('FactionController', function ($scope) {
             name: "Restore Cohesion",
             action: function () {
                 console.log("Restoring Cohesion");
-                var faction = $scope.factionTurnData.faction;
-                var cost = Math.pow(2, faction.power);
+                const faction = $scope.factionTurnData.faction;
+                const cost = Math.pow(2, faction.power);
                 if (faction.dominion < cost) {
                     $scope.messageTitle = "Not enough dominion to restore cohesion!";
                     $scope.messageBody = faction.name + " only has " + faction.dominion
@@ -152,7 +148,7 @@ factionController.controller('FactionController', function ($scope) {
                 }
                 else {
                     faction.dominion -= cost;
-                    var roll = faction.getRoll();
+                    const roll = faction.getRoll();
                     if (faction.trouble < roll) {
                         faction.cohesion++;
                         if (faction.cohesion > faction.cohesionMax) {
@@ -173,8 +169,8 @@ factionController.controller('FactionController', function ($scope) {
             name: "Build Strength",
             action: function () {
                 console.log("Creating Dominion");
-                var faction = $scope.factionTurnData.faction;
-                var roll = faction.getRoll();
+                const faction = $scope.factionTurnData.faction;
+                const roll = faction.getRoll();
                 $scope.messageTitle = "Build Strength Outcome";
                 $scope.onMessageAccept = $scope.factionTurnData.doNextAction.bind($scope.factionTurnData);
                 if (roll > faction.trouble) {
@@ -207,8 +203,8 @@ factionController.controller('FactionController', function ($scope) {
                 console.log("Solving problem");
                 $scope.targetProblem = "";
                 $scope.onFixProblem = function () {
-                    var faction = $scope.factionTurnData.faction;
-                    var roll = faction.getRoll();
+                    const faction = $scope.factionTurnData.faction;
+                    const roll = faction.getRoll();
                     if (roll <= faction.trouble) {
                         // problem is reduced
                         $scope.log(faction.name + " attempts to reduce their trouble.", "They target " + $scope.targetProblem.text, "The roll of " + roll + " comapred to their trouble of " + faction.trouble
@@ -321,7 +317,7 @@ factionController.controller('FactionController', function ($scope) {
                     $scope.contestData.clear();
                     $scope.contestData.attacker = $scope.factionTurnData.faction;
                     $scope.updateAttackerFeatures();
-                    $scope.contestData.defender = $scope.factions.find(function (f) { return f.name === $scope.removeInterestTarget.target; });
+                    $scope.contestData.defender = $scope.factions.find((f) => f.name === $scope.removeInterestTarget.target);
                     $scope.updateDefenderFeatures();
                     $scope.contestData.onAccept = function () {
                         if ($scope.contestData.isVictory) {
@@ -428,11 +424,7 @@ factionController.controller('FactionController', function ($scope) {
     $scope.outcomeData = new ContestOutcomeViewModel();
     // ==========================================================
     //           logging related functionality
-    $scope.log = function (title) {
-        var details = [];
-        for (var _i = 1; _i < arguments.length; _i++) {
-            details[_i - 1] = arguments[_i];
-        }
+    $scope.log = function (title, ...details) {
         $scope.eventLog.push({
             headerText: title,
             subItems: details
@@ -459,7 +451,7 @@ factionController.controller('FactionController', function ($scope) {
         }
     };
     $scope.loadData();
-    $scope["import"] = function () {
+    $scope.import = function () {
         $scope.importLabel = "Import Data";
         $scope.importText = "";
         $("#exportModal").css("display", "block");
@@ -471,7 +463,7 @@ factionController.controller('FactionController', function ($scope) {
             }
         };
     };
-    $scope["export"] = function () {
+    $scope.export = function () {
         $scope.importLabel = "Export Data";
         $scope.importText = JSON.stringify({
             factions: $scope.factions,
@@ -497,6 +489,6 @@ factionController.controller('FactionController', function ($scope) {
  * @returns {Faction[]} array of faction objects from parsed values
  */
 function LoadData(parsedFactions) {
-    return parsedFactions.map(function (f) { return new Faction().fromJson(f); });
+    return parsedFactions.map((f) => new Faction().fromJson(f));
 }
 ;
