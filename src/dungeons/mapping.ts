@@ -17,8 +17,8 @@ function linkRoom(
     const aStub = getHallStub(aCenter, exitDirection, jitter(dimensions.size / 2));
     const bStub = getHallStub(bCenter, entryDirection, jitter(dimensions.size / 2));
 
-    const aCorner = getNearestCorner(aStub[1], exitDirection, bCenter);
-    const bCorner = getNearestCorner(bStub[1], entryDirection, aCenter);
+    const aCorner = getNearestCorner(aStub[1], exitDirection, bStub[1]);
+    const bCorner = getNearestCorner(bStub[1], entryDirection, aCorner);
     
     return {
         start: { x: aCenter.x, y: aCenter.y, direction: exitDirection },
@@ -73,26 +73,26 @@ function getNearestCorner(start: Point, dir: Direction, hint: Point) {
     }
 }
 
-function getHallStub(p: Point, d: Direction, jitter: number = 0): Point[] {
+function getHallStub(p: Point, d: Direction, drift: number = 0): Point[] {
     const { size, padding } = dimensions;
     let edgePoint;
     let nextPoint;
     switch (d) {
         case 'E':
-            edgePoint = north(east(p, (size / 2)), jitter);
-            nextPoint = east(edgePoint, padding / 2);
+            edgePoint = north(east(p, (size / 2)), drift);
+            nextPoint = east(edgePoint, padding / 2 + jitter(10));
             break;
         case 'W':
-            edgePoint = north(west(p, (size / 2)), jitter);
-            nextPoint = west(edgePoint, padding / 2);
+            edgePoint = north(west(p, (size / 2)), drift);
+            nextPoint = west(edgePoint, padding / 2 + jitter(10));
             break;
         case 'N':
-            edgePoint = west(north(p, (size / 2)), jitter);
-            nextPoint = north(edgePoint, padding / 2);
+            edgePoint = west(north(p, (size / 2)), drift);
+            nextPoint = north(edgePoint, padding / 2 + jitter(10));
             break;
         case 'S':
-            edgePoint = west(south(p, (size / 2)), jitter);
-            nextPoint = south(edgePoint, padding / 2);
+            edgePoint = west(south(p, (size / 2)), drift);
+            nextPoint = south(edgePoint, padding / 2 + jitter(10));
             break;
     }
     return [edgePoint, nextPoint];
