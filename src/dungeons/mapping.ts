@@ -106,6 +106,7 @@ declare type RoomDescription = {
     numExits: number;
     location: { x: number, y: number };
     contents: { type: string, description: string, treasure: boolean }
+    halls: Hallway[];
 };
 
 const dimensions = {
@@ -115,13 +116,21 @@ const dimensions = {
     size: 100,
 }
 
-const directions: ("N" | "W" | "E" | "S")[] = ["N", "W", "E", "S"];
+
+const directions: Direction[] = ["N", "W", "E", "S"];
 function randomDirection() {
     return directions[Math.floor(Math.random() * directions.length)];
 }
+function oppositeDirection(dir: Direction): Direction {
+    switch (dir) {
+        case "N": return "S";
+        case "W": return "E";
+        case "S": return "N";
+        case "E": return "W";
+    }
+}
 
-function getRoomDescription(): RoomDescription {
-    const { x, y } = dimensions;
+function getRoomDescription(location= { x: 0, y: 0 }): RoomDescription {
     const type = RollOn(roomTypes);
     const subtype = RollOn(type.subtypes);
     const contents = RollOn(roomContents);
@@ -129,15 +138,13 @@ function getRoomDescription(): RoomDescription {
         type: type.type,
         subtype,
         numExits: Math.floor(Math.random() * 4) + 1,
-        location: {
-            x: Math.floor(Math.random() * x),
-            y: Math.floor(Math.random() * y)
-        },
+        location,
         contents: {
             type: contents.type,
             description: contents.description,
             treasure: (Math.random() <= contents.chanceOfTreasure)
-        }
+        },
+        halls: []
     };
 }
 

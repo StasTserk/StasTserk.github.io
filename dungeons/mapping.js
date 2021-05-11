@@ -97,8 +97,15 @@ const directions = ["N", "W", "E", "S"];
 function randomDirection() {
     return directions[Math.floor(Math.random() * directions.length)];
 }
-function getRoomDescription() {
-    const { x, y } = dimensions;
+function oppositeDirection(dir) {
+    switch (dir) {
+        case "N": return "S";
+        case "W": return "E";
+        case "S": return "N";
+        case "E": return "W";
+    }
+}
+function getRoomDescription(location = { x: 0, y: 0 }) {
     const type = RollOn(roomTypes);
     const subtype = RollOn(type.subtypes);
     const contents = RollOn(roomContents);
@@ -106,15 +113,13 @@ function getRoomDescription() {
         type: type.type,
         subtype,
         numExits: Math.floor(Math.random() * 4) + 1,
-        location: {
-            x: Math.floor(Math.random() * x),
-            y: Math.floor(Math.random() * y)
-        },
+        location,
         contents: {
             type: contents.type,
             description: contents.description,
             treasure: (Math.random() <= contents.chanceOfTreasure)
-        }
+        },
+        halls: []
     };
 }
 function north(p, amount) {
