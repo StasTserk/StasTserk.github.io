@@ -20,7 +20,14 @@ const Layout = (props: React.PropsWithChildren<{ rooms: RoomDescription[], halls
 }
 
 const Hallways = (props: React.PropsWithChildren<{ halls: Hallway[] }>) => {
-    const { x, y, size, padding} = dimensions
+    const { x, y, size, padding } = dimensions
+    // const pathify = (points: Point[]): string => {
+    //     let curvedPath = `M ${points[0].x} ${points[0].y} Q ${points[1].x} ${points[1].y}, ${points[2].x} ${points[2].y}`;
+    //     for (let i = 2; i < points.length - 1; i += 2) {
+    //         curvedPath += ` Q ${points[i].x} ${points[i].y}, ${points[i+1].x} ${points[i+1].y}`
+    //     }
+    //     return curvedPath;
+    // }
     return (
         <svg style={{
             width: x * (size + padding) + padding,
@@ -32,6 +39,13 @@ const Hallways = (props: React.PropsWithChildren<{ halls: Hallway[] }>) => {
                     stroke={"black"}
                     points={hall.path.map(p => `${p.x}, ${p.y}`).join(' ')}
                 />);
+                // return (
+                //     <path key={index}
+                //         fill={"none"}
+                //         stroke={"black"}
+                //         d={pathify(hall.path)}
+                //     />
+                // )
             })}
         </svg>
     );

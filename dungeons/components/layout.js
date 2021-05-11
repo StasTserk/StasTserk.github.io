@@ -11,11 +11,25 @@ const Layout = (props) => {
 };
 const Hallways = (props) => {
     const { x, y, size, padding } = dimensions;
+    // const pathify = (points: Point[]): string => {
+    //     let curvedPath = `M ${points[0].x} ${points[0].y} Q ${points[1].x} ${points[1].y}, ${points[2].x} ${points[2].y}`;
+    //     for (let i = 2; i < points.length - 1; i += 2) {
+    //         curvedPath += ` Q ${points[i].x} ${points[i].y}, ${points[i+1].x} ${points[i+1].y}`
+    //     }
+    //     return curvedPath;
+    // }
     return (React.createElement("svg", { style: {
             width: x * (size + padding) + padding,
             height: y * (size + padding) + padding,
         } }, props.halls.map((hall, index) => {
         return (React.createElement("polyline", { key: index, fill: "none", stroke: "black", points: hall.path.map(p => `${p.x}, ${p.y}`).join(' ') }));
+        // return (
+        //     <path key={index}
+        //         fill={"none"}
+        //         stroke={"black"}
+        //         d={pathify(hall.path)}
+        //     />
+        // )
     })));
 };
 const Room = (props) => {
