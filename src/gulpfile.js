@@ -1,5 +1,7 @@
 const gulp = require("gulp");
 const ts = require("gulp-typescript");
+const sass = require("gulp-sass");
+sass.compiler = require('node-sass');
 const tsProject = ts.createProject("tsconfig.json");
 
 function compileTs() {
@@ -9,15 +11,19 @@ function compileTs() {
 }
 
 function buildCss() {
-    return gulp.src("**/*.css", { base: "." })
+    return gulp.src(["**/*.css", "!node_modules/**"], { base: "." })
         .pipe(gulp.dest("../"));
-    // return gulp.src("styles/**/*.scss")
-    //     .pipe(sass())
-    //     .pipe(gulp.dest("dist/styles"));
+
+}
+
+function buildSass() {
+    return gulp.src(["**/*.scss", "!node_modules/**"], { base: "." })
+        .pipe(sass())
+        .pipe(gulp.dest("../"));
 }
 
 function buildHtml() {
-    return gulp.src(["**/*.html"], { base: "." })
+    return gulp.src(["**/*.html", "!node_modules/**"], { base: "." })
         .pipe(gulp.dest("../"));
 }
 
@@ -25,6 +31,10 @@ const tsTask = gulp.series(
     compileTs);
 
 const sassTask = gulp.series(
+    buildSass
+);
+
+const cssTask = gulp.series(
     buildCss
 );
 
@@ -36,6 +46,7 @@ const build = gulp.series(
     //lintTs,
     compileTs,
     buildCss,
+    buildSass,
     buildHtml,
 )
 
@@ -44,7 +55,7 @@ function watch() {
     gulp.watch("**/*.tsx", tsTask);
     gulp.watch("**/*.js", tsTask);
     gulp.watch("**/*.scss", sassTask);
-    gulp.watch("**/*.css", sassTask);
+    gulp.watch("**/*.css", cssTask);
     gulp.watch("**/*.html", htmlTask);
 }
 

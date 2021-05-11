@@ -17,6 +17,12 @@
 
 .room-detail {
     max-width: 300px;
+    border: 2px inset gray;
+    background: linear-gradient(darkgray, white);
+    padding: 1em;
+    border-radius: 1em;
+    margin-left: 5px;
+    height: min-content;
 }
 
 svg {
