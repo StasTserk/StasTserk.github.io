@@ -99,8 +99,9 @@ function randomDirection() {
 }
 function getRoomDescription() {
     const { x, y } = dimensions;
-    const type = roomTypes[Math.floor(Math.random() * roomTypes.length)];
-    const subtype = type.subtypes[Math.floor(Math.random() * type.subtypes.length)];
+    const type = RollOn(roomTypes);
+    const subtype = RollOn(type.subtypes);
+    const contents = RollOn(roomContents);
     return {
         type: type.type,
         subtype,
@@ -108,6 +109,11 @@ function getRoomDescription() {
         location: {
             x: Math.floor(Math.random() * x),
             y: Math.floor(Math.random() * y)
+        },
+        contents: {
+            type: contents.type,
+            description: contents.description,
+            treasure: (Math.random() <= contents.chanceOfTreasure)
         }
     };
 }

@@ -1,4 +1,10 @@
 .root {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.dungeon-map {
     display: grid;
     grid-template-columns: 1fr;
 }
@@ -9,10 +15,14 @@
     grid-area: 1 / 1 / 2 / 2;
 }
 
+.room-detail {
+    max-width: 300px;
+}
+
 svg {
     background-color: darkgray;
     grid-area: 1 / 1 / 2 / 2;
-    
+    padding: 10px;
 }
 
 .room {

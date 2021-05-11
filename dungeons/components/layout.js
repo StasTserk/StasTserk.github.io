@@ -1,11 +1,12 @@
 const Layout = (props) => {
     const { x, y, size, padding } = dimensions;
     return (React.createElement(React.Fragment, null,
-        React.createElement(Hallways, { halls: props.halls }),
-        React.createElement("div", { className: "dungeon-layout", style: {
-                width: x * (size + padding) + padding,
-                height: y * (size + padding) + padding,
-            } }, props.rooms.map(r => { return React.createElement(Room, { room: r, key: r.id }); })),
+        React.createElement("div", { className: "dungeon-map" },
+            React.createElement(Hallways, { halls: props.halls }),
+            React.createElement("div", { className: "dungeon-layout", style: {
+                    width: x * (size + padding) + padding,
+                    height: y * (size + padding) + padding,
+                } }, props.rooms.map(r => { return React.createElement(Room, { room: r, key: r.id }); }))),
         React.createElement(RoomDetail, { room: props.rooms[0] })));
 };
 const Hallways = (props) => {
@@ -21,7 +22,7 @@ const Room = (props) => {
     const { size, padding } = dimensions;
     const { room } = props;
     return (React.createElement("div", { className: "room", style: { top: room.location.y * (size + padding) + padding, left: room.location.x * (size + padding) + padding }, onMouseEnter: () => notify('hover', room) },
-        React.createElement("strong", null, room.type),
+        React.createElement("strong", null, room.id),
         " - ",
         room.subtype));
 };
@@ -35,5 +36,13 @@ const RoomDetail = (props) => {
             room.subtype),
         React.createElement("p", null,
             "Number of Exits: ",
-            room.numExits)));
+            room.numExits),
+        React.createElement("p", null,
+            "Contents: ",
+            room.contents.type,
+            " - ",
+            room.contents.description),
+        React.createElement("p", null,
+            "Treasure: ",
+            room.contents.treasure.toString())));
 };

@@ -2,6 +2,7 @@ const Layout = (props: React.PropsWithChildren<{ rooms: RoomDescription[], halls
     const { x, y, size, padding} = dimensions
     return (
         <>
+        <div className={ "dungeon-map"}>
             <Hallways halls={props.halls} />
             <div
                 className={"dungeon-layout"}
@@ -12,7 +13,8 @@ const Layout = (props: React.PropsWithChildren<{ rooms: RoomDescription[], halls
             >
                 {props.rooms.map(r => { return <Room room={r} key={r.id} />; })}
             </div>
-            <RoomDetail room={ props.rooms[0] }/>
+        </div>
+        <RoomDetail room={ props.rooms[0] }/>
         </>
     );
 }
@@ -44,7 +46,7 @@ const Room = (props: React.PropsWithChildren<{ room: RoomDescription }>) => {
             style={{ top: room.location.y * (size + padding) + padding, left: room.location.x * (size + padding) + padding }}
             onMouseEnter={ () => notify('hover', room)}
         >
-            <strong>{room.type}</strong> - {room.subtype}
+            <strong>{room.id}</strong> - {room.subtype}
         </div>
     );
 }
@@ -57,6 +59,12 @@ const RoomDetail = (props: React.PropsWithChildren<{ room: RoomDescription }>) =
             <div className="description">{room.type} - {room.subtype}</div>
             <p>
                 Number of Exits: {room.numExits}
+            </p>
+            <p>
+                Contents: {room.contents.type} - {room.contents.description}
+            </p>
+            <p>
+                Treasure: {room.contents.treasure.toString()}
             </p>
         </div>
     );
