@@ -40,8 +40,8 @@ function GenerateDungeon() {
     dimensions.y = bounds.maxY;
 }
 function findEmptySpot(point, direction) {
-    const x = Math.floor(Math.random() * 3) + 1;
-    const y = Math.floor(Math.random() * 3) + 1;
+    const x = Math.floor(Math.random() * 0) + 1;
+    const y = Math.floor(Math.random() * 0) + 1;
     const multiplier = { x: 0, y: 0 };
     switch (direction) {
         case "W":
@@ -51,7 +51,7 @@ function findEmptySpot(point, direction) {
             multiplier.x = 1;
             break;
         case "N":
-            multiplier.y = 1;
+            multiplier.y = -1;
             break;
         case "S":
             multiplier.y = 1;

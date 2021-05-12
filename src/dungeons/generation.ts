@@ -50,13 +50,13 @@ function GenerateDungeon() {
 }
 
 function findEmptySpot(point: Point, direction: Direction): Point {
-    const x = Math.floor(Math.random() * 3)+1;
-    const y = Math.floor(Math.random() * 3)+1;
+    const x = Math.floor(Math.random() * 0)+1;
+    const y = Math.floor(Math.random() * 0)+1;
     const multiplier = { x: 0, y: 0 }
     switch (direction) {
         case "W": multiplier.x = -1; break;
         case "E": multiplier.x = 1; break;
-        case "N": multiplier.y = 1; break;
+        case "N": multiplier.y = -1; break;
         case "S": multiplier.y = 1; break;
     }
     const offset: Point = { x: x * multiplier.x, y: y * multiplier.y };
