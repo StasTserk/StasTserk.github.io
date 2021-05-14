@@ -1,5 +1,6 @@
 const Layout = (props: React.PropsWithChildren<{ rooms: RoomDescription[], halls: Hallway[] }>) => {
-    const { x, y, size, padding} = dimensions
+    const { x, y, size, padding } = dimensions;
+
     return (
         <>
         <div className={ "dungeon-map"}>
@@ -14,7 +15,7 @@ const Layout = (props: React.PropsWithChildren<{ rooms: RoomDescription[], halls
                 {props.rooms.map(r => { return <Room room={r} key={r.id} />; })}
             </div>
         </div>
-        <RoomDetail room={ props.rooms[0] }/>
+        <RoomDetail room={props.rooms[0]} />
         </>
     );
 }

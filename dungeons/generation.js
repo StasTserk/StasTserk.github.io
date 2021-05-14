@@ -1,7 +1,8 @@
 const rooms = [];
 const bounds = { minX: 999, minY: 999, maxX: 0, maxY: 0 };
 const halls = [];
-function GenerateDungeon() {
+function GenerateDungeon(seed) {
+    Math.seedrandom(seed);
     rooms.push({ ...getRoomDescription(), id: "1" });
     let i = 0;
     while (i < rooms.length && rooms.length < 10) {
@@ -40,8 +41,8 @@ function GenerateDungeon() {
     dimensions.y = bounds.maxY;
 }
 function findEmptySpot(point, direction) {
-    const x = Math.floor(Math.random() * 0) + 1;
-    const y = Math.floor(Math.random() * 0) + 1;
+    const x = Math.floor(Math.random() * 2) + 1;
+    const y = Math.floor(Math.random() * 2) + 1;
     const multiplier = { x: 0, y: 0 };
     switch (direction) {
         case "W":
