@@ -23,6 +23,8 @@ function GenerateDungeon(seed: string) {
             const newLocation = findEmptySpot(room.location, direction);
             const newRoom = { ...getRoomDescription(newLocation), id: (rooms.length + 1 ).toString() }
             const hall = linkRoom(room, direction, newRoom, oppositeDirection(direction));
+            hall.startRoom = room;
+            hall.endRoom = newRoom;
             room.halls.push(hall);
             newRoom.halls.push(hall);
             updateBounds(newRoom);
@@ -48,15 +50,18 @@ function GenerateDungeon(seed: string) {
         h.path.forEach(p => {
             p.x -= hallDeltaX;
             p.y -= hallDeltaY;
-        })
-    })
+        });
+        if (!rooms.some(r => roomIsBetween(r, h.startRoom, h.endRoom))) {
+            simplifyPath(h);
+        }
+    });
     dimensions.x = bounds.maxX;
     dimensions.y = bounds.maxY;
 }
 
 function findEmptySpot(point: Point, direction: Direction): Point {
-    const x = Math.floor(Math.random() * 2)+1;
-    const y = Math.floor(Math.random() * 2)+1;
+    const x = Math.floor(Math.random() * 0)+1;
+    const y = Math.floor(Math.random() * 0)+1;
     const multiplier = { x: 0, y: 0 }
     switch (direction) {
         case "W": multiplier.x = -1; break;

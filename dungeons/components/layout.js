@@ -22,7 +22,7 @@ const Hallways = (props) => {
             width: x * (size + padding) + padding,
             height: y * (size + padding) + padding,
         } }, props.halls.map((hall, index) => {
-        return (React.createElement("polyline", { key: index, fill: "none", stroke: "black", points: hall.path.map(p => `${p.x}, ${p.y}`).join(' ') }));
+        return (React.createElement("polyline", { key: index, fill: "none", stroke: "black", points: hall.path.map(p => `${p.x}, ${p.y}`).join(' '), strokeWidth: 3 }));
         // return (
         //     <path key={index}
         //         fill={"none"}

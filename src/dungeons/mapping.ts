@@ -14,8 +14,8 @@ function linkRoom(
         y: b.location.y * (dimensions.size + dimensions.padding) + dimensions.padding + (dimensions.size / 2),
     }
 
-    const aStub = getHallStub(aCenter, exitDirection, jitter(dimensions.size / 2));
-    const bStub = getHallStub(bCenter, entryDirection, jitter(dimensions.size / 2));
+    const aStub = getHallStub(aCenter, exitDirection, jitter(dimensions.size * .75));
+    const bStub = getHallStub(bCenter, entryDirection, jitter(dimensions.size * .75));
 
     const aCorner = getNearestCorner(aStub[1], exitDirection, bStub[1]);
     const bCorner = getNearestCorner(bStub[1], entryDirection, aCorner);
@@ -80,22 +80,38 @@ function getHallStub(p: Point, d: Direction, drift: number = 0): Point[] {
     switch (d) {
         case 'E':
             edgePoint = north(east(p, (size / 2)), drift);
-            nextPoint = east(edgePoint, padding / 2 + jitter(10));
+            nextPoint = east(edgePoint, padding / 2 +  jitter(0));
             break;
         case 'W':
             edgePoint = north(west(p, (size / 2)), drift);
-            nextPoint = west(edgePoint, padding / 2 + jitter(10));
+            nextPoint = west(edgePoint, padding / 2 +  jitter(0));
             break;
         case 'N':
             edgePoint = west(north(p, (size / 2)), drift);
-            nextPoint = north(edgePoint, padding / 2 + jitter(10));
+            nextPoint = north(edgePoint, padding / 2 + jitter(0));
             break;
         case 'S':
             edgePoint = west(south(p, (size / 2)), drift);
-            nextPoint = south(edgePoint, padding / 2 + jitter(10));
+            nextPoint = south(edgePoint, padding / 2 + jitter(0));
             break;
     }
     return [edgePoint, nextPoint];
+}
+
+function roomIsBetween(room: RoomDescription, a: RoomDescription, b: RoomDescription): boolean {
+    if (room === a || room === b) { return false; }
+    
+    const minX = Math.min(a.location.x, b.location.x);
+    const maxX = Math.max(a.location.x, b.location.x);
+    const minY = Math.min(a.location.y, b.location.y);
+    const maxY = Math.max(a.location.y, b.location.y);
+    const { x, y } = room.location;
+
+    return (x >= minX && x <= maxX && y >= minY && y <= maxY);
+}
+
+function simplifyPath(hall: Hallway) {
+    hall.path.splice(3, 4);
 }
 
 
@@ -180,4 +196,6 @@ declare type Hallway = {
     start: Point & { direction: Direction },
     end: Point & { direction: Direction },
     path: Point[];
+    startRoom?: RoomDescription;
+    endRoom?: RoomDescription;
 }

@@ -39,6 +39,7 @@ const Hallways = (props: React.PropsWithChildren<{ halls: Hallway[] }>) => {
                     fill={"none"}
                     stroke={"black"}
                     points={hall.path.map(p => `${p.x}, ${p.y}`).join(' ')}
+                    strokeWidth={3}
                 />);
                 // return (
                 //     <path key={index}
