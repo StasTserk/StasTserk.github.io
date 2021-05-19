@@ -28,6 +28,7 @@ function GenerateDungeon(seed: string) {
             room.halls.push(hall);
             newRoom.halls.push(hall);
             updateBounds(newRoom);
+            hall.id = halls.length;
             halls.push(hall);
             rooms.push(newRoom);
         }

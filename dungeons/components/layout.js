@@ -11,31 +11,29 @@ const Layout = (props) => {
 };
 const Hallways = (props) => {
     const { x, y, size, padding } = dimensions;
-    // const pathify = (points: Point[]): string => {
-    //     let curvedPath = `M ${points[0].x} ${points[0].y} Q ${points[1].x} ${points[1].y}, ${points[2].x} ${points[2].y}`;
-    //     for (let i = 2; i < points.length - 1; i += 2) {
-    //         curvedPath += ` Q ${points[i].x} ${points[i].y}, ${points[i+1].x} ${points[i+1].y}`
-    //     }
-    //     return curvedPath;
-    // }
     return (React.createElement("svg", { style: {
             width: x * (size + padding) + padding,
             height: y * (size + padding) + padding,
-        } }, props.halls.map((hall, index) => {
-        return (React.createElement("polyline", { key: index, fill: "none", stroke: "black", points: hall.path.map(p => `${p.x}, ${p.y}`).join(' '), strokeWidth: 3 }));
-        // return (
-        //     <path key={index}
-        //         fill={"none"}
-        //         stroke={"black"}
-        //         d={pathify(hall.path)}
-        //     />
-        // )
+        } }, props.halls.map((hall) => {
+        return React.createElement(Hall, { hall: hall, key: hall.id });
     })));
+};
+const Hall = (props) => {
+    const [active, setActive] = React.useState(false);
+    React.useEffect(() => {
+        subscribe(`hall${props.hall.id}`, (state) => {
+            setActive(state);
+        });
+    }, []);
+    return (React.createElement("polyline", { key: props.hall.id, fill: "none", stroke: active ? "gold" : "black", points: props.hall.path.map(p => `${p.x}, ${p.y}`).join(' '), strokeWidth: 3 }));
 };
 const Room = (props) => {
     const { size, padding } = dimensions;
     const { room } = props;
-    return (React.createElement("div", { className: "room", style: { top: room.location.y * (size + padding) + padding, left: room.location.x * (size + padding) + padding }, onMouseEnter: () => notify('hover', room) },
+    return (React.createElement("div", { className: "room", style: { top: room.location.y * (size + padding) + padding, left: room.location.x * (size + padding) + padding }, onMouseEnter: () => {
+            notify('hover', room);
+            room.halls.forEach(h => notify(`hall${h.id}`, true));
+        }, onMouseLeave: () => room.halls.forEach(h => notify(`hall${h.id}`, false)) },
         React.createElement("strong", null, room.id),
         " - ",
         room.subtype));

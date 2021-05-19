@@ -99,7 +99,7 @@ function roomIsBetween(room, a, b) {
     return (x >= minX && x <= maxX && y >= minY && y <= maxY);
 }
 function simplifyPath(hall) {
-    hall.path.splice(3, 4);
+    hall.path.splice(1, 7);
 }
 const dimensions = {
     x: 5,

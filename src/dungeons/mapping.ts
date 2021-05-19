@@ -111,7 +111,7 @@ function roomIsBetween(room: RoomDescription, a: RoomDescription, b: RoomDescrip
 }
 
 function simplifyPath(hall: Hallway) {
-    hall.path.splice(3, 4);
+    hall.path.splice(1, 7);
 }
 
 
@@ -198,4 +198,5 @@ declare type Hallway = {
     path: Point[];
     startRoom?: RoomDescription;
     endRoom?: RoomDescription;
+    id?: number;
 }
