@@ -34,7 +34,7 @@ const Hallways = (props) => {
 const Hall = (props) => {
     return (React.createElement(ActiveHallwayContext.Consumer, null, ({ activeHallways }) => {
         const active = activeHallways.includes(props.hall.id);
-        return (React.createElement("polyline", { fill: "none", stroke: active ? "gold" : "black", points: props.hall.path.map(p => `${p.x}, ${p.y}`).join(' '), strokeWidth: 3 }));
+        return (React.createElement("polyline", { fill: "none", stroke: active ? "gold" : "rgba(0, 0, 0, .2)", points: props.hall.path.map(p => `${p.x}, ${p.y}`).join(' '), strokeWidth: 3 }));
     }));
 };
 const Room = (props) => {

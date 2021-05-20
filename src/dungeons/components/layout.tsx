@@ -68,7 +68,7 @@ const Hall = (props: React.PropsWithoutRef<{ hall: Hallway }>) => {
                 const active = activeHallways.includes(props.hall.id);
                 return (<polyline
                     fill={"none"}
-                    stroke={active ? "gold" : "black"}
+                    stroke={active ? "gold" : "rgba(0, 0, 0, .2)"}
                     points={props.hall.path.map(p => `${p.x}, ${p.y}`).join(' ')}
                     strokeWidth={3} />);
             }}
