@@ -1,13 +1,26 @@
+const RoomDetailContext = React.createContext({ setActiveRoom: () => { }, activeRoom: undefined });
+const ActiveHallwayContext = React.createContext({ setActiveHallways: () => { }, activeHallways: [] });
 const Layout = (props) => {
     const { x, y, size, padding } = dimensions;
-    return (React.createElement(React.Fragment, null,
-        React.createElement("div", { className: "dungeon-map" },
-            React.createElement(Hallways, { halls: props.halls }),
-            React.createElement("div", { className: "dungeon-layout", style: {
-                    width: x * (size + padding) + padding,
-                    height: y * (size + padding) + padding,
-                } }, props.rooms.map(r => { return React.createElement(Room, { room: r, key: r.id }); }))),
-        React.createElement(RoomDetail, { room: props.rooms[0] })));
+    const [detailRoom, setDetailRoom] = React.useState(props.rooms[0]);
+    const [activeHalls, setActiveHalls] = React.useState([]);
+    const roomContext = {
+        setActiveRoom: (r) => setDetailRoom(r),
+        activeRoom: detailRoom
+    };
+    const hallContext = {
+        activeHallways: activeHalls,
+        setActiveHallways: setActiveHalls
+    };
+    return (React.createElement(RoomDetailContext.Provider, { value: roomContext },
+        React.createElement(ActiveHallwayContext.Provider, { value: hallContext },
+            React.createElement("div", { className: "dungeon-map" },
+                React.createElement(Hallways, { halls: props.halls }),
+                React.createElement("div", { className: "dungeon-layout", style: {
+                        width: x * (size + padding) + padding,
+                        height: y * (size + padding) + padding,
+                    } }, props.rooms.map(r => { return React.createElement(Room, { room: r, key: r.id }); }))),
+            React.createElement(RoomDetail, null))));
 };
 const Hallways = (props) => {
     const { x, y, size, padding } = dimensions;
@@ -19,42 +32,39 @@ const Hallways = (props) => {
     })));
 };
 const Hall = (props) => {
-    const [active, setActive] = React.useState(false);
-    React.useEffect(() => {
-        subscribe(`hall${props.hall.id}`, (state) => {
-            setActive(state);
-        });
-    }, []);
-    return (React.createElement("polyline", { key: props.hall.id, fill: "none", stroke: active ? "gold" : "black", points: props.hall.path.map(p => `${p.x}, ${p.y}`).join(' '), strokeWidth: 3 }));
+    return (React.createElement(ActiveHallwayContext.Consumer, null, ({ activeHallways }) => {
+        const active = activeHallways.includes(props.hall.id);
+        return (React.createElement("polyline", { fill: "none", stroke: active ? "gold" : "black", points: props.hall.path.map(p => `${p.x}, ${p.y}`).join(' '), strokeWidth: 3 }));
+    }));
 };
 const Room = (props) => {
     const { size, padding } = dimensions;
     const { room } = props;
-    return (React.createElement("div", { className: "room", style: { top: room.location.y * (size + padding) + padding, left: room.location.x * (size + padding) + padding }, onMouseEnter: () => {
-            notify('hover', room);
-            room.halls.forEach(h => notify(`hall${h.id}`, true));
-        }, onMouseLeave: () => room.halls.forEach(h => notify(`hall${h.id}`, false)) },
+    return (React.createElement(RoomDetailContext.Consumer, null, ({ setActiveRoom }) => (React.createElement(ActiveHallwayContext.Consumer, null, ({ setActiveHallways }) => React.createElement("div", { className: "room", style: { top: room.location.y * (size + padding) + padding, left: room.location.x * (size + padding) + padding }, onMouseEnter: () => {
+            setActiveRoom(room);
+            setActiveHallways(room.halls.map(h => h.id));
+        }, onMouseLeave: () => setActiveHallways([]) },
         React.createElement("strong", null, room.id),
         " - ",
-        room.subtype));
+        room.subtype)))));
 };
-const RoomDetail = (props) => {
-    const [room, setRoom] = React.useState(props.room);
-    subscribe("hover", setRoom);
-    return (React.createElement("div", { className: "room-detail" },
-        React.createElement("div", { className: "description" },
-            room.type,
-            " - ",
-            room.subtype),
-        React.createElement("p", null,
-            "Number of Exits: ",
-            room.numExits),
-        React.createElement("p", null,
-            "Contents: ",
-            room.contents.type,
-            " - ",
-            room.contents.description),
-        React.createElement("p", null,
-            "Treasure: ",
-            room.contents.treasure.toString())));
+const RoomDetail = () => {
+    return (React.createElement(RoomDetailContext.Consumer, null, ({ activeRoom }) => {
+        return (React.createElement("div", { className: "room-detail" },
+            React.createElement("div", { className: "description" },
+                activeRoom.type,
+                " - ",
+                activeRoom.subtype),
+            React.createElement("p", null,
+                "Number of Exits: ",
+                activeRoom.numExits),
+            React.createElement("p", null,
+                "Contents: ",
+                activeRoom.contents.type,
+                " - ",
+                activeRoom.contents.description),
+            React.createElement("p", null,
+                "Treasure: ",
+                activeRoom.contents.treasure.toString())));
+    }));
 };
