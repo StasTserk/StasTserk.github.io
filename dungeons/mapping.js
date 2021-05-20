@@ -63,6 +63,24 @@ function getNearestCorner(start, dir, hint) {
             };
     }
 }
+function quadratize(path) {
+    const pathString = [`M ${path[0].x} ${path[0].y}`];
+    for (let i = 1; i < path.length - 1; i++) {
+        const pt1 = path[i];
+        const pt2 = path[i + 1];
+        if (distanceBetween(pt1, pt2) < 25) {
+            continue;
+        }
+        const midway = { x: (pt1.x + pt2.x) / 2, y: (pt1.y + pt2.y) / 2 };
+        pathString.push(`Q ${pt1.x} ${pt1.y}, ${midway.x} ${midway.y}`);
+    }
+    const endPoint = path[path.length - 1];
+    pathString.push(`L ${endPoint.x} ${endPoint.y}`);
+    return pathString.join(' ');
+}
+function distanceBetween(a, b) {
+    return Math.sqrt((a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y));
+}
 function getHallStub(p, d, drift = 0) {
     const { size, padding } = dimensions;
     let edgePoint;

@@ -143,3 +143,5 @@ const roomContents: RoomContents[] = [
 function RollOn<T>(table: Array<T>): T {
     return table[Math.floor(Math.random() * table.length)];
 }
+
+const pathType: "Linear" | "Curved" = "Linear";

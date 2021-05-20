@@ -140,3 +140,4 @@ const roomContents = [
 function RollOn(table) {
     return table[Math.floor(Math.random() * table.length)];
 }
+const pathType = "Linear";

@@ -16,7 +16,6 @@ function GenerateDungeon(seed: string) {
     while (i < rooms.length && rooms.length < 10) {
         
         const room = rooms[i];
-        
 
         for (let j = room.halls.length; j < room.numExits; j++) {
             const direction = randomDirection();

@@ -6,7 +6,4 @@ if (!seed) {
 
 GenerateDungeon(seed);
 
-
-
-
 ReactDOM.render(<Layout rooms={rooms} halls={halls} />, document.getElementById('root'))
