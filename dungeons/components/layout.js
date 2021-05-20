@@ -3,11 +3,11 @@ const ActiveHallwayContext = React.createContext({ setActiveHallways: () => { },
 const Layout = (props) => {
     const { x, y, size, padding } = dimensions;
     const [detailRoom, setDetailRoom] = React.useState(props.rooms[0]);
-    const [activeHalls, setActiveHalls] = React.useState([]);
     const roomContext = {
         setActiveRoom: (r) => setDetailRoom(r),
         activeRoom: detailRoom
     };
+    const [activeHalls, setActiveHalls] = React.useState([]);
     const hallContext = {
         activeHallways: activeHalls,
         setActiveHallways: setActiveHalls
@@ -40,13 +40,19 @@ const Hall = (props) => {
 const Room = (props) => {
     const { size, padding } = dimensions;
     const { room } = props;
-    return (React.createElement(RoomDetailContext.Consumer, null, ({ setActiveRoom }) => (React.createElement(ActiveHallwayContext.Consumer, null, ({ setActiveHallways }) => React.createElement("div", { className: "room", style: { top: room.location.y * (size + padding) + padding, left: room.location.x * (size + padding) + padding }, onMouseEnter: () => {
+    const hasMonster = room.contents.type === "Creature" ? (React.createElement(React.Fragment, null, "\uD83D\uDC32")) : (React.createElement(React.Fragment, null));
+    const hasTreasure = room.contents.treasure ? React.createElement(React.Fragment, null, "\uD83D\uDCB0") : React.createElement(React.Fragment, null);
+    return (React.createElement(RoomDetailContext.Consumer, null, ({ setActiveRoom }) => (React.createElement(ActiveHallwayContext.Consumer, null, ({ setActiveHallways }) => (React.createElement("div", { className: "room", style: { top: room.location.y * (size + padding) + padding, left: room.location.x * (size + padding) + padding }, onMouseEnter: () => {
             setActiveRoom(room);
             setActiveHallways(room.halls.map(h => h.id));
         }, onMouseLeave: () => setActiveHallways([]) },
-        React.createElement("strong", null, room.id),
-        " - ",
-        room.subtype)))));
+        React.createElement("span", { className: "number" }, room.id),
+        " ",
+        room.subtype,
+        " ",
+        hasMonster,
+        " ",
+        hasTreasure))))));
 };
 const RoomDetail = () => {
     return (React.createElement(RoomDetailContext.Consumer, null, ({ activeRoom }) => {

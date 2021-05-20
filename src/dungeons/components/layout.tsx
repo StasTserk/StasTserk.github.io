@@ -9,20 +9,23 @@ declare type ActiveHallwayContextData = {
     setActiveHallways: (ids: number[]) => void,
     activeHallways: number[];
 }
-const ActiveHallwayContext = React.createContext<ActiveHallwayContextData>({ setActiveHallways: () => { }, activeHallways: []})
+const ActiveHallwayContext = React.createContext<ActiveHallwayContextData>({ setActiveHallways: () => { }, activeHallways: [] });
 
 const Layout = (props: React.PropsWithoutRef<{ rooms: RoomDescription[], halls: Hallway[] }>) => {
     const { x, y, size, padding } = dimensions;
+
     const [detailRoom, setDetailRoom] = React.useState<RoomDescription>(props.rooms[0]);
-    const [activeHalls, setActiveHalls] = React.useState<number[]>([]);
     const roomContext: RoomContextData = {
         setActiveRoom: (r) => setDetailRoom(r),
         activeRoom: detailRoom
     }
+
+    const [activeHalls, setActiveHalls] = React.useState<number[]>([]);
     const hallContext: ActiveHallwayContextData = {
         activeHallways: activeHalls,
         setActiveHallways: setActiveHalls
     }
+
     return (
         <RoomDetailContext.Provider value={roomContext} >
         <ActiveHallwayContext.Provider value={hallContext} >
@@ -75,22 +78,25 @@ const Hall = (props: React.PropsWithoutRef<{ hall: Hallway }>) => {
 const Room = (props: React.PropsWithoutRef<{ room: RoomDescription }>) => {
     const { size, padding } = dimensions;
     const { room } = props;
+    const hasMonster = room.contents.type === "Creature" ? (<>&#128050;</>) : (<></>);
+    const hasTreasure = room.contents.treasure ? <>&#128176;</> : <></>
     return (
         <RoomDetailContext.Consumer>
             {({ setActiveRoom }) => (
                 <ActiveHallwayContext.Consumer>
-                    {({ setActiveHallways }) =>
-                    <div
-                        className="room"
-                        style={{ top: room.location.y * (size + padding) + padding, left: room.location.x * (size + padding) + padding }}
-                        onMouseEnter={() => {
-                            setActiveRoom(room);
-                            setActiveHallways(room.halls.map(h => h.id));
-                        }}
-                        onMouseLeave={() => setActiveHallways([])}
-                    >
-                        <strong>{room.id}</strong> - {room.subtype}
-                    </div>}
+                    {({ setActiveHallways }) => (
+                        <div
+                            className="room"
+                            style={{ top: room.location.y * (size + padding) + padding, left: room.location.x * (size + padding) + padding }}
+                            onMouseEnter={() => {
+                                setActiveRoom(room);
+                                setActiveHallways(room.halls.map(h => h.id));
+                            }}
+                            onMouseLeave={() => setActiveHallways([])}
+                        >
+                            <span className={"number"}>{room.id}</span> {room.subtype} {hasMonster} {hasTreasure}
+                        </div>
+                    )}
                 </ActiveHallwayContext.Consumer>)
             }
         </RoomDetailContext.Consumer>
